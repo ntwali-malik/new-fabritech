@@ -36,3 +36,1566 @@
     transform: rotate(360deg);
   }
 }
+
+/* Professional Navbar Styling */
+.tv-menu-content ul {
+  display: flex;
+  gap: 0;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.tv-menu-content ul li {
+  position: relative;
+  margin: 0;
+  padding: 0;
+}
+
+.tv-menu-content ul li a {
+  display: inline-block;
+  padding: 15px 25px;
+  font-size: 16px;
+  font-weight: 600;
+  text-decoration: none;
+  color: #3399CC;
+  text-transform: capitalize;
+  transition: all 0.3s ease;
+  position: relative;
+  letter-spacing: 0.5px;
+}
+
+/* Underline animation on hover */
+.tv-menu-content ul li a::after {
+  content: '';
+  position: absolute;
+  bottom: 8px;
+  left: 50%;
+  width: 0;
+  height: 3px;
+  background: linear-gradient(90deg, #3399CC, #2580B3);
+  transform: translateX(-50%);
+  transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  border-radius: 2px;
+}
+
+.tv-menu-content ul li a:hover::after {
+  width: 80%;
+}
+
+/* Hover effects */
+.tv-menu-content ul li a:hover {
+  color: #0f313a;
+  transform: translateY(-2px);
+  text-shadow: 0 2px 8px rgba(51, 153, 204, 0.15);
+}
+
+/* Ensure menu items maintain same padding in sticky state */
+#header-sticky.header-sticky .tv-menu-content ul li a,
+.header-sticky .tv-menu-content ul li a {
+  padding: 15px 25px !important;
+  font-size: 16px !important;
+  font-weight: 600 !important;
+  color: #3399CC !important;
+}
+
+/* Ensure menu items maintain same hover effect in sticky state */
+#header-sticky.header-sticky .tv-menu-content ul li a:hover,
+.header-sticky .tv-menu-content ul li a:hover {
+  color: #0f313a !important;
+  transform: translateY(-2px) !important;
+}
+
+/* Active state styling */
+.tv-menu-content ul li a.active,
+.tv-menu-content ul li a[href="/"] {
+  color: #0f313a;
+}
+
+.tv-menu-content ul li a.active::after,
+.tv-menu-content ul li a[href="/"]::after {
+  width: 80%;
+  background: linear-gradient(90deg, #3399CC, #2580B3);
+}
+
+/* Smooth transition for all menu items */
+.tv-header-content {
+  transition: all 0.3s ease;
+}
+
+/* Ripple effect on click (optional enhancement) */
+.tv-menu-content ul li a {
+  overflow: hidden;
+}
+
+.tv-menu-content ul li a::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.1);
+  transform: translate(-50%, -50%);
+  transition: width 0.6s, height 0.6s;
+}
+
+.tv-menu-content ul li a:active::before {
+  width: 300px;
+  height: 300px;
+}
+
+/* Logo Section Styling - Clean and Simple */
+.tv-header-logo {
+  display: inline-block;
+  transition: all 0.3s ease;
+  background: transparent !important;
+  padding: 0 !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+.tv-header-logo:hover {
+  transform: translateY(-2px);
+}
+
+.tv-header-logo a {
+  display: inline-block;
+  background: transparent !important;
+  padding: 0 !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+.tv-header-logo img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+/* ===== UNIFIED NAVBAR STYLING - APPLIES TO ALL PAGES ===== */
+
+/* Header Top Area - Consistent Styling */
+.tv-header-top-area {
+  background-color: #f8f9fa !important;
+  border-bottom: 1px solid rgba(51, 153, 204, 0.1);
+}
+
+.tv-header-top-list-box ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0;
+}
+
+.tv-header-top-list-box ul li {
+  display: inline-block;
+  padding-right: 20px;
+  margin-right: 20px;
+  border-right: 1px solid rgba(51, 153, 204, 0.2);
+}
+
+.tv-header-top-list-box ul li:last-child {
+  border-right: none;
+  padding-right: 0;
+  margin-right: 0;
+}
+
+.tv-header-top-list-box ul li span {
+  color: #666666;
+  font-size: 14px;
+}
+
+.tv-header-top-list-box ul li span i {
+  color: #3399CC;
+  margin-right: 8px;
+}
+
+.tv-header-top-list-box ul li span a {
+  color: #666666;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+.tv-header-top-list-box ul li span a:hover {
+  color: #3399CC;
+}
+
+/* Social Icons in Header Top */
+.tv-header-top-social-box {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.tv-header-top-social-box a {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background-color: #ffffff;
+  color: #3399CC;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  border: 1px solid rgba(51, 153, 204, 0.2);
+}
+
+.tv-header-top-social-box a:hover {
+  background-color: #3399CC;
+  color: #ffffff;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(51, 153, 204, 0.3);
+}
+
+/* Header Area Styling - White Background - Unified (Like Image 2) */
+/* Normal Header */
+.tv-header-area,
+.tv-header-ptb,
+#header-sticky,
+.header-style-1,
+.tv-header-area.header-style-1 {
+  background-color: #ffffff !important;
+  background-image: none !important;
+  background: #ffffff !important;
+  box-shadow: 0 2px 8px rgba(51, 153, 204, 0.1) !important;
+  border-bottom: 1px solid rgba(51, 153, 204, 0.15) !important;
+}
+
+/* Sticky Header - Must Match Normal Header Exactly */
+#header-sticky.header-sticky,
+#header-sticky.header-sticky.tv-header-area,
+#header-sticky.header-sticky.header-style-1,
+.header-sticky,
+.header-sticky.tv-header-area,
+.header-sticky.tv-header-area.header-style-1,
+.header-sticky.header-style-1 {
+  background-color: #ffffff !important;
+  background-image: none !important;
+  background: #ffffff !important;
+  box-shadow: 0 2px 8px rgba(51, 153, 204, 0.1) !important;
+  border-bottom: 1px solid rgba(51, 153, 204, 0.15) !important;
+}
+
+/* Ensure ALL header sections have white background - Override any template styles */
+.tv-header-area .container,
+.tv-header-area .container-1750,
+.tv-header-area .row,
+.tv-header-area .p-relative,
+.tv-header-area [class*="col-"],
+.tv-header-area .col-xxl-2,
+.tv-header-area .col-xl-2,
+.tv-header-area .col-xxl-7,
+.tv-header-area .col-xl-7,
+.tv-header-area .col-xxl-3,
+.tv-header-area .col-xl-3,
+.tv-header-area .col-6,
+#header-sticky .container,
+#header-sticky .container-1750,
+#header-sticky .row,
+#header-sticky .p-relative,
+#header-sticky [class*="col-"],
+#header-sticky .col-xxl-2,
+#header-sticky .col-xl-2,
+#header-sticky .col-xxl-7,
+#header-sticky .col-xl-7,
+#header-sticky .col-xxl-3,
+#header-sticky .col-xl-3,
+#header-sticky .col-6,
+.header-sticky .container,
+.header-sticky .container-1750,
+.header-sticky .row,
+.header-sticky .p-relative,
+.header-sticky [class*="col-"],
+.header-sticky .col-xxl-2,
+.header-sticky .col-xl-2,
+.header-sticky .col-xxl-7,
+.header-sticky .col-xl-7,
+.header-sticky .col-xxl-3,
+.header-sticky .col-xl-3,
+.header-sticky .col-6 {
+  background-color: transparent !important;
+  background: transparent !important;
+  background-image: none !important;
+}
+
+/* Logo Section - White Background (Override any blue/gradient) */
+.tv-header-logo,
+.tv-header-logo a,
+.tv-header-logo img,
+.tv-header-area .tv-header-logo,
+.tv-header-area .tv-header-logo a,
+.tv-header-area .tv-header-logo *,
+#header-sticky .tv-header-logo,
+#header-sticky .tv-header-logo a,
+#header-sticky .tv-header-logo *,
+.header-sticky .tv-header-logo,
+.header-sticky .tv-header-logo a,
+.header-sticky .tv-header-logo *,
+.col-xxl-2:first-child,
+.col-xl-2:first-child,
+.col-6:first-child,
+[class*="col-"]:first-child {
+  background-color: transparent !important;
+  background: transparent !important;
+  background-image: none !important;
+}
+
+/* Remove any pseudo-elements that might add blue backgrounds */
+.tv-header-logo::before,
+.tv-header-logo::after,
+.tv-header-area .col-xxl-2:first-child::before,
+.tv-header-area .col-xxl-2:first-child::after,
+.tv-header-area .col-xl-2:first-child::before,
+.tv-header-area .col-xl-2:first-child::after,
+#header-sticky .col-xxl-2:first-child::before,
+#header-sticky .col-xxl-2:first-child::after,
+#header-sticky .col-xl-2:first-child::before,
+#header-sticky .col-xl-2:first-child::after,
+.header-sticky .col-xxl-2:first-child::before,
+.header-sticky .col-xxl-2:first-child::after,
+.header-sticky .col-xl-2:first-child::before,
+.header-sticky .col-xl-2:first-child::after {
+  display: none !important;
+  background: none !important;
+  background-color: transparent !important;
+  content: none !important;
+}
+
+/* Force white background on logo column - Override any template blue backgrounds */
+.tv-header-area .row > div:first-child,
+#header-sticky .row > div:first-child,
+.header-sticky .row > div:first-child,
+.tv-header-area [class*="col-"]:first-child,
+#header-sticky [class*="col-"]:first-child,
+.header-sticky [class*="col-"]:first-child,
+.tv-header-area .col-xxl-2:first-child,
+.tv-header-area .col-xl-2:first-child,
+#header-sticky .col-xxl-2:first-child,
+#header-sticky .col-xl-2:first-child,
+.header-sticky .col-xxl-2:first-child,
+.header-sticky .col-xl-2:first-child {
+  background-color: transparent !important;
+  background: transparent !important;
+  background-image: none !important;
+  padding: 0 !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+/* Remove any pseudo-elements from logo column */
+.tv-header-area .row > div:first-child::before,
+.tv-header-area .row > div:first-child::after,
+#header-sticky .row > div:first-child::before,
+#header-sticky .row > div:first-child::after,
+.header-sticky .row > div:first-child::before,
+.header-sticky .row > div:first-child::after,
+.tv-header-area .col-xxl-2:first-child::before,
+.tv-header-area .col-xxl-2:first-child::after,
+.tv-header-area .col-xl-2:first-child::before,
+.tv-header-area .col-xl-2:first-child::after,
+#header-sticky .col-xxl-2:first-child::before,
+#header-sticky .col-xxl-2:first-child::after,
+#header-sticky .col-xl-2:first-child::before,
+#header-sticky .col-xl-2:first-child::after,
+.header-sticky .col-xxl-2:first-child::before,
+.header-sticky .col-xxl-2:first-child::after,
+.header-sticky .col-xl-2:first-child::before,
+.header-sticky .col-xl-2:first-child::after {
+  display: none !important;
+  content: none !important;
+  background: none !important;
+  box-shadow: none !important;
+}
+
+/* Ensure no gradient or blue color in logo area */
+.tv-header-area .row > div:first-child *,
+#header-sticky .row > div:first-child *,
+.header-sticky .row > div:first-child * {
+  background-color: transparent !important;
+  background: transparent !important;
+  background-image: none !important;
+}
+
+/* Override any template header-wrap or border styles that add blue */
+.tv-header-wrap,
+.tv-header-wrap::before,
+.tv-header-wrap::after,
+.tv-header-border,
+.tv-header-border::before,
+.tv-header-border::after,
+.header-style-1 .tv-header-wrap,
+.header-style-1 .tv-header-wrap::before,
+.header-style-1 .tv-header-wrap::after {
+  background-color: transparent !important;
+  background: transparent !important;
+  background-image: none !important;
+  border: none !important;
+}
+
+/* CRITICAL: Override template's ::before and ::after that create blue background and white card effect */
+.tv-header-area.header-style-1::before,
+.tv-header-area::before,
+#header-sticky.header-style-1::before,
+#header-sticky::before,
+.header-sticky.header-style-1::before,
+.header-sticky::before {
+  display: none !important;
+  content: none !important;
+  background: none !important;
+  background-image: none !important;
+  background-color: transparent !important;
+}
+
+.tv-header-area.header-style-1::after,
+.tv-header-area::after,
+#header-sticky.header-style-1::after,
+#header-sticky::after,
+.header-sticky.header-style-1::after,
+.header-sticky::after {
+  display: none !important;
+  content: none !important;
+  background: none !important;
+  box-shadow: none !important;
+  background-color: transparent !important;
+}
+
+/* Ensure header-style-1 has white background (override template) */
+.header-style-1,
+.tv-header-area.header-style-1,
+#header-sticky.header-style-1,
+.header-sticky.header-style-1 {
+  background-color: #ffffff !important;
+  background: #ffffff !important;
+  background-image: none !important;
+}
+
+/* Override any template CSS that might add blue to first column */
+.tv-header-area .row > [class*="col-"]:first-child,
+#header-sticky .row > [class*="col-"]:first-child,
+.header-sticky .row > [class*="col-"]:first-child {
+  background: linear-gradient(to right, transparent, transparent) !important;
+  background-color: transparent !important;
+  background-image: none !important;
+}
+
+/* Header Dropdown Styling */
+.tv-header-dropdown {
+  background-color: #ffffff !important;
+  background: #ffffff !important;
+}
+
+/* Menu Section - White Background */
+.tv-header-menu,
+.tv-header-menu nav,
+.tv-header-menu .tv-menu-content,
+.tv-header-menu ul,
+.tv-header-menu li,
+.tv-header-area .tv-header-menu,
+.tv-header-area .tv-header-menu *,
+#header-sticky .tv-header-menu,
+#header-sticky .tv-header-menu *,
+.header-sticky .tv-header-menu,
+.header-sticky .tv-header-menu * {
+  background-color: transparent !important;
+  background: transparent !important;
+}
+
+/* Right Action Section - White Background */
+.tv-header-right-action,
+.tv-header-right-action *,
+.tv-header-area .tv-header-right-action,
+.tv-header-area .tv-header-right-action *,
+#header-sticky .tv-header-right-action,
+#header-sticky .tv-header-right-action *,
+.header-sticky .tv-header-right-action,
+.header-sticky .tv-header-right-action * {
+  background-color: transparent !important;
+  background: transparent !important;
+}
+
+/* Search Button - Removed (not needed) */
+
+/* Menu Bar (Hamburger) - Premium & Stunning Design */
+.tv-header-bar {
+  display: flex;
+  align-items: center;
+}
+
+.tv-menu-bar {
+  width: 64px !important;
+  height: 64px !important;
+  border-radius: 18px !important;
+  background: linear-gradient(145deg, #2580B3 0%, #1A6B99 30%, #0f4d66 70%, #0a3d4d 100%) !important;
+  border: 3px solid rgba(15, 49, 58, 0.3) !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
+  cursor: pointer !important;
+  padding: 0 !important;
+  box-shadow: 
+    0 12px 35px rgba(15, 49, 58, 0.4),
+    0 6px 18px rgba(15, 49, 58, 0.3),
+    0 2px 8px rgba(0, 0, 0, 0.2),
+    0 0 0 2px rgba(255, 255, 255, 0.15) inset,
+    0 1px 4px rgba(0, 0, 0, 0.15) inset,
+    0 0 0 0 rgba(51, 153, 204, 0.5) !important;
+  position: relative !important;
+  overflow: hidden !important;
+  backdrop-filter: blur(10px) !important;
+}
+
+/* Animated gradient background overlay - Enhanced */
+.tv-menu-bar::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(
+    45deg,
+    transparent 25%,
+    rgba(255, 255, 255, 0.15) 50%,
+    transparent 75%,
+    rgba(255, 255, 255, 0.1) 100%
+  );
+  transform: rotate(45deg);
+  transition: all 0.8s ease;
+  opacity: 0;
+  z-index: 1;
+}
+
+/* Shimmer effect on hover - Enhanced */
+.tv-menu-bar:hover::before {
+  opacity: 1;
+  animation: shimmer 2s infinite;
+}
+
+@keyframes shimmer {
+  0% {
+    transform: translateX(-100%) translateY(-100%) rotate(45deg);
+  }
+  100% {
+    transform: translateX(100%) translateY(100%) rotate(45deg);
+  }
+}
+
+/* Glow effect overlay - Enhanced with multiple layers */
+.tv-menu-bar::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    rgba(255, 255, 255, 0.4) 0%,
+    rgba(255, 255, 255, 0.2) 30%,
+    rgba(51, 153, 204, 0.3) 60%,
+    transparent 100%
+  );
+  transform: translate(-50%, -50%);
+  transition: all 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.tv-menu-bar:hover::after {
+  width: 140px;
+  height: 140px;
+  animation: pulse-glow-expand 2s ease-in-out infinite;
+}
+
+@keyframes pulse-glow-expand {
+  0%, 100% {
+    opacity: 0.6;
+    transform: translate(-50%, -50%) scale(1);
+  }
+  50% {
+    opacity: 0.8;
+    transform: translate(-50%, -50%) scale(1.1);
+  }
+}
+
+/* Hover state - Premium Enhanced with Better Contrast */
+.tv-menu-bar:hover {
+  transform: translateY(-5px) scale(1.1) rotate(3deg) !important;
+  box-shadow: 
+    0 22px 55px rgba(15, 49, 58, 0.5),
+    0 12px 30px rgba(15, 49, 58, 0.4),
+    0 4px 12px rgba(0, 0, 0, 0.3),
+    0 0 45px rgba(51, 153, 204, 0.6),
+    0 0 0 3px rgba(255, 255, 255, 0.25) inset,
+    0 2px 6px rgba(0, 0, 0, 0.2) inset !important;
+  border-color: rgba(15, 49, 58, 0.5) !important;
+  background: linear-gradient(145deg, #3399CC 0%, #2580B3 35%, #1A6B99 70%, #0f4d66 100%) !important;
+}
+
+/* Active/Pressed state - Refined with Better Contrast */
+.tv-menu-bar:active {
+  transform: translateY(-3px) scale(1.06) !important;
+  box-shadow: 
+    0 14px 40px rgba(15, 49, 58, 0.5),
+    0 7px 20px rgba(15, 49, 58, 0.4),
+    0 3px 10px rgba(0, 0, 0, 0.3),
+    0 0 30px rgba(51, 153, 204, 0.5),
+    0 0 0 2px rgba(255, 255, 255, 0.2) inset !important;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+/* Hamburger Icon - Ultra Premium Design */
+.hamburger-icon {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 7px !important;
+  width: 30px !important;
+  height: 24px !important;
+  position: relative !important;
+  z-index: 2 !important;
+  transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
+}
+
+.hamburger-line {
+  width: 100% !important;
+  height: 4.5px !important;
+  background: linear-gradient(90deg, 
+    rgba(255, 255, 255, 1) 0%, 
+    rgba(255, 255, 255, 1) 50%,
+    rgba(255, 255, 255, 0.98) 100%) !important;
+  border-radius: 6px !important;
+  transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
+  transform-origin: center !important;
+  box-shadow: 
+    0 4px 8px rgba(0, 0, 0, 0.4),
+    0 2px 4px rgba(0, 0, 0, 0.3),
+    0 0 16px rgba(255, 255, 255, 0.6),
+    0 0 8px rgba(255, 255, 255, 0.4),
+    0 2px 4px rgba(255, 255, 255, 0.7) inset,
+    0 -1px 2px rgba(0, 0, 0, 0.2) inset !important;
+  position: relative !important;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3)) drop-shadow(0 0 6px rgba(255, 255, 255, 0.6));
+  border: 0.5px solid rgba(255, 255, 255, 0.3);
+}
+
+/* Elegant varying widths for visual interest - Refined */
+.hamburger-line:nth-child(1) {
+  width: 24px !important;
+  margin-left: auto !important;
+  margin-right: 0 !important;
+  transform-origin: right center !important;
+}
+
+.hamburger-line:nth-child(2) {
+  width: 30px !important;
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+  transform-origin: center !important;
+}
+
+.hamburger-line:nth-child(3) {
+  width: 22px !important;
+  margin-left: 0 !important;
+  margin-right: auto !important;
+  transform-origin: left center !important;
+}
+
+/* Hover Animation - Ultra Smooth and Elegant with Enhanced Visibility */
+.tv-menu-bar:hover .hamburger-icon {
+  gap: 8px !important;
+  transform: scale(1.15) !important;
+}
+
+.tv-menu-bar:hover .hamburger-line:nth-child(1) {
+  width: 30px !important;
+  margin-left: 0 !important;
+  transform: translateX(0) rotate(3deg) scaleY(1.1) !important;
+  box-shadow: 
+    0 5px 10px rgba(0, 0, 0, 0.45),
+    0 2px 5px rgba(0, 0, 0, 0.35),
+    0 0 20px rgba(255, 255, 255, 0.7),
+    0 0 12px rgba(255, 255, 255, 0.5),
+    0 3px 6px rgba(255, 255, 255, 0.8) inset,
+    0 -1px 3px rgba(0, 0, 0, 0.25) inset !important;
+  filter: drop-shadow(0 3px 6px rgba(0, 0, 0, 0.4)) drop-shadow(0 0 8px rgba(255, 255, 255, 0.7));
+  border-color: rgba(255, 255, 255, 0.5);
+}
+
+.tv-menu-bar:hover .hamburger-line:nth-child(2) {
+  transform: scaleX(1.2) scaleY(1.1) !important;
+  box-shadow: 
+    0 5px 10px rgba(0, 0, 0, 0.45),
+    0 2px 5px rgba(0, 0, 0, 0.35),
+    0 0 20px rgba(255, 255, 255, 0.7),
+    0 0 12px rgba(255, 255, 255, 0.5),
+    0 3px 6px rgba(255, 255, 255, 0.8) inset,
+    0 -1px 3px rgba(0, 0, 0, 0.25) inset !important;
+  filter: drop-shadow(0 3px 6px rgba(0, 0, 0, 0.4)) drop-shadow(0 0 8px rgba(255, 255, 255, 0.7));
+  border-color: rgba(255, 255, 255, 0.5);
+}
+
+.tv-menu-bar:hover .hamburger-line:nth-child(3) {
+  width: 30px !important;
+  margin-right: 0 !important;
+  transform: translateX(0) rotate(-3deg) scaleY(1.1) !important;
+  box-shadow: 
+    0 5px 10px rgba(0, 0, 0, 0.45),
+    0 2px 5px rgba(0, 0, 0, 0.35),
+    0 0 20px rgba(255, 255, 255, 0.7),
+    0 0 12px rgba(255, 255, 255, 0.5),
+    0 3px 6px rgba(255, 255, 255, 0.8) inset,
+    0 -1px 3px rgba(0, 0, 0, 0.25) inset !important;
+  filter: drop-shadow(0 3px 6px rgba(0, 0, 0, 0.4)) drop-shadow(0 0 8px rgba(255, 255, 255, 0.7));
+  border-color: rgba(255, 255, 255, 0.5);
+}
+
+/* Active/Open State - Premium X transformation with Enhanced Visibility */
+.tv-menu-bar.active {
+  background: linear-gradient(145deg, #1A6B99 0%, #0f4d66 40%, #0a3d4d 80%, #062832 100%) !important;
+  transform: rotate(180deg) scale(1.05) !important;
+  box-shadow: 
+    0 18px 45px rgba(15, 49, 58, 0.6),
+    0 10px 25px rgba(15, 49, 58, 0.5),
+    0 4px 12px rgba(0, 0, 0, 0.4),
+    0 0 40px rgba(51, 153, 204, 0.6),
+    0 0 0 3px rgba(255, 255, 255, 0.3) inset !important;
+  border-color: rgba(15, 49, 58, 0.6) !important;
+}
+
+.tv-menu-bar.active .hamburger-line:nth-child(1) {
+  transform: translateY(10px) rotate(45deg) !important;
+  width: 30px !important;
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+  box-shadow: 
+    0 4px 8px rgba(0, 0, 0, 0.45),
+    0 2px 4px rgba(0, 0, 0, 0.35),
+    0 0 18px rgba(255, 255, 255, 0.7),
+    0 0 10px rgba(255, 255, 255, 0.5),
+    0 2px 5px rgba(255, 255, 255, 0.8) inset,
+    0 -1px 3px rgba(0, 0, 0, 0.3) inset !important;
+  filter: drop-shadow(0 3px 6px rgba(0, 0, 0, 0.4)) drop-shadow(0 0 8px rgba(255, 255, 255, 0.7));
+  border-color: rgba(255, 255, 255, 0.4);
+}
+
+.tv-menu-bar.active .hamburger-line:nth-child(2) {
+  opacity: 0 !important;
+  transform: scaleX(0) rotate(180deg) !important;
+  width: 0 !important;
+  transition: all 0.3s ease !important;
+}
+
+.tv-menu-bar.active .hamburger-line:nth-child(3) {
+  transform: translateY(-10px) rotate(-45deg) !important;
+  width: 30px !important;
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+  box-shadow: 
+    0 4px 8px rgba(0, 0, 0, 0.45),
+    0 2px 4px rgba(0, 0, 0, 0.35),
+    0 0 18px rgba(255, 255, 255, 0.7),
+    0 0 10px rgba(255, 255, 255, 0.5),
+    0 2px 5px rgba(255, 255, 255, 0.8) inset,
+    0 -1px 3px rgba(0, 0, 0, 0.3) inset !important;
+  filter: drop-shadow(0 3px 6px rgba(0, 0, 0, 0.4)) drop-shadow(0 0 8px rgba(255, 255, 255, 0.7));
+  border-color: rgba(255, 255, 255, 0.4);
+}
+
+/* Pulse animation for attention - Enhanced with Better Contrast */
+@keyframes pulse-glow {
+  0%, 100% {
+    box-shadow: 
+      0 12px 35px rgba(15, 49, 58, 0.4),
+      0 6px 18px rgba(15, 49, 58, 0.3),
+      0 2px 8px rgba(0, 0, 0, 0.2),
+      0 0 0 0 rgba(51, 153, 204, 0.5);
+  }
+  50% {
+    box-shadow: 
+      0 12px 35px rgba(15, 49, 58, 0.5),
+      0 6px 18px rgba(15, 49, 58, 0.4),
+      0 2px 8px rgba(0, 0, 0, 0.3),
+      0 0 0 12px rgba(51, 153, 204, 0);
+  }
+}
+
+/* Subtle pulse on load - Refined */
+.tv-menu-bar {
+  animation: pulse-glow 4s ease-in-out infinite;
+}
+
+/* Sticky Header - Unified Styling - Must Match Normal Header Exactly */
+#header-sticky.header-sticky,
+#header-sticky.header-sticky.tv-header-area,
+#header-sticky.header-sticky.header-style-1,
+.header-sticky.tv-header-area,
+.header-sticky.tv-header-area.header-style-1,
+.header-sticky.header-style-1 {
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  z-index: 999 !important;
+  background-color: #ffffff !important;
+  background: #ffffff !important;
+  background-image: none !important;
+  box-shadow: 0 2px 8px rgba(51, 153, 204, 0.1) !important;
+  border-bottom: 1px solid rgba(51, 153, 204, 0.15) !important;
+  animation: headerSlideDown 0.3s ease !important;
+}
+
+@keyframes headerSlideDown {
+  from {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* Ensure sticky header maintains EXACT same white background as normal header */
+#header-sticky.header-sticky .tv-header-logo,
+#header-sticky.header-sticky .tv-header-logo a,
+#header-sticky.header-sticky .tv-header-logo *,
+#header-sticky.header-sticky .tv-header-menu,
+#header-sticky.header-sticky .tv-header-dropdown,
+#header-sticky.header-sticky .tv-header-right-action,
+#header-sticky.header-sticky .tv-menu-content,
+#header-sticky.header-sticky nav,
+#header-sticky.header-sticky .container,
+#header-sticky.header-sticky .container-1750,
+#header-sticky.header-sticky .row,
+#header-sticky.header-sticky .p-relative,
+#header-sticky.header-sticky [class*="col-"],
+#header-sticky.header-sticky .col-xxl-2,
+#header-sticky.header-sticky .col-xl-2,
+#header-sticky.header-sticky .col-xxl-7,
+#header-sticky.header-sticky .col-xl-7,
+#header-sticky.header-sticky .col-xxl-3,
+#header-sticky.header-sticky .col-xl-3,
+#header-sticky.header-sticky .col-6,
+.header-sticky .tv-header-logo,
+.header-sticky .tv-header-logo a,
+.header-sticky .tv-header-logo *,
+.header-sticky .tv-header-menu,
+.header-sticky .tv-header-dropdown,
+.header-sticky .tv-header-right-action,
+.header-sticky .tv-menu-content,
+.header-sticky nav,
+.header-sticky .container,
+.header-sticky .container-1750,
+.header-sticky .row,
+.header-sticky .p-relative,
+.header-sticky [class*="col-"],
+.header-sticky .col-xxl-2,
+.header-sticky .col-xl-2,
+.header-sticky .col-xxl-7,
+.header-sticky .col-xl-7,
+.header-sticky .col-xxl-3,
+.header-sticky .col-xl-3,
+.header-sticky .col-6 {
+  background-color: transparent !important;
+  background: transparent !important;
+  background-image: none !important;
+}
+
+/* Ensure sticky header logo column has no blue background - CRITICAL */
+#header-sticky.header-sticky .row > div:first-child,
+#header-sticky.header-sticky [class*="col-"]:first-child,
+#header-sticky.header-sticky .col-xxl-2:first-child,
+#header-sticky.header-sticky .col-xl-2:first-child,
+#header-sticky.header-sticky .col-6:first-child,
+#header-sticky.header-sticky .row > [class*="col-"]:first-child,
+.header-sticky .row > div:first-child,
+.header-sticky [class*="col-"]:first-child,
+.header-sticky .col-xxl-2:first-child,
+.header-sticky .col-xl-2:first-child,
+.header-sticky .col-6:first-child,
+.header-sticky .row > [class*="col-"]:first-child {
+  background-color: transparent !important;
+  background: transparent !important;
+  background-image: none !important;
+  background: linear-gradient(to right, transparent, transparent) !important;
+}
+
+/* Force logo section to stay white/transparent on scroll - Override any template blue */
+#header-sticky.header-sticky .row > div:first-child *,
+#header-sticky.header-sticky [class*="col-"]:first-child *,
+#header-sticky.header-sticky .col-xxl-2:first-child *,
+#header-sticky.header-sticky .col-xl-2:first-child *,
+#header-sticky.header-sticky .col-6:first-child *,
+.header-sticky .row > div:first-child *,
+.header-sticky [class*="col-"]:first-child *,
+.header-sticky .col-xxl-2:first-child *,
+.header-sticky .col-xl-2:first-child *,
+.header-sticky .col-6:first-child * {
+  background-color: transparent !important;
+  background: transparent !important;
+  background-image: none !important;
+}
+
+/* Remove any pseudo-elements on sticky header */
+#header-sticky.header-sticky .col-xxl-2:first-child::before,
+#header-sticky.header-sticky .col-xxl-2:first-child::after,
+#header-sticky.header-sticky .col-xl-2:first-child::before,
+#header-sticky.header-sticky .col-xl-2:first-child::after,
+#header-sticky.header-sticky .tv-header-logo::before,
+#header-sticky.header-sticky .tv-header-logo::after,
+.header-sticky .col-xxl-2:first-child::before,
+.header-sticky .col-xxl-2:first-child::after,
+.header-sticky .col-xl-2:first-child::before,
+.header-sticky .col-xl-2:first-child::after,
+.header-sticky .tv-header-logo::before,
+.header-sticky .tv-header-logo::after {
+  display: none !important;
+  background: none !important;
+  background-color: transparent !important;
+  content: none !important;
+}
+
+/* Override template sticky header styles that might add blue */
+#header-sticky.header-sticky .tv-header-wrap,
+#header-sticky.header-sticky .tv-header-wrap::before,
+#header-sticky.header-sticky .tv-header-wrap::after,
+#header-sticky.header-sticky .tv-header-border,
+#header-sticky.header-sticky .tv-header-border::before,
+#header-sticky.header-sticky .tv-header-border::after,
+.header-sticky .tv-header-wrap,
+.header-sticky .tv-header-wrap::before,
+.header-sticky .tv-header-wrap::after,
+.header-sticky .tv-header-border,
+.header-sticky .tv-header-border::before,
+.header-sticky .tv-header-border::after {
+  background-color: transparent !important;
+  background: transparent !important;
+  background-image: none !important;
+  border: none !important;
+}
+
+/* CRITICAL: Prevent logo column from getting blue background on scroll */
+/* Target all possible selectors that might add blue to first column when sticky */
+#header-sticky.header-sticky .row > div:first-child,
+#header-sticky.header-sticky .row > [class*="col-"]:first-child,
+#header-sticky.header-sticky [class*="col-"]:first-child,
+#header-sticky.header-sticky .col-xxl-2,
+#header-sticky.header-sticky .col-xl-2,
+#header-sticky.header-sticky .col-6:first-child,
+#header-sticky.header-sticky > .container > .row > div:first-child,
+#header-sticky.header-sticky > .container-1750 > .row > div:first-child,
+.header-sticky .row > div:first-child,
+.header-sticky .row > [class*="col-"]:first-child,
+.header-sticky [class*="col-"]:first-child,
+.header-sticky .col-xxl-2,
+.header-sticky .col-xl-2,
+.header-sticky .col-6:first-child,
+.header-sticky > .container > .row > div:first-child,
+.header-sticky > .container-1750 > .row > div:first-child {
+  background-color: #ffffff !important;
+  background: #ffffff !important;
+  background-image: none !important;
+}
+
+/* Ensure logo itself and all its children stay white/transparent */
+#header-sticky.header-sticky .tv-header-logo,
+#header-sticky.header-sticky .tv-header-logo *,
+#header-sticky.header-sticky .tv-header-logo a,
+#header-sticky.header-sticky .tv-header-logo img,
+.header-sticky .tv-header-logo,
+.header-sticky .tv-header-logo *,
+.header-sticky .tv-header-logo a,
+.header-sticky .tv-header-logo img {
+  background-color: transparent !important;
+  background: transparent !important;
+  background-image: none !important;
+}
+
+/* Override any inline styles or dynamically added styles */
+#header-sticky.header-sticky [style*="background"],
+#header-sticky.header-sticky [style*="background-color"],
+.header-sticky [style*="background"],
+.header-sticky [style*="background-color"] {
+  background-color: transparent !important;
+  background: transparent !important;
+}
+
+/* Specifically target the logo column when sticky - highest priority */
+#header-sticky.header-sticky .col-xxl-2:first-of-type,
+#header-sticky.header-sticky .col-xl-2:first-of-type,
+#header-sticky.header-sticky .col-6:first-of-type,
+.header-sticky .col-xxl-2:first-of-type,
+.header-sticky .col-xl-2:first-of-type,
+.header-sticky .col-6:first-of-type {
+  background-color: #ffffff !important;
+  background: #ffffff !important;
+  background-image: none !important;
+}
+
+/* Right Action Icons - Unified Spacing and Styling */
+.tv-header-right-action {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: flex-end !important;
+  gap: 12px !important;
+}
+
+/* Responsive Navbar Adjustments */
+@media (max-width: 1399px) {
+  .tv-menu-bar {
+    width: 60px !important;
+    height: 60px !important;
+    border-radius: 16px !important;
+  }
+  
+  .hamburger-icon {
+    width: 28px !important;
+    height: 22px !important;
+    gap: 6px !important;
+  }
+  
+  .hamburger-line {
+    height: 3.5px !important;
+  }
+  
+  .hamburger-line:nth-child(1) {
+    width: 22px !important;
+  }
+  
+  .hamburger-line:nth-child(2) {
+    width: 28px !important;
+  }
+  
+  .hamburger-line:nth-child(3) {
+    width: 20px !important;
+  }
+}
+
+@media (max-width: 1199px) {
+  .tv-header-top-list-box ul li {
+    padding-right: 15px;
+    margin-right: 15px;
+    font-size: 13px;
+  }
+  
+  .tv-header-top-social-box a {
+    width: 32px;
+    height: 32px;
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 991px) {
+  .tv-header-top-area {
+    padding: 12px 0 !important;
+  }
+  
+  .tv-menu-bar {
+    width: 56px !important;
+    height: 56px !important;
+    border-radius: 15px !important;
+  }
+  
+  .hamburger-icon {
+    width: 26px !important;
+    height: 20px !important;
+    gap: 6px !important;
+  }
+  
+  .hamburger-line {
+    height: 3.5px !important;
+  }
+  
+  .hamburger-line:nth-child(1) {
+    width: 20px !important;
+  }
+  
+  .hamburger-line:nth-child(2) {
+    width: 26px !important;
+  }
+  
+  .hamburger-line:nth-child(3) {
+    width: 18px !important;
+  }
+}
+
+@media (max-width: 575px) {
+  .tv-menu-bar {
+    width: 52px !important;
+    height: 52px !important;
+    border-radius: 14px !important;
+  }
+  
+  .hamburger-icon {
+    width: 24px !important;
+    height: 18px !important;
+    gap: 5px !important;
+  }
+  
+  .hamburger-line {
+    height: 3px !important;
+  }
+  
+  .hamburger-line:nth-child(1) {
+    width: 18px !important;
+  }
+  
+  .hamburger-line:nth-child(2) {
+    width: 24px !important;
+  }
+  
+  .hamburger-line:nth-child(3) {
+    width: 16px !important;
+  }
+}
+
+/* Search popup logo */
+.search__logo {
+  background-color: #ffffff;
+  padding: 10px 15px;
+  border-radius: 4px;
+}
+
+/* Offcanvas (Mobile Menu) Styling - White Background */
+.tv-offcanvas-area {
+  background-color: #ffffff !important;
+}
+
+.itoffcanvas {
+  background-color: #ffffff !important;
+}
+
+.itoffcanvas__close-btn .close-btn {
+  color: #3399CC;
+  font-size: 28px;
+  transition: all 0.3s ease;
+}
+
+.itoffcanvas__close-btn .close-btn:hover {
+  color: #0f313a;
+  transform: rotate(90deg);
+}
+
+.itoffcanvas__text {
+  color: #333333;
+}
+
+.itoffcanvas__text p {
+  color: #666666;
+  line-height: 1.6;
+}
+
+.offcanva-title {
+  color: #0f313a;
+  font-weight: 700;
+  margin-bottom: 20px;
+}
+
+.tv-info-wrapper {
+  margin-bottom: 20px;
+}
+
+.itoffcanvas__info-icon a {
+  background-color: #f0f7fb;
+  color: #3399CC;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  font-size: 18px;
+}
+
+/* User Menu Professional Styling */
+.user-menu {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.user-menu-login-btn,
+.user-menu-button {
+  position: relative;
+}
+
+.user-menu-login-btn:hover,
+.user-menu-button:hover {
+  z-index: 1;
+}
+
+/* Responsive adjustments for user menu */
+@media (max-width: 991px) {
+  .user-menu {
+    gap: 8px;
+  }
+  
+  .user-menu-login-btn,
+  .user-menu-button {
+    height: 48px !important;
+    width: 48px !important;
+    font-size: 16px !important;
+  }
+}
+
+@media (max-width: 575px) {
+  .user-menu-login-btn,
+  .user-menu-button {
+    height: 40px !important;
+    width: 40px !important;
+    font-size: 14px !important;
+  }
+}
+
+/* User menu dropdown styling */
+.user-menu-dropdown {
+  backdrop-filter: blur(10px);
+}
+
+.user-menu-dropdown a,
+.user-menu-dropdown button {
+  position: relative;
+}
+
+.user-menu-dropdown a:hover i,
+.user-menu-dropdown button:hover i {
+  transform: translateX(4px);
+  transition: transform 0.2s ease;
+}
+
+.itoffcanvas__info-icon a:hover {
+  background-color: #3399CC;
+  color: #ffffff;
+  transform: scale(1.1);
+}
+
+.itoffcanvas__info-address span {
+  color: #0f313a;
+  font-weight: 600;
+  display: block;
+  margin-bottom: 5px;
+}
+
+.itoffcanvas__info-address a {
+  color: #666666;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+.itoffcanvas__info-address a:hover {
+  color: #3399CC;
+}
+
+.body-overlay {
+  background-color: rgba(15, 49, 58, 0.5);
+}
+
+/* ===== Service Section Styling ===== */
+.tv-service-area {
+  position: relative;
+  overflow: hidden;
+}
+
+.single-service-item {
+  background: #ffffff;
+  padding: 40px 30px;
+  border-radius: 12px;
+  text-align: center;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 5px 20px rgba(51, 153, 204, 0.08);
+  border: 1px solid rgba(51, 153, 204, 0.1);
+}
+
+/* Hover effect - lift and enhanced shadow */
+.single-service-item:hover {
+  transform: translateY(-15px);
+  box-shadow: 0 20px 40px rgba(51, 153, 204, 0.2);
+  border-color: rgba(51, 153, 204, 0.3);
+}
+
+/* Background animation on hover */
+.single-service-item::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(51, 153, 204, 0.1) 0%, transparent 70%);
+  opacity: 0;
+  transition: all 0.6s ease;
+  z-index: 0;
+}
+
+.single-service-item:hover::before {
+  opacity: 1;
+  animation: pulse-bg 1s ease-in-out infinite;
+}
+
+@keyframes pulse-bg {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+}
+
+.single-service-item > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* Service Icon Styling */
+.service-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 80px;
+  height: 80px;
+  background: linear-gradient(135deg, #3399CC 0%, #2580B3 100%);
+  border-radius: 50%;
+  margin-bottom: 25px;
+  transition: all 0.4s ease;
+  box-shadow: 0 8px 20px rgba(51, 153, 204, 0.3);
+  animation: float 3s ease-in-out infinite;
+}
+
+.service-icon svg {
+  filter: brightness(0) invert(1);
+  transition: all 0.4s ease;
+}
+
+.single-service-item:hover .service-icon {
+  transform: scale(1.15) rotateZ(10deg);
+  box-shadow: 0 12px 30px rgba(51, 153, 204, 0.5);
+}
+
+.single-service-item:hover .service-icon svg {
+  filter: brightness(0) invert(1);
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+/* Service Title Styling */
+.service-section-title {
+  color: #0f313a;
+  font-size: 20px;
+  font-weight: 700;
+  margin-bottom: 15px;
+  transition: all 0.3s ease;
+  line-height: 1.4;
+}
+
+.single-service-item:hover .service-section-title {
+  color: #3399CC;
+}
+
+/* Service Description */
+.single-service-item p {
+  color: #666666;
+  font-size: 14px;
+  line-height: 1.8;
+  margin-bottom: 25px;
+  transition: all 0.3s ease;
+}
+
+.single-service-item:hover p {
+  color: #555555;
+}
+
+/* Service Button */
+.tv-normal-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: #3399CC;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 14px;
+  padding: 10px 0;
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+.tv-normal-btn::after {
+  content: '';
+  position: absolute;
+  bottom: 5px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: linear-gradient(90deg, #3399CC, #2580B3);
+  transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.tv-normal-btn:hover {
+  color: #0f313a;
+}
+
+.tv-normal-btn:hover::after {
+  width: 100%;
+}
+
+.tv-normal-btn i {
+  transition: all 0.3s ease;
+}
+
+.tv-normal-btn:hover i {
+  transform: translateX(5px);
+}
+
+/* Section Title Styling */
+.tv-section-title-box {
+  margin-bottom: 20px;
+}
+
+.tv-section-subtitle {
+  color: #3399CC;
+  font-size: 14px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  display: inline-block;
+  margin-bottom: 10px;
+}
+
+.tv-section-title {
+  color: #0f313a;
+  font-size: 32px;
+  font-weight: 800;
+  line-height: 1.3;
+}
+
+/* Service Bottom Text */
+.service-bottom-text {
+  margin-top: 40px;
+}
+
+.service-bottom-text p {
+  color: #666666;
+  font-size: 16px;
+}
+
+.service-bottom-text a {
+  color: #3399CC;
+  font-weight: 700;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  border-bottom: 2px solid transparent;
+}
+
+.service-bottom-text a:hover {
+  color: #0f313a;
+  border-bottom-color: #3399CC;
+}
+
+/* Stagger animation for cards */
+.single-service-item {
+  animation: slideUp 0.6s ease-out backwards;
+}
+
+.col-xl-3:nth-child(1) .single-service-item {
+  animation-delay: 0.1s;
+}
+
+.col-xl-3:nth-child(2) .single-service-item {
+  animation-delay: 0.2s;
+}
+
+.col-xl-3:nth-child(3) .single-service-item {
+  animation-delay: 0.3s;
+}
+
+.col-xl-3:nth-child(4) .single-service-item {
+  animation-delay: 0.4s;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .single-service-item {
+    padding: 30px 20px;
+  }
+
+  .service-section-title {
+    font-size: 18px;
+  }
+
+  .tv-section-title {
+    font-size: 24px;
+  }
+
+  .service-icon {
+    width: 70px;
+    height: 70px;
+  }
+
+  .single-service-item:hover {
+    transform: translateY(-10px);
+  }
+}
+
+/* Responsive adjustments */
+@media (max-width: 1200px) {
+  .tv-menu-content ul li a {
+    padding: 12px 18px;
+    font-size: 15px;
+  }
+
+  .tv-header-logo {
+    padding: 6px 12px;
+  }
+}
+
+@media (max-width: 768px) {
+  .tv-menu-content ul {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .tv-menu-content ul li a {
+    padding: 12px 15px;
+    font-size: 14px;
+  }
+
+  .tv-menu-content ul li a::after {
+    bottom: 5px;
+  }
+
+  .tv-header-logo {
+    padding: 5px 10px;
+  }
+}

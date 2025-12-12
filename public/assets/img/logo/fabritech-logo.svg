@@ -1,0 +1,13 @@
+<svg viewBox="0 0 200 100" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet">
+  <!-- Background -->
+  <rect width="200" height="100" fill="none"/>
+  
+  <!-- F letter (stylized arrow-like shape) -->
+  <path d="M 30 20 L 50 20 L 55 35 L 35 35 L 40 50 L 55 50 L 45 80 L 25 70 Z" fill="#3399CC" stroke="none"/>
+  
+  <!-- Diagonal accent line -->
+  <path d="M 45 35 L 60 60" stroke="#3399CC" stroke-width="4" stroke-linecap="round" fill="none"/>
+  
+  <!-- Arrow/cursor pointing right -->
+  <path d="M 65 45 L 85 30 L 80 50 L 95 50 L 70 70 Z" fill="#2580B3" stroke="none"/>
+</svg>

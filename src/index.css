@@ -11,3 +11,45 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+/* ================================
+   What we do – service cards
+   ================================ */
+
+.services-one__bottom .services-one__single .service-one__content {
+  text-align: center;
+}
+
+.services-one__bottom .services-one__single .services-one__icon {
+  left: 50%;
+  right: auto;
+  transform: translateX(-50%);
+  border-radius: 50%;
+}
+
+.services-one__bottom .services-one__single .services-one__icon span {
+  font-size: 26px;
+}
+
+.services-one__bottom .services-one__single .service-one__title {
+  margin-top: 18px;
+}
+
+.services-one__bottom .services-one__single .service-one__title::before {
+  display: none;
+}
+
+.services-one__bottom .services-one__single .service-one__text {
+  margin-top: 8px;
+  margin-bottom: 18px;
+}
+
+.services-one__bottom .services-one__single .services-one__btn {
+  padding: 12px 32px;
+  border-radius: 999px;
+  font-size: 15px;
+}
+
+.services-one__bottom .services-one__single .services-one__btn .fas {
+  margin-left: 8px;
+}

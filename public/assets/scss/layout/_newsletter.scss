@@ -1,0 +1,41 @@
+
+@use '../utils' as *;
+
+/*----------------------------------------*/
+/*  17. newsletter css start
+/*----------------------------------------*/
+.tv-newsletter {
+    &-area {
+        border-bottom: 1px solid rgba($color: #fff, $alpha: .1);
+    }
+    &-input {
+        &-box {
+            @media #{$md,$xs}{
+                margin-top: 30px;
+            }
+            & input {
+                line-height: 60px;
+                height: 60px;
+                width: 490px;
+                @media #{$xl,$lg}{
+                    width: 50%;
+                }
+                @media #{$md,$xs}{
+                    width: 100%;
+                    height: 56px;
+                    line-height: 56px;
+                }
+            }
+            & .tv-btn-orange {
+                padding: 19px 40px;
+            }
+        }
+    }
+    &-left {
+        & .tv-section-title {
+            @media #{$lg}{
+                font-size: 35px;
+            }
+        }
+    }
+}
