@@ -76,6 +76,20 @@ const Cart = () => {
             0%, 100% { transform: scale(1); }
             50% { transform: scale(1.05); }
           }
+          @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+          }
+          @keyframes slideInRight {
+            from {
+              transform: translateX(100%);
+              opacity: 0;
+            }
+            to {
+              transform: translateX(0);
+              opacity: 1;
+            }
+          }
           .empty-cart-container {
             animation: fadeInUp 0.6s ease-out;
           }
@@ -85,10 +99,62 @@ const Cart = () => {
           .empty-cart-button {
             animation: pulse 2s ease-in-out infinite;
           }
+          @media (max-width: 768px) {
+            .empty-cart-header h1 {
+              font-size: 32px !important;
+            }
+            .empty-cart-header p {
+              font-size: 14px !important;
+            }
+            .empty-cart-content {
+              padding: 40px 20px !important;
+            }
+            .empty-cart-icon {
+              font-size: 80px !important;
+              margin-bottom: 20px !important;
+            }
+            .empty-cart-title {
+              font-size: 24px !important;
+            }
+            .empty-cart-text {
+              font-size: 16px !important;
+            }
+            .empty-cart-button {
+              padding: 14px 24px !important;
+              font-size: 14px !important;
+            }
+            .toast-notification {
+              top: 16px !important;
+              right: 16px !important;
+              left: 16px !important;
+              padding: 12px 16px !important;
+              font-size: 14px !important;
+            }
+          }
+          @media (max-width: 480px) {
+            .empty-cart-header {
+              padding: 50px 16px !important;
+            }
+            .empty-cart-header h1 {
+              font-size: 28px !important;
+            }
+            .empty-cart-content {
+              padding: 30px 16px !important;
+            }
+            .empty-cart-icon {
+              font-size: 60px !important;
+            }
+            .empty-cart-title {
+              font-size: 20px !important;
+            }
+            .empty-cart-text {
+              font-size: 14px !important;
+            }
+          }
         `}</style>
 
         {/* Header */}
-        <header style={{
+        <header className="empty-cart-header" style={{
           background: 'linear-gradient(135deg, #2D8BD1 0%, #1A4F97 50%, #37A6E5 100%)',
           color: 'white',
           padding: '80px 20px',
@@ -105,12 +171,6 @@ const Cart = () => {
             background: 'radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%)',
             animation: 'rotate 20s linear infinite'
           }}></div>
-          <style>{`
-            @keyframes rotate {
-              from { transform: rotate(0deg); }
-              to { transform: rotate(360deg); }
-            }
-          `}</style>
           <h1 style={{ 
             fontSize: '48px', 
             fontWeight: '900', 
@@ -129,7 +189,7 @@ const Cart = () => {
         </header>
 
         <div style={{ maxWidth: '800px', margin: '0 auto', padding: '80px 20px' }}>
-          <div className="empty-cart-container" style={{
+          <div className="empty-cart-container empty-cart-content" style={{
             textAlign: 'center',
             padding: '80px 40px',
             background: 'linear-gradient(145deg, #ffffff 0%, #f8fafc 100%)',
@@ -144,7 +204,7 @@ const Cart = () => {
               marginBottom: '30px',
               filter: 'drop-shadow(0 8px 16px rgba(45, 139, 209, 0.2))'
             }}>🛒</div>
-            <h2 style={{
+            <h2 className="empty-cart-title" style={{
               fontSize: '32px',
               fontWeight: '800',
               color: '#1a1a1a',
@@ -154,7 +214,7 @@ const Cart = () => {
               WebkitTextFillColor: 'transparent',
               backgroundClip: 'text'
             }}>Your cart is empty</h2>
-            <p style={{
+            <p className="empty-cart-text" style={{
               color: '#64748b',
               fontSize: '18px',
               marginBottom: '40px',
@@ -198,7 +258,7 @@ const Cart = () => {
 
         {/* Toast Notification */}
         {toast && (
-          <div style={{
+          <div className="toast-notification" style={{
             position: 'fixed',
             top: '24px',
             right: '24px',
@@ -212,22 +272,11 @@ const Cart = () => {
             display: 'inline-flex',
             alignItems: 'center',
             gap: '12px',
-            animation: 'slideInRight 0.3s ease-out'
+            animation: 'slideInRight 0.3s ease-out',
+            maxWidth: 'calc(100% - 32px)'
           }}>
             <i className="fa-solid fa-circle-check" style={{ color: '#22c55e', fontSize: '20px' }}></i>
             <span>{toast}</span>
-            <style>{`
-              @keyframes slideInRight {
-                from {
-                  transform: translateX(100%);
-                  opacity: 0;
-                }
-                to {
-                  transform: translateX(0);
-                  opacity: 1;
-                }
-              }
-            `}</style>
           </div>
         )}
       </div>
@@ -267,16 +316,185 @@ const Cart = () => {
             opacity: 1;
           }
         }
+        @keyframes rotate {
+          from { transform: rotate(0deg); }
+          to { transform: rotate(360deg); }
+        }
         .cart-item-card {
           animation: fadeInUp 0.4s ease-out;
         }
         .cart-item-card:hover {
           transform: translateY(-4px);
         }
+        @media (max-width: 1024px) {
+          .cart-grid {
+            grid-template-columns: 1fr !important;
+          }
+          .order-summary {
+            position: relative !important;
+            top: 0 !important;
+          }
+        }
+        @media (max-width: 768px) {
+          .cart-header {
+            padding: 40px 16px !important;
+          }
+          .cart-header h1 {
+            font-size: 32px !important;
+          }
+          .cart-header p {
+            font-size: 14px !important;
+          }
+          .cart-container {
+            padding: 20px 16px !important;
+          }
+          .breadcrumb {
+            font-size: 12px !important;
+            flex-wrap: wrap !important;
+          }
+          .cart-items-header h2 {
+            font-size: 20px !important;
+          }
+          .clear-cart-text {
+            display: none !important;
+          }
+          .cart-item-card {
+            grid-template-columns: 100px 1fr !important;
+            gap: 16px !important;
+            padding: 16px !important;
+          }
+          .cart-item-image {
+            width: 100px !important;
+            height: 100px !important;
+          }
+          .cart-item-details h3 {
+            font-size: 16px !important;
+          }
+          .cart-item-price {
+            font-size: 18px !important;
+          }
+          .cart-item-controls {
+            grid-column: 1 / -1 !important;
+            display: flex !important;
+            justify-content: space-between !important;
+            align-items: center !important;
+            margin-top: 12px !important;
+          }
+          .cart-item-quantity {
+            order: 1 !important;
+          }
+          .cart-item-subtotal {
+            order: 2 !important;
+            text-align: right !important;
+            min-width: auto !important;
+            font-size: 18px !important;
+          }
+          .cart-item-remove {
+            order: 3 !important;
+          }
+          .order-summary {
+            padding: 24px 20px !important;
+          }
+          .order-summary-title {
+            font-size: 20px !important;
+          }
+          .checkout-form-grid {
+            grid-template-columns: 1fr !important;
+          }
+          .toast-notification {
+            top: 16px !important;
+            right: 16px !important;
+            left: 16px !important;
+            padding: 12px 16px !important;
+            font-size: 14px !important;
+          }
+        }
+        @media (max-width: 480px) {
+          .cart-header {
+            padding: 30px 12px !important;
+          }
+          .cart-header h1 {
+            font-size: 28px !important;
+          }
+          .cart-container {
+            padding: 16px 12px !important;
+          }
+          .cart-item-card {
+            grid-template-columns: 80px 1fr !important;
+            padding: 12px !important;
+            gap: 12px !important;
+          }
+          .cart-item-image {
+            width: 80px !important;
+            height: 80px !important;
+          }
+          .cart-item-details h3 {
+            font-size: 14px !important;
+          }
+          .cart-item-price {
+            font-size: 16px !important;
+          }
+          .quantity-control {
+            width: 36px !important;
+            height: 36px !important;
+            font-size: 18px !important;
+          }
+          .quantity-value {
+            font-size: 14px !important;
+            min-width: 40px !important;
+          }
+          .cart-item-remove {
+            width: 36px !important;
+            height: 36px !important;
+            font-size: 16px !important;
+          }
+          .order-summary {
+            padding: 20px 16px !important;
+          }
+          .order-summary-title {
+            font-size: 18px !important;
+          }
+          .checkout-modal {
+            padding: 20px 16px !important;
+            max-width: 100% !important;
+            margin: 10px !important;
+          }
+          .checkout-modal h2 {
+            font-size: 24px !important;
+          }
+          .success-modal {
+            padding: 30px 20px !important;
+          }
+          .success-icon {
+            width: 80px !important;
+            height: 80px !important;
+          }
+          .success-icon i {
+            font-size: 36px !important;
+          }
+          .success-title {
+            font-size: 24px !important;
+          }
+          .success-text {
+            font-size: 16px !important;
+          }
+          .success-delivery {
+            padding: 16px !important;
+          }
+          .success-delivery h3 {
+            font-size: 18px !important;
+          }
+          .success-delivery p {
+            font-size: 14px !important;
+          }
+          .success-delivery .success-note {
+            font-size: 12px !important;
+          }
+        }
       `}</style>
 
       {/* Header */}
-      <header style={{
+      <header className="cart-header" style={{
         background: 'linear-gradient(135deg, #2D8BD1 0%, #1A4F97 50%, #37A6E5 100%)',
         color: 'white',
         padding: '60px 20px',
@@ -311,9 +529,9 @@ const Cart = () => {
         }}>{cartItems.length} {cartItems.length === 1 ? 'item' : 'items'} in your cart</p>
       </header>
 
-      <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '40px 20px' }}>
+      <div className="cart-container" style={{ maxWidth: '1200px', margin: '0 auto', padding: '40px 20px' }}>
         {/* Breadcrumb */}
-        <div style={{
+        <div className="breadcrumb" style={{
           fontSize: '14px',
           marginBottom: '30px',
           color: '#64748b',
@@ -343,7 +561,7 @@ const Cart = () => {
         </div>
 
         {/* Cart Items Section */}
-        <div style={{
+        <div className="cart-grid" style={{
           display: 'grid',
           gridTemplateColumns: '1fr 400px',
           gap: '30px',
@@ -351,11 +569,13 @@ const Cart = () => {
         }}>
           {/* Cart Items */}
           <div>
-            <div style={{
+            <div className="cart-items-header" style={{
               display: 'flex',
               justifyContent: 'space-between',
               alignItems: 'center',
-              marginBottom: '24px'
+              marginBottom: '24px',
+              flexWrap: 'wrap',
+              gap: '12px'
             }}>
               <h2 style={{
                 fontSize: '24px',
@@ -390,7 +610,7 @@ const Cart = () => {
                   }}
                 >
                   <i className="fa-solid fa-trash"></i>
-                  Clear Cart
+                  <span className="clear-cart-text">Clear Cart</span>
                 </button>
               )}
             </div>
@@ -437,7 +657,7 @@ const Cart = () => {
                   ></div>
 
                   {/* Image */}
-                  <div style={{
+                  <div className="cart-item-image" style={{
                     width: '120px',
                     height: '120px',
                     borderRadius: '16px',
@@ -462,7 +682,7 @@ const Cart = () => {
                   </div>
 
                   {/* Details */}
-                  <div style={{
+                  <div className="cart-item-details" style={{
                     display: 'flex',
                     flexDirection: 'column',
                     gap: '8px'
@@ -487,7 +707,7 @@ const Cart = () => {
                         width: 'fit-content'
                       }}>{item.category}</span>
                     )}
-                    <div style={{
+                    <div className="cart-item-price" style={{
                       fontSize: '20px',
                       fontWeight: '900',
                       background: 'linear-gradient(135deg, #2D8BD1 0%, #1A4F97 100%)',
@@ -498,7 +718,7 @@ const Cart = () => {
                   </div>
 
                   {/* Quantity Control */}
-                  <div style={{
+                  <div className="cart-item-controls cart-item-quantity" style={{
                     display: 'flex',
                     alignItems: 'center',
                     border: '2px solid rgba(45, 139, 209, 0.2)',
@@ -509,6 +729,7 @@ const Cart = () => {
                   }}>
                     <button
                       onClick={() => handleQuantityChange(item.id, item.quantity - 1)}
+                      className="quantity-control"
                       style={{
                         background: 'none',
                         border: 'none',
@@ -535,7 +756,7 @@ const Cart = () => {
                     >
                       −
                     </button>
-                    <span style={{
+                    <span className="quantity-value" style={{
                       flex: 1,
                       textAlign: 'center',
                       fontSize: '16px',
@@ -546,6 +767,7 @@ const Cart = () => {
                     }}>{item.quantity}</span>
                     <button
                       onClick={() => handleQuantityChange(item.id, item.quantity + 1)}
+                      className="quantity-control"
                       style={{
                         background: 'none',
                         border: 'none',
@@ -575,7 +797,7 @@ const Cart = () => {
                   </div>
 
                   {/* Subtotal */}
-                  <div style={{
+                  <div className="cart-item-controls cart-item-subtotal" style={{
                     fontSize: '20px',
                     fontWeight: '900',
                     color: '#1a1a1a',
@@ -586,6 +808,7 @@ const Cart = () => {
                   {/* Remove Button */}
                   <button
                     onClick={() => handleRemove(item.id, item.name || item.title)}
+                    className="cart-item-controls cart-item-remove"
                     style={{
                       background: 'linear-gradient(135deg, #fee2e2 0%, #fecdd3 100%)',
                       border: 'none',
@@ -621,7 +844,7 @@ const Cart = () => {
           </div>
 
           {/* Order Summary */}
-          <div style={{
+          <div className="order-summary" style={{
             background: 'linear-gradient(145deg, #ffffff 0%, #f8fafc 100%)',
             borderRadius: '24px',
             padding: '32px',
@@ -631,7 +854,7 @@ const Cart = () => {
             boxShadow: '0 12px 40px rgba(0,0,0,0.1)',
             border: '1px solid rgba(45, 139, 209, 0.1)'
           }}>
-            <div style={{
+            <div className="order-summary-title" style={{
               fontSize: '24px',
               fontWeight: '900',
               color: '#1a1a1a',
@@ -807,6 +1030,7 @@ const Cart = () => {
             }
           `}</style>
           <div
+            className="checkout-modal"
             style={{
               background: 'linear-gradient(145deg, #ffffff 0%, #f8fafc 100%)',
               borderRadius: '24px',
@@ -838,7 +1062,8 @@ const Cart = () => {
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                transition: 'all 0.3s ease'
+                transition: 'all 0.3s ease',
+                zIndex: 1
               }}
               onMouseEnter={(e) => {
                 e.target.style.background = 'rgba(239, 68, 68, 0.1)'
@@ -913,7 +1138,7 @@ const Cart = () => {
                   />
                 </div>
 
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
+                <div className="checkout-form-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
                   <div>
                     <label style={{
                       display: 'block',
@@ -1172,6 +1397,7 @@ const Cart = () => {
           }}
         >
           <div
+            className="success-modal"
             style={{
               background: 'linear-gradient(145deg, #ffffff 0%, #f8fafc 100%)',
               borderRadius: '24px',
@@ -1186,7 +1412,7 @@ const Cart = () => {
             onClick={(e) => e.stopPropagation()}
           >
             {/* Success Icon */}
-            <div style={{
+            <div className="success-icon" style={{
               width: '100px',
               height: '100px',
               borderRadius: '50%',
@@ -1201,7 +1427,7 @@ const Cart = () => {
               <i className="fa-solid fa-check" style={{ color: 'white', fontSize: '48px' }}></i>
             </div>
 
-            <h2 style={{
+            <h2 className="success-title" style={{
               fontSize: '32px',
               fontWeight: '900',
               color: '#1a1a1a',
@@ -1214,7 +1440,7 @@ const Cart = () => {
               Order Confirmed!
             </h2>
 
-            <p style={{
+            <p className="success-text" style={{
               color: '#64748b',
               fontSize: '18px',
               lineHeight: '1.6',
@@ -1224,7 +1450,7 @@ const Cart = () => {
               Thank you for your order!
             </p>
 
-            <div style={{
+            <div className="success-delivery" style={{
               background: 'rgba(45, 139, 209, 0.08)',
               padding: '24px',
               borderRadius: '16px',
@@ -1236,7 +1462,8 @@ const Cart = () => {
                 alignItems: 'center',
                 justifyContent: 'center',
                 gap: '12px',
-                marginBottom: '16px'
+                marginBottom: '16px',
+                flexWrap: 'wrap'
               }}>
                 <i className="fa-solid fa-truck" style={{ color: '#2D8BD1', fontSize: '24px' }}></i>
                 <h3 style={{
@@ -1256,7 +1483,7 @@ const Cart = () => {
                 Our team will contact you shortly via phone or email to confirm the delivery details 
                 and schedule.
               </p>
-              <p style={{
+              <p className="success-note" style={{
                 color: '#64748b',
                 fontSize: '14px',
                 marginTop: '16px',
@@ -1347,7 +1574,7 @@ const Cart = () => {
 
       {/* Toast Notification */}
       {toast && (
-        <div style={{
+        <div className="toast-notification" style={{
           position: 'fixed',
           top: '24px',
           right: '24px',
@@ -1361,7 +1588,8 @@ const Cart = () => {
           display: 'inline-flex',
           alignItems: 'center',
           gap: '12px',
-          animation: 'slideInRight 0.3s ease-out'
+          animation: 'slideInRight 0.3s ease-out',
+          maxWidth: 'calc(100% - 32px)'
         }}>
           <i className="fa-solid fa-circle-check" style={{ color: '#22c55e', fontSize: '20px' }}></i>
           <span>{toast}</span>

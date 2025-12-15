@@ -276,16 +276,16 @@ function Shop() {
                                         <nav className="tv-menu-content">
                                             <ul>
                                                 <li>
-                                                    <a href='/'>Home</a>
+                                                    <a href="/#home">Home</a>
                                                 </li>
                                                 <li>
-                                                    <a href='/about'>About Us</a>
+                                                    <a href="/#about">About Us</a>
                                                 </li>
                                                 <li>
-                                                    <a href='/shop'>Shop</a>
+                                                    <a href="/#products">Shop</a>
                                                 </li>
                                                 <li>
-                                                    <a href='/contact'>Contact</a>
+                                                    <a href="/#contact">Contact</a>
                                                 </li>
                                             </ul>
                                         </nav>
