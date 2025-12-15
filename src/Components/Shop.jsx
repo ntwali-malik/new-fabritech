@@ -1392,7 +1392,12 @@ function Shop() {
                                             // Only show discount if both priceOld and discount exist, and priceOld > price
                                             const showDiscount = oldPrice && discountValue !== null && oldPrice > product.price
                                             return (
-                                                <div key={product.id} className="deal-card" onClick={() => navigate(`/product-details/${product.id}`)} style={{ cursor: 'pointer' }}>
+                                                <div
+                                                    key={product.id}
+                                                    className="deal-card"
+                                                    onClick={() => navigate(`/product-details/${product.id}`, { state: { product } })}
+                                                    style={{ cursor: 'pointer' }}
+                                                >
                                                     <div className="deal-image">
                                                         <img 
                                                             src={product.image} 

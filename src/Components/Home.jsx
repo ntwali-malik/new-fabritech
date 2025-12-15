@@ -11,11 +11,253 @@ function Home() {
     const navigate = useNavigate()
     const { cartItems, addToCart: addToCartContext, removeFromCart: removeFromCartContext } = useCart()
     const [selectedProduct, setSelectedProduct] = useState(null)
+    const [selectedService, setSelectedService] = useState(null)
     const [toast, setToast] = useState(null)
     const [showCart, setShowCart] = useState(false)
     const [dealProducts, setDealProducts] = useState([])
     const [productsLoading, setProductsLoading] = useState(true)
     const [productsError, setProductsError] = useState('')
+
+    // Services data
+    const servicesData = [
+        {
+            id: 'network-infrastructure',
+            title: 'Network Infrastructure',
+            shortDescription: 'Lightning-Fast Networks That Keep Your Business Running 24/7.',
+            image: 'assets/img/service/networking.jpeg',
+            fullDescription: 'Say goodbye to slow internet and network headaches! We transform your workspace into a connectivity powerhouse. Our mission? Simple: ensure your place has blazing-fast internet and every network resource works flawlessly. No more "the internet is down" moments. No more buffering. No more excuses. Just smooth, reliable, lightning-fast connections that power your business forward. We don\'t just set it up and leave—we stick around to make sure everything stays perfect.',
+            features: [
+                'Network health check & turbo boost - We diagnose and optimize everything for peak performance',
+                'Blazing-fast internet installation - Get speeds that actually match what you\'re paying for',
+                'Smart network resource management - Every device, every connection, working in perfect harmony',
+                '24/7 network guardians - We watch your network so you can focus on your business',
+                'Flexible wireless & wired options - Mix and match solutions that fit your space perfectly',
+                'Fortress-level security - Your data stays locked down while your team stays connected',
+                'Networks that grow with you - Start small, scale big, zero headaches',
+                'Instant problem-solving team - Issues? We fix them fast, usually before you even notice'
+            ],
+            benefits: [
+                '⚡ Internet so fast, your team will notice the difference on day one',
+                '🎯 Zero downtime - We prevent problems before they can ruin your day',
+                '📈 Productivity boost - When networks work perfectly, your team works faster',
+                '🔒 Enterprise-grade security that doesn\'t slow you down',
+                '💰 Save money - Optimized networks use resources efficiently',
+                '😌 Stress-free networking - Sleep well knowing everything is monitored',
+                '🚀 Future-ready tech - Networks designed for tomorrow\'s needs, today',
+                '✅ One less thing to worry about - Your network becomes your secret weapon'
+            ]
+        },
+        {
+            id: 'digital-security',
+            title: 'Digital Security',
+            shortDescription: 'Comprehensive Digital Security Solutions.',
+            image: 'assets/img/service/security.jpeg',
+            fullDescription: 'Protect your business with comprehensive digital security solutions. We offer complete security systems including CCTV surveillance, access control, time & attendance, metal detection, intrusion detection, IT security, and fire safety equipment.',
+            features: [
+                'End-to-end security solutions',
+                'Professional installation and configuration',
+                '24/7 monitoring and support',
+                'Integration of multiple security systems',
+                'Custom security solutions tailored to your needs'
+            ],
+            benefits: [
+                'Complete protection for your business',
+                'Reduced security risks and threats',
+                'Enhanced safety for employees and assets',
+                'Compliance with security standards',
+                'Peace of mind with comprehensive coverage'
+            ],
+            categories: [
+                {
+                    title: 'CCTV Surveillance Systems',
+                    icon: 'video',
+                    items: [
+                        'IP Cameras',
+                        'Analog Cameras',
+                        'WiFi Camera',
+                        'PTZ Camera',
+                        'Dome Cameras',
+                        'Bullet Cameras',
+                        'Turret Cameras',
+                        'Thermal Cameras'
+                    ]
+                },
+                {
+                    title: 'Access Control Systems',
+                    icon: 'lock',
+                    items: [
+                        'Biometric Scanners (Fingerprint, Facial Recognition)',
+                        'RFID Card Readers',
+                        'Digital Identity Management Tools',
+                        'Keypad Access Systems',
+                        'Smart Locks',
+                        'Turnstiles & Speed Gates',
+                        'Intercom Systems',
+                        'Multi-Factor Authentication Devices'
+                    ]
+                },
+                {
+                    title: 'Time & Attendance Systems',
+                    icon: 'clock',
+                    items: [
+                        'Biometric Attendance Devices',
+                        'RFID-Based Attendance Solutions',
+                        'Wi-Fi & Cloud-Based Attendance Systems',
+                        'Mobile Attendance Apps',
+                        'Turnstile/Access Gate Integration',
+                        'Web-Based Time Tracking Software',
+                        'Multi-Shift Scheduling Tools',
+                        'Payroll Integration Systems'
+                    ]
+                },
+                {
+                    title: 'Metal Detection & Screening Equipment',
+                    icon: 'shield-alt',
+                    items: [
+                        'Walk-Through Metal Detectors',
+                        'Hand-Held Metal Detectors',
+                        'Luggage & Baggage Scanners',
+                        'Explosive Trace Detectors (ETDs)',
+                        'Under Vehicle Inspection Systems (UVIS)',
+                        'Parcel Scanners',
+                        'Radiation Detection Systems'
+                    ]
+                },
+                {
+                    title: 'Intrusion Detection Systems',
+                    icon: 'bell',
+                    items: [
+                        'Alarm Systems',
+                        'Motion Sensors',
+                        'Door & Window Sensors',
+                        'Glass Break Detectors',
+                        'Vibration Sensors',
+                        'Perimeter Security Systems',
+                        'Integrated Control Panels',
+                        'Remote Monitoring Systems'
+                    ]
+                },
+                {
+                    title: 'IT Security Solutions',
+                    icon: 'shield',
+                    items: [
+                        'Network Security (Firewalls, IDS, VPNs)',
+                        'Endpoint Protection (Antivirus, Anti-Malware)',
+                        'Data Protection & Backup (Encryption, Recovery Solutions)',
+                        'Cloud Security (Compliance & Infrastructure Protection)',
+                        'Security Monitoring & Analytics (Threat Detection, Dashboards)'
+                    ]
+                },
+                {
+                    title: 'Fire Safety Equipment',
+                    icon: 'fire-extinguisher',
+                    items: [
+                        'Fire Extinguishers'
+                    ]
+                }
+            ]
+        },
+        {
+            id: 'starlink-installation',
+            title: 'Starlink Installation',
+            shortDescription: 'Game-Changing Internet Anywhere - No More Connectivity Struggles!',
+            image: 'assets/img/service/starlink.jpeg',
+            fullDescription: 'Starlink isn\'t just internet—it\'s a game-changer for anyone tired of daily connectivity headaches. Whether you\'re in the city or the middle of nowhere, Starlink solves your internet problems once and for all. Fast, reliable, and revolutionary. From equipment to connected devices, we\'ve got you covered. One complete solution, zero hassle.',
+            features: [
+                'Complete equipment supply - Starlink Standard, Starlink Mini, routers, adapters & cables',
+                'Professional installation & setup - Expert mounting and configuration done right',
+                'Equipment options - Standard kit, Mini kit, Ethernet adapters, routers & cables',
+                'End-to-end service - From unboxing to fully connected devices, we handle everything',
+                'Signal optimization - Maximum performance tuned for your location',
+                'Quick activation - Get online fast with our streamlined process'
+            ],
+            benefits: [
+                '🌐 Solves daily internet struggles - Say goodbye to connectivity problems forever',
+                '⚡ High-speed internet anywhere - Even in places traditional providers can\'t reach',
+                '📡 Complete equipment package - Everything you need from dish to device',
+                '🚀 Quick setup & activation - Get connected faster than you\'d think possible',
+                '✅ One-stop solution - We handle equipment, installation, and configuration',
+                '💪 Reliability you can count on - Internet that works when you need it most'
+            ]
+        },
+        {
+            id: 'software-development',
+            title: 'Software Development',
+            shortDescription: 'We Turn Your Business Ideas Into Powerful Reality.',
+            image: 'assets/img/service/software.jpeg',
+            fullDescription: 'Got a business idea? We build your thoughts into reality. That vision in your head? We make it real. Custom software solutions that turn your business dreams into working applications. ERP systems, web apps, mobile apps—we bring your ideas to life with code that actually works. From concept to launch, your thoughts become powerful tools that drive your business forward.',
+            features: [
+                'Business idea to reality - We transform your vision into working software',
+                'Custom ERP systems - Streamline operations with systems built for you',
+                'Web applications - Powerful web solutions that work beautifully',
+                'Mobile apps (iOS & Android) - Take your business mobile',
+                'Database design - Solid foundations that scale with you',
+                'API integration - Connect everything seamlessly',
+                'Maintenance & updates - Keep your software evolving'
+            ],
+            benefits: [
+                '💡 Your ideas become real software - No more "what if" moments',
+                '⚡ Custom-built solutions - Software that fits your business perfectly',
+                '🚀 Faster operations - Automate processes, boost productivity',
+                '📱 Reach customers everywhere - Web and mobile solutions',
+                '💪 Scalable technology - Software that grows with your business',
+                '✅ Expert support - We build it, maintain it, improve it',
+                '🎯 Ideas to impact - Turn thoughts into tools that drive results'
+            ]
+        },
+        {
+            id: 'canalplus-dstv',
+            title: 'Canal+ & DStv Services',
+            shortDescription: 'Professional Installation, Signal Support & Easy Subscription Renewal.',
+            image: 'assets/img/service/payTv.jpeg',
+            fullDescription: 'We install both Canal+ and DStv dishes like pros. But we don\'t stop there—when your signal isn\'t working well, we fix it fast. Plus, renew your subscription through us and skip the hassle. One place for everything: installation, signal support, and subscription renewal. Your entertainment, simplified.',
+            features: [
+                'Professional dish installation - We install both Canal+ and DStv dishes expertly',
+                'Signal troubleshooting & support - Bad signal? We fix it quickly',
+                'Subscription renewal service - Renew through us, save time and stress',
+                'HD & 4K decoder setup - Get the best picture quality from day one',
+                'Multi-room installations - TV in every room, all set up properly',
+                'Signal optimization - Maximum signal strength, crystal clear picture',
+                'Package management - Upgrade, downgrade, or switch packages easily'
+            ],
+            benefits: [
+                '📡 Expert installation - Both Canal+ and DStv done right the first time',
+                '🔧 Signal problems solved - We fix weak signals fast, no more frustration',
+                '💳 Easy renewals - Skip the queues, renew your subscription with us',
+                '📺 Crystal clear picture - Optimized signal means better viewing',
+                '✅ One-stop service - Installation, support, and renewal all in one place',
+                '⚡ Quick response - Signal issues? We come fast and fix faster',
+                '🎯 Hassle-free entertainment - Let us handle everything, you just enjoy'
+            ]
+        },
+        {
+            id: 'internships-courses',
+            title: 'Internships & Short Courses',
+            shortDescription: 'Academic & Professional Internships - Real Hands-On Experience That Matters.',
+            image: 'assets/img/service/internship.jpeg',
+            fullDescription: 'Ready to level up? We provide both Academic and Professional internships with real hands-on experience. No boring theory—just actual work on real projects. Whether you\'re a student needing academic credit or a professional looking to upskill, our internships give you practical skills that employers actually want. Get your hands dirty, build your portfolio, and launch your career.',
+            features: [
+                'Academic internships - Perfect for students needing credit and experience',
+                'Professional internships - Level up your career with practical skills',
+                '100% hands-on experience - Learn by doing, not just listening',
+                'Real-world projects - Work on actual projects that matter',
+                'Industry mentors - Learn from professionals who\'ve been there',
+                'Certificate of completion - Proof of your new skills',
+                'Career support - Get guidance and placement assistance',
+                'Flexible programs - Choose what fits your schedule'
+            ],
+            benefits: [
+                '🎓 Academic credit + real experience - Get both in one program',
+                '💼 Professional growth - Practical skills that boost your career',
+                '✋ Hands-on learning - Actually do the work, not just read about it',
+                '🚀 Real projects - Build a portfolio employers notice',
+                '👥 Expert mentorship - Learn from the best in the industry',
+                '📜 Recognized certificates - Proof of your practical skills',
+                '💡 Career guidance - Get help landing your next opportunity',
+                '⚡ Fast-track your career - Start working on day one'
+            ]
+        }
+    ]
 
     useEffect(() => {
         if (toast) {
@@ -167,6 +409,19 @@ function Home() {
 
     const openProduct = (product) => setSelectedProduct(product)
     const closeProduct = () => setSelectedProduct(null)
+    const closeService = () => setSelectedService(null)
+
+    // Prevent body scroll when modals are open
+    useEffect(() => {
+        if (selectedService || selectedProduct || showCart) {
+            document.body.style.overflow = 'hidden'
+        } else {
+            document.body.style.overflow = 'unset'
+        }
+        return () => {
+            document.body.style.overflow = 'unset'
+        }
+    }, [selectedService, selectedProduct, showCart])
 
     const addToCart = (product) => {
         // Convert product format to match CartContext format
@@ -479,7 +734,7 @@ function Home() {
                             <div className="swiper-wrapper">
                                 <div className="swiper-slide">
                                     <div className="tv-slider-overlay z-index-1 fix p-relative">
-                                        <div className="tv-slider-bg" data-background="assets/img/slider/slider-1-1.jpg" style={{ backgroundImage: "url('assets/img/slider/slider-1-1.jpg')" }}></div>
+                                        <div className="tv-slider-bg" data-background="assets/img/slider/hero1.jpeg" style={{ backgroundImage: "url('assets/img/slider/hero1.jpeg')" }}></div>
                                         <div className="container">
                                             <div className="row">
                                                 <div className="col-xl-6 col-lg-6">
@@ -648,78 +903,39 @@ function Home() {
                             </div>
                         </div>
                         <div className="row">
-                            <div className="col-lg-4 col-xl-4 col-md-6 scroll-animate fade-up scroll-animate-delay-1">
-                                <div className="single-project-item mb-30">
-                                    <img src="assets/img/service/networking.jpeg" alt="Network Infrastructure" />
-                                    <span className="icon">
-                                        <a href='/service-details/network-infrastructure'> <i className="fa-solid fa-arrow-right"></i></a>
-                                    </span>
-                                    <div className="single-project-content">
-                                        <h3>Network Infrastructure</h3>
-                                        <p>High-Speed Network Setup for Corporate Offices.</p>
+                            {servicesData.map((service, index) => (
+                                <div key={service.id} className="col-lg-4 col-xl-4 col-md-6 scroll-animate fade-up" style={{ animationDelay: `${(index + 1) * 0.1}s` }}>
+                                    <div 
+                                        className="single-project-item mb-30 service-card-clickable" 
+                                        style={{ cursor: 'pointer' }}
+                                        onClick={() => setSelectedService(service)}
+                                    >
+                                        <img src={service.image} alt={service.title} />
+                                        <span className="icon">
+                                            <button 
+                                                type="button"
+                                                onClick={(e) => {
+                                                    e.stopPropagation()
+                                                    setSelectedService(service)
+                                                }}
+                                                style={{ 
+                                                    background: 'none', 
+                                                    border: 'none', 
+                                                    color: 'inherit',
+                                                    cursor: 'pointer',
+                                                    padding: 0
+                                                }}
+                                            >
+                                                <i className="fa-solid fa-arrow-right"></i>
+                                            </button>
+                                        </span>
+                                        <div className="single-project-content">
+                                            <h3>{service.title}</h3>
+                                            <p>{service.shortDescription}</p>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div className="col-lg-4 col-xl-4 col-md-6 scroll-animate fade-up scroll-animate-delay-2">
-                                <div className="single-project-item mb-30">
-                                    <img src="assets/img/service/security.jpeg" alt="Digital Security" />
-                                    <span className="icon">
-                                        <a href='/service-details/digital-security'> <i className="fa-solid fa-arrow-right"></i></a>
-                                    </span>
-                                    <div className="single-project-content">
-                                        <h3>Digital Security</h3>
-                                        <p>Comprehensive Digital Security Solutions.</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="col-lg-4 col-xl-4 col-md-6 scroll-animate fade-up scroll-animate-delay-3">
-                                <div className="single-project-item mb-30">
-                                    <img src="assets/img/service/starlink.jpeg" alt="Starlink Installation" />
-                                    <span className="icon">
-                                        <a href='/service-details/starlink-installation'> <i className="fa-solid fa-arrow-right"></i></a>
-                                    </span>
-                                    <div className="single-project-content">
-                                        <h3>Starlink Installation</h3>
-                                        <p>Professional Starlink setup and configuration for high-speed internet anywhere.</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="col-lg-4 col-xl-4 col-md-6 scroll-animate fade-up scroll-animate-delay-4">
-                                <div className="single-project-item mb-30">
-                                    <img src="assets/img/service/software.jpeg" alt="Software Development" />
-                                    <span className="icon">
-                                        <a href='/service-details/software-development'> <i className="fa-solid fa-arrow-right"></i></a>
-                                    </span>
-                                    <div className="single-project-content">
-                                        <h3>Software Development</h3>
-                                        <p>Bespoke ERP System for Small Businesses.</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="col-lg-4 col-xl-4 col-md-6 scroll-animate fade-up scroll-animate-delay-5">
-                                <div className="single-project-item mb-30">
-                                    <img src="assets/img/service/payTv.jpeg" alt="Canal+ & DStv Services" />
-                                    <span className="icon">
-                                        <a href='/service-details/canalplus-dstv'> <i className="fa-solid fa-arrow-right"></i></a>
-                                    </span>
-                                    <div className="single-project-content">
-                                        <h3>Canal+ & DStv Services</h3>
-                                        <p>Installation & Subscription Services for Canal+ and DStv.</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="col-lg-4 col-xl-4 col-md-6 scroll-animate fade-up scroll-animate-delay-6">
-                                <div className="single-project-item mb-30">
-                                    <img src="assets/img/service/internship.jpeg" alt="Internships & Short Courses" />
-                                    <span className="icon">
-                                        <a href='/service-details/internships-courses'> <i className="fa-solid fa-arrow-right"></i></a>
-                                    </span>
-                                    <div className="single-project-content">
-                                        <h3>Internships & Short Courses</h3>
-                                        <p>Gain Practical Experience with Our Internship Programs.</p>
-                                    </div>
-                                </div>
-                            </div>
+                            ))}
                         </div>
                     </div>
                 </div>
@@ -973,6 +1189,1048 @@ function Home() {
                     .product-modal-close:hover {
                         background: #e5e7eb;
                     }
+
+                    /* Service modal styles */
+                    .service-modal-overlay {
+                        position: fixed;
+                        inset: 0;
+                        background: rgba(0, 0, 0, 0.65);
+                        backdrop-filter: blur(8px);
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        z-index: 9999;
+                        padding: 20px;
+                        animation: fadeInOverlay 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+                    }
+                    @keyframes fadeInOverlay {
+                        from { 
+                            opacity: 0;
+                            backdrop-filter: blur(0px);
+                        }
+                        to { 
+                            opacity: 1;
+                            backdrop-filter: blur(8px);
+                        }
+                    }
+                    .service-modal-decorative-bg {
+                        position: absolute;
+                        inset: 0;
+                        background: 
+                            radial-gradient(circle at 20% 30%, rgba(45, 139, 209, 0.1) 0%, transparent 50%),
+                            radial-gradient(circle at 80% 70%, rgba(26, 79, 151, 0.1) 0%, transparent 50%);
+                        animation: pulseBg 8s ease-in-out infinite;
+                        pointer-events: none;
+                    }
+                    @keyframes pulseBg {
+                        0%, 100% { opacity: 0.5; transform: scale(1); }
+                        50% { opacity: 0.8; transform: scale(1.05); }
+                    }
+                    .service-modal {
+                        width: min(1000px, 100%);
+                        max-height: 90vh;
+                        background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+                        border-radius: 24px;
+                        overflow: hidden;
+                        box-shadow: 
+                            0 24px 60px rgba(0, 0, 0, 0.25),
+                            0 0 0 1px rgba(255, 255, 255, 0.5) inset,
+                            0 0 100px rgba(45, 139, 209, 0.1);
+                        display: grid;
+                        grid-template-columns: 1fr 1.2fr;
+                        gap: 0;
+                        animation: modalEnter 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+                        position: relative;
+                        z-index: 1;
+                    }
+                    @keyframes modalEnter {
+                        0% {
+                            opacity: 0;
+                            transform: translateY(50px) scale(0.9);
+                        }
+                        100% {
+                            opacity: 1;
+                            transform: translateY(0) scale(1);
+                        }
+                    }
+                    @media (max-width: 900px) {
+                        .service-modal {
+                            grid-template-columns: 1fr;
+                            max-height: 95vh;
+                        }
+                    }
+                    .service-modal-image {
+                        background: linear-gradient(135deg, #f6f8fb 0%, #e9ecef 100%);
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        padding: 30px;
+                        position: relative;
+                        overflow: hidden;
+                    }
+                    .service-modal-image::before {
+                        content: '';
+                        position: absolute;
+                        inset: 0;
+                        background: linear-gradient(135deg, rgba(45, 139, 209, 0.05) 0%, rgba(26, 79, 151, 0.05) 100%);
+                        z-index: 1;
+                    }
+                    .service-modal-image-overlay {
+                        position: absolute;
+                        inset: 0;
+                        background: linear-gradient(180deg, transparent 0%, rgba(255, 255, 255, 0.1) 100%);
+                        z-index: 2;
+                        pointer-events: none;
+                    }
+                    .service-modal-decorative-circles {
+                        position: absolute;
+                        inset: 0;
+                        z-index: 1;
+                        pointer-events: none;
+                    }
+                    .decorative-circle {
+                        position: absolute;
+                        border-radius: 50%;
+                        background: linear-gradient(135deg, rgba(45, 139, 209, 0.1), rgba(26, 79, 151, 0.1));
+                        animation: float 6s ease-in-out infinite;
+                    }
+                    .circle-1 {
+                        width: 150px;
+                        height: 150px;
+                        top: -50px;
+                        right: -50px;
+                        animation-delay: 0s;
+                    }
+                    .circle-2 {
+                        width: 100px;
+                        height: 100px;
+                        bottom: 20px;
+                        left: -30px;
+                        animation-delay: 2s;
+                    }
+                    .circle-3 {
+                        width: 80px;
+                        height: 80px;
+                        top: 50%;
+                        right: 10%;
+                        animation-delay: 4s;
+                    }
+                    @keyframes float {
+                        0%, 100% { transform: translate(0, 0) scale(1); opacity: 0.6; }
+                        33% { transform: translate(20px, -20px) scale(1.1); opacity: 0.8; }
+                        66% { transform: translate(-20px, 20px) scale(0.9); opacity: 0.7; }
+                    }
+                    .service-modal-image img {
+                        width: 100%;
+                        height: auto;
+                        max-height: 100%;
+                        object-fit: cover;
+                        border-radius: 16px;
+                        position: relative;
+                        z-index: 2;
+                        animation: imageZoom 0.8s ease-out;
+                        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+                        transition: transform 0.5s ease;
+                    }
+                    .service-modal:hover .service-modal-image img {
+                        transform: scale(1.02);
+                    }
+                    @keyframes imageZoom {
+                        from {
+                            opacity: 0;
+                            transform: scale(0.95);
+                        }
+                        to {
+                            opacity: 1;
+                            transform: scale(1);
+                        }
+                    }
+                    .service-modal-body {
+                        padding: 35px;
+                        display: flex;
+                        flex-direction: column;
+                        gap: 24px;
+                        overflow-y: auto;
+                        max-height: 90vh;
+                        position: relative;
+                        background: linear-gradient(to bottom, #ffffff, #fafbfc);
+                        animation: bodySlideIn 0.6s ease-out 0.2s both;
+                    }
+                    .service-modal-body::-webkit-scrollbar {
+                        width: 8px;
+                    }
+                    .service-modal-body::-webkit-scrollbar-track {
+                        background: rgba(0, 0, 0, 0.05);
+                        border-radius: 10px;
+                    }
+                    .service-modal-body::-webkit-scrollbar-thumb {
+                        background: linear-gradient(135deg, #2D8BD1, #1A4F97);
+                        border-radius: 10px;
+                        transition: background 0.3s ease;
+                    }
+                    .service-modal-body::-webkit-scrollbar-thumb:hover {
+                        background: linear-gradient(135deg, #3580d2, #1f5ca8);
+                    }
+                    @keyframes bodySlideIn {
+                        from {
+                            opacity: 0;
+                            transform: translateX(20px);
+                        }
+                        to {
+                            opacity: 1;
+                            transform: translateX(0);
+                        }
+                    }
+                    @media (max-width: 900px) {
+                        .service-modal-body {
+                            max-height: 60vh;
+                            padding: 25px;
+                        }
+                    }
+                    .service-modal-chip {
+                        align-self: flex-start;
+                        padding: 10px 18px;
+                        border-radius: 999px;
+                        background: linear-gradient(135deg, #2D8BD1 0%, #1A4F97 100%);
+                        color: #fff;
+                        font-weight: 800;
+                        font-size: 12px;
+                        letter-spacing: 0.5px;
+                        text-transform: uppercase;
+                        display: inline-flex;
+                        align-items: center;
+                        animation: chipBounce 0.6s ease-out 0.3s both;
+                        box-shadow: 0 4px 12px rgba(45, 139, 209, 0.3);
+                        position: relative;
+                        overflow: hidden;
+                    }
+                    .service-modal-chip::before {
+                        content: '';
+                        position: absolute;
+                        top: -50%;
+                        left: -50%;
+                        width: 200%;
+                        height: 200%;
+                        background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+                        transform: rotate(45deg);
+                        animation: shine 3s infinite;
+                    }
+                    @keyframes chipBounce {
+                        0% {
+                            opacity: 0;
+                            transform: scale(0.5) translateY(-20px);
+                        }
+                        60% {
+                            transform: scale(1.05) translateY(0);
+                        }
+                        100% {
+                            opacity: 1;
+                            transform: scale(1) translateY(0);
+                        }
+                    }
+                    @keyframes shine {
+                        0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+                        100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
+                    }
+                    @keyframes sparkle {
+                        0%, 100% { transform: scale(1) rotate(0deg); opacity: 1; }
+                        50% { transform: scale(1.2) rotate(180deg); opacity: 0.8; }
+                    }
+                    .service-modal-title {
+                        font-size: 32px;
+                        font-weight: 900;
+                        color: #0f172a;
+                        margin: 0;
+                        line-height: 1.3;
+                        position: relative;
+                        animation: titleFadeIn 0.6s ease-out 0.4s both;
+                        display: flex;
+                        align-items: center;
+                        gap: 12px;
+                    }
+                    .title-decoration {
+                        width: 4px;
+                        height: 32px;
+                        background: linear-gradient(180deg, #2D8BD1, #1A4F97);
+                        border-radius: 2px;
+                        animation: decorationGrow 0.6s ease-out 0.5s both;
+                    }
+                    @keyframes decorationGrow {
+                        from {
+                            height: 0;
+                            opacity: 0;
+                        }
+                        to {
+                            height: 32px;
+                            opacity: 1;
+                        }
+                    }
+                    @keyframes titleFadeIn {
+                        from {
+                            opacity: 0;
+                            transform: translateY(10px);
+                        }
+                        to {
+                            opacity: 1;
+                            transform: translateY(0);
+                        }
+                    }
+                    .service-modal-desc {
+                        font-size: 16px;
+                        color: #475467;
+                        line-height: 1.8;
+                        margin: 0;
+                        animation: descFadeIn 0.6s ease-out 0.5s both;
+                    }
+                    @keyframes descFadeIn {
+                        from {
+                            opacity: 0;
+                            transform: translateY(10px);
+                        }
+                        to {
+                            opacity: 1;
+                            transform: translateY(0);
+                        }
+                    }
+                    .service-modal-section {
+                        margin-top: 10px;
+                        animation: sectionSlideIn 0.6s ease-out both;
+                    }
+                    .service-modal-section:nth-child(1) {
+                        animation-delay: 0.6s;
+                    }
+                    .service-modal-section:nth-child(2) {
+                        animation-delay: 0.7s;
+                    }
+                    @keyframes sectionSlideIn {
+                        from {
+                            opacity: 0;
+                            transform: translateX(-20px);
+                        }
+                        to {
+                            opacity: 1;
+                            transform: translateX(0);
+                        }
+                    }
+                    .service-modal-section-title {
+                        font-size: 18px;
+                        font-weight: 700;
+                        color: #1a1a1a;
+                        margin: 0 0 16px 0;
+                        display: flex;
+                        align-items: center;
+                        gap: 10px;
+                    }
+                    .section-icon-wrapper {
+                        width: 36px;
+                        height: 36px;
+                        border-radius: 10px;
+                        background: linear-gradient(135deg, rgba(45, 139, 209, 0.1), rgba(26, 79, 151, 0.1));
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        transition: all 0.3s ease;
+                        animation: iconPulse 2s ease-in-out infinite;
+                    }
+                    .section-icon-wrapper i {
+                        color: #2D8BD1;
+                        font-size: 16px;
+                    }
+                    @keyframes iconPulse {
+                        0%, 100% { transform: scale(1); }
+                        50% { transform: scale(1.1); }
+                    }
+                    .service-modal-features,
+                    .service-modal-benefits {
+                        list-style: none;
+                        padding: 0;
+                        margin: 0;
+                        display: flex;
+                        flex-direction: column;
+                        gap: 12px;
+                    }
+                    .service-modal-features li,
+                    .service-modal-benefits li {
+                        font-size: 15px;
+                        color: #475467;
+                        line-height: 1.7;
+                        display: flex;
+                        align-items: flex-start;
+                        gap: 12px;
+                        padding: 12px;
+                        border-radius: 10px;
+                        background: rgba(255, 255, 255, 0.5);
+                        border: 1px solid rgba(229, 231, 235, 0.5);
+                        transition: all 0.3s ease;
+                        animation: listItemSlideIn 0.5s ease-out both;
+                        opacity: 0;
+                    }
+                    .service-modal-features li {
+                        animation: listItemSlideIn 0.5s ease-out both;
+                    }
+                    .service-modal-benefits li {
+                        animation: listItemSlideIn 0.5s ease-out both;
+                    }
+                    @keyframes listItemSlideIn {
+                        from {
+                            opacity: 0;
+                            transform: translateX(-15px);
+                        }
+                        to {
+                            opacity: 1;
+                            transform: translateX(0);
+                        }
+                    }
+                    .service-modal-features li:hover,
+                    .service-modal-benefits li:hover {
+                        background: rgba(45, 139, 209, 0.05);
+                        border-color: rgba(45, 139, 209, 0.2);
+                        transform: translateX(5px);
+                        box-shadow: 0 2px 8px rgba(45, 139, 209, 0.1);
+                    }
+                    .feature-icon,
+                    .benefit-icon {
+                        width: 24px;
+                        height: 24px;
+                        border-radius: 6px;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        flex-shrink: 0;
+                        margin-top: 2px;
+                        transition: all 0.3s ease;
+                    }
+                    .feature-icon {
+                        background: linear-gradient(135deg, rgba(45, 139, 209, 0.1), rgba(45, 139, 209, 0.2));
+                    }
+                    .feature-icon i {
+                        color: #2D8BD1;
+                        font-size: 11px;
+                        transition: all 0.3s ease;
+                    }
+                    .benefit-icon {
+                        background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(16, 185, 129, 0.2));
+                    }
+                    .benefit-icon i {
+                        color: #10b981;
+                        font-size: 12px;
+                        transition: all 0.3s ease;
+                    }
+                    .service-modal-features li:hover .feature-icon,
+                    .service-modal-benefits li:hover .benefit-icon {
+                        transform: scale(1.1) rotate(5deg);
+                    }
+                    .service-modal-features li:hover .feature-icon i {
+                        transform: translateX(2px);
+                    }
+                    .feature-text,
+                    .benefit-text {
+                        flex: 1;
+                    }
+                    
+                    /* Service Categories Styles */
+                    .service-modal-categories {
+                        display: flex;
+                        flex-direction: column;
+                        gap: 24px;
+                    }
+                    .service-category-item {
+                        animation: categorySlideIn 0.6s ease-out both;
+                        opacity: 0;
+                    }
+                    @keyframes categorySlideIn {
+                        from {
+                            opacity: 0;
+                            transform: translateY(20px);
+                        }
+                        to {
+                            opacity: 1;
+                            transform: translateY(0);
+                        }
+                    }
+                    .service-category-header {
+                        display: flex;
+                        align-items: center;
+                        gap: 14px;
+                        margin-bottom: 16px;
+                        padding-bottom: 12px;
+                        border-bottom: 2px solid rgba(45, 139, 209, 0.1);
+                    }
+                    .service-category-icon-wrapper {
+                        width: 48px;
+                        height: 48px;
+                        border-radius: 12px;
+                        background: linear-gradient(135deg, #2D8BD1 0%, #1A4F97 100%);
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        box-shadow: 0 4px 12px rgba(45, 139, 209, 0.3);
+                        animation: iconBounce 2s ease-in-out infinite;
+                    }
+                    @keyframes iconBounce {
+                        0%, 100% { transform: translateY(0); }
+                        50% { transform: translateY(-3px); }
+                    }
+                    .service-category-icon-wrapper i {
+                        color: #fff;
+                        font-size: 20px;
+                    }
+                    .service-category-title {
+                        font-size: 20px;
+                        font-weight: 700;
+                        color: #1a1a1a;
+                        margin: 0;
+                        background: linear-gradient(135deg, #2D8BD1, #1A4F97);
+                        -webkit-background-clip: text;
+                        -webkit-text-fill-color: transparent;
+                        background-clip: text;
+                    }
+                    .service-category-items-grid {
+                        display: grid;
+                        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+                        gap: 12px;
+                    }
+                    @media (max-width: 600px) {
+                        .service-category-items-grid {
+                            grid-template-columns: 1fr;
+                        }
+                    }
+                    .service-category-item-card {
+                        padding: 14px 16px;
+                        background: linear-gradient(135deg, rgba(255, 255, 255, 0.9), rgba(248, 250, 252, 0.9));
+                        border: 1px solid rgba(229, 231, 235, 0.6);
+                        border-radius: 10px;
+                        display: flex;
+                        align-items: center;
+                        gap: 12px;
+                        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+                        cursor: default;
+                        animation: itemCardFadeIn 0.5s ease-out both;
+                        opacity: 0;
+                        position: relative;
+                        overflow: hidden;
+                    }
+                    .service-category-item-card::before {
+                        content: '';
+                        position: absolute;
+                        top: 0;
+                        left: -100%;
+                        width: 100%;
+                        height: 100%;
+                        background: linear-gradient(90deg, transparent, rgba(45, 139, 209, 0.1), transparent);
+                        transition: left 0.5s ease;
+                    }
+                    .service-category-item-card:hover::before {
+                        left: 100%;
+                    }
+                    @keyframes itemCardFadeIn {
+                        from {
+                            opacity: 0;
+                            transform: translateX(-10px) scale(0.95);
+                        }
+                        to {
+                            opacity: 1;
+                            transform: translateX(0) scale(1);
+                        }
+                    }
+                    .service-category-item-card:hover {
+                        transform: translateY(-3px) translateX(5px);
+                        box-shadow: 0 6px 20px rgba(45, 139, 209, 0.15);
+                        border-color: rgba(45, 139, 209, 0.3);
+                        background: linear-gradient(135deg, rgba(255, 255, 255, 1), rgba(248, 250, 252, 1));
+                    }
+                    .category-item-icon {
+                        width: 24px;
+                        height: 24px;
+                        min-width: 24px;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        border-radius: 6px;
+                        background: linear-gradient(135deg, rgba(45, 139, 209, 0.15), rgba(45, 139, 209, 0.25));
+                        transition: all 0.3s ease;
+                    }
+                    .category-item-icon i {
+                        color: #2D8BD1;
+                        font-size: 11px;
+                        transition: all 0.3s ease;
+                    }
+                    .service-category-item-card:hover .category-item-icon {
+                        background: linear-gradient(135deg, #2D8BD1, #1A4F97);
+                        transform: scale(1.1) rotate(5deg);
+                    }
+                    .service-category-item-card:hover .category-item-icon i {
+                        color: #fff;
+                    }
+                    .category-item-text {
+                        font-size: 14px;
+                        color: #475467;
+                        line-height: 1.5;
+                        font-weight: 500;
+                        transition: color 0.3s ease;
+                    }
+                    .service-category-item-card:hover .category-item-text {
+                        color: #1a1a1a;
+                        font-weight: 600;
+                    }
+                    
+                    .service-modal-actions {
+                        display: flex;
+                        gap: 12px;
+                        margin-top: 10px;
+                        flex-wrap: wrap;
+                        padding-top: 20px;
+                        border-top: 2px solid rgba(229, 231, 235, 0.5);
+                        animation: actionsFadeIn 0.6s ease-out 0.8s both;
+                        position: relative;
+                    }
+                    @keyframes actionsFadeIn {
+                        from {
+                            opacity: 0;
+                            transform: translateY(10px);
+                        }
+                        to {
+                            opacity: 1;
+                            transform: translateY(0);
+                        }
+                    }
+                    .service-modal-contact-btn {
+                        flex: 1;
+                        min-width: 150px;
+                        background: linear-gradient(135deg, #2D8BD1 0%, #1A4F97 100%);
+                        color: #fff;
+                        border: none;
+                        border-radius: 12px;
+                        padding: 16px 24px;
+                        font-weight: 700;
+                        font-size: 15px;
+                        cursor: pointer;
+                        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        gap: 10px;
+                        position: relative;
+                        overflow: hidden;
+                        box-shadow: 0 4px 12px rgba(45, 139, 209, 0.3);
+                    }
+                    .btn-shine {
+                        position: absolute;
+                        top: -50%;
+                        left: -50%;
+                        width: 200%;
+                        height: 200%;
+                        background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+                        transform: translateX(-100%) translateY(-100%) rotate(45deg);
+                        transition: transform 0.6s;
+                    }
+                    .service-modal-contact-btn:hover .btn-shine {
+                        transform: translateX(100%) translateY(100%) rotate(45deg);
+                    }
+                    .service-modal-contact-btn:hover {
+                        transform: translateY(-3px);
+                        box-shadow: 0 8px 24px rgba(45, 139, 209, 0.4);
+                        background: linear-gradient(135deg, #3580d2 0%, #1f5ca8 100%);
+                    }
+                    .service-modal-contact-btn:active {
+                        transform: translateY(-1px);
+                    }
+                    .service-modal-contact-btn i {
+                        transition: transform 0.3s ease;
+                    }
+                    .service-modal-contact-btn:hover i {
+                        transform: translateY(-2px) rotate(-10deg);
+                    }
+                    .service-modal-register-btn {
+                        flex: 1;
+                        min-width: 150px;
+                        background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+                        color: #fff;
+                        border: none;
+                        border-radius: 12px;
+                        padding: 16px 24px;
+                        font-weight: 700;
+                        font-size: 15px;
+                        cursor: pointer;
+                        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        gap: 10px;
+                        position: relative;
+                        overflow: hidden;
+                        box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+                    }
+                    .service-modal-register-btn:hover .btn-shine {
+                        transform: translateX(100%) translateY(100%) rotate(45deg);
+                    }
+                    .service-modal-register-btn:hover {
+                        transform: translateY(-3px);
+                        box-shadow: 0 8px 24px rgba(16, 185, 129, 0.4);
+                        background: linear-gradient(135deg, #059669 0%, #047857 100%);
+                    }
+                    .service-modal-register-btn:active {
+                        transform: translateY(-1px);
+                    }
+                    .service-modal-register-btn i {
+                        transition: transform 0.3s ease;
+                    }
+                    .service-modal-register-btn:hover i {
+                        transform: translateY(-2px) scale(1.1);
+                    }
+                    .service-modal-close {
+                        background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%);
+                        color: #111827;
+                        border: 1px solid #e5e7eb;
+                        border-radius: 12px;
+                        padding: 16px 24px;
+                        font-weight: 700;
+                        cursor: pointer;
+                        transition: all 0.3s ease;
+                        min-width: 100px;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        gap: 8px;
+                    }
+                    .service-modal-close:hover {
+                        background: linear-gradient(135deg, #e5e7eb 0%, #d1d5db 100%);
+                        transform: translateY(-2px);
+                        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+                    }
+                    .service-modal-close i {
+                        transition: transform 0.3s ease;
+                    }
+                    .service-modal-close:hover i {
+                        transform: rotate(90deg);
+                    }
+                    
+                    /* Comprehensive Responsive Styles for All Devices */
+                    @media (max-width: 1200px) {
+                        .service-modal {
+                            width: min(900px, 95%);
+                        }
+                        .service-category-items-grid {
+                            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+                        }
+                    }
+                    @media (max-width: 768px) {
+                        .service-modal-overlay {
+                            padding: 10px;
+                        }
+                        .service-modal {
+                            width: 100%;
+                            max-height: 98vh;
+                            border-radius: 16px;
+                        }
+                        .service-modal-image {
+                            padding: 20px;
+                            min-height: 200px;
+                        }
+                        .service-modal-image img {
+                            border-radius: 10px;
+                        }
+                        .decorative-circle {
+                            display: none;
+                        }
+                        .service-modal-body {
+                            padding: 20px;
+                            gap: 18px;
+                            max-height: calc(98vh - 200px);
+                        }
+                        .service-modal-chip {
+                            padding: 8px 14px;
+                            font-size: 11px;
+                        }
+                        .service-modal-title {
+                            font-size: 24px;
+                            gap: 8px;
+                        }
+                        .title-decoration {
+                            width: 3px;
+                            height: 24px;
+                        }
+                        .service-modal-desc {
+                            font-size: 15px;
+                            line-height: 1.6;
+                        }
+                        .service-modal-section-title {
+                            font-size: 16px;
+                            gap: 8px;
+                        }
+                        .section-icon-wrapper {
+                            width: 32px;
+                            height: 32px;
+                        }
+                        .section-icon-wrapper i {
+                            font-size: 14px;
+                        }
+                        .service-modal-features li,
+                        .service-modal-benefits li {
+                            font-size: 14px;
+                            padding: 10px;
+                            gap: 10px;
+                        }
+                        .feature-icon,
+                        .benefit-icon {
+                            width: 22px;
+                            height: 22px;
+                            min-width: 22px;
+                        }
+                        .feature-icon i {
+                            font-size: 10px;
+                        }
+                        .benefit-icon i {
+                            font-size: 11px;
+                        }
+                        .service-category-header {
+                            gap: 12px;
+                            margin-bottom: 14px;
+                            padding-bottom: 10px;
+                        }
+                        .service-category-icon-wrapper {
+                            width: 40px;
+                            height: 40px;
+                        }
+                        .service-category-icon-wrapper i {
+                            font-size: 18px;
+                        }
+                        .service-category-title {
+                            font-size: 18px;
+                        }
+                        .service-category-items-grid {
+                            grid-template-columns: 1fr;
+                            gap: 10px;
+                        }
+                        .service-category-item-card {
+                            padding: 12px 14px;
+                            gap: 10px;
+                        }
+                        .category-item-icon {
+                            width: 22px;
+                            height: 22px;
+                            min-width: 22px;
+                        }
+                        .category-item-icon i {
+                            font-size: 10px;
+                        }
+                        .category-item-text {
+                            font-size: 13px;
+                        }
+                        .service-modal-actions {
+                            flex-direction: column;
+                            gap: 10px;
+                            padding-top: 15px;
+                        }
+                        .service-modal-contact-btn,
+                        .service-modal-register-btn,
+                        .service-modal-close {
+                            width: 100%;
+                            min-width: auto;
+                            padding: 14px 20px;
+                            font-size: 14px;
+                        }
+                    }
+                    @media (max-width: 480px) {
+                        .service-modal-overlay {
+                            padding: 5px;
+                        }
+                        .service-modal {
+                            border-radius: 12px;
+                            max-height: 99vh;
+                        }
+                        .service-modal-image {
+                            padding: 15px;
+                            min-height: 150px;
+                        }
+                        .service-modal-body {
+                            padding: 15px;
+                            gap: 15px;
+                            max-height: calc(99vh - 150px);
+                        }
+                        .service-modal-chip {
+                            padding: 6px 12px;
+                            font-size: 10px;
+                        }
+                        .service-modal-title {
+                            font-size: 20px;
+                            flex-direction: column;
+                            align-items: flex-start;
+                            gap: 6px;
+                        }
+                        .title-decoration {
+                            width: 100%;
+                            height: 3px;
+                            border-radius: 2px;
+                        }
+                        .service-modal-desc {
+                            font-size: 14px;
+                        }
+                        .service-modal-section-title {
+                            font-size: 15px;
+                            flex-wrap: wrap;
+                        }
+                        .section-icon-wrapper {
+                            width: 28px;
+                            height: 28px;
+                        }
+                        .section-icon-wrapper i {
+                            font-size: 12px;
+                        }
+                        .service-modal-features li,
+                        .service-modal-benefits li {
+                            font-size: 13px;
+                            padding: 8px;
+                            flex-wrap: wrap;
+                        }
+                        .service-category-header {
+                            flex-wrap: wrap;
+                        }
+                        .service-category-icon-wrapper {
+                            width: 36px;
+                            height: 36px;
+                        }
+                        .service-category-icon-wrapper i {
+                            font-size: 16px;
+                        }
+                        .service-category-title {
+                            font-size: 16px;
+                        }
+                        .service-category-item-card {
+                            padding: 10px 12px;
+                        }
+                        .category-item-text {
+                            font-size: 12px;
+                        }
+                        .service-modal-actions {
+                            gap: 8px;
+                        }
+                        .service-modal-contact-btn,
+                        .service-modal-register-btn,
+                        .service-modal-close {
+                            padding: 12px 16px;
+                            font-size: 13px;
+                        }
+                        .service-modal-contact-btn i,
+                        .service-modal-register-btn i,
+                        .service-modal-close i {
+                            font-size: 14px;
+                        }
+                    }
+                    @media (min-width: 769px) and (max-width: 1024px) {
+                        .service-modal {
+                            width: min(850px, 90%);
+                        }
+                        .service-category-items-grid {
+                            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+                        }
+                    }
+                    @media (orientation: landscape) and (max-height: 600px) {
+                        .service-modal {
+                            max-height: 95vh;
+                        }
+                        .service-modal-image {
+                            min-height: 150px;
+                            padding: 15px;
+                        }
+                        .service-modal-body {
+                            max-height: calc(95vh - 150px);
+                            padding: 20px;
+                        }
+                    }
+                    
+                    .service-card-clickable {
+                        transition: transform 0.3s ease, box-shadow 0.3s ease;
+                        position: relative;
+                        overflow: hidden;
+                    }
+                    .service-card-clickable:hover {
+                        transform: translateY(-5px);
+                    }
+                    .service-card-clickable .icon {
+                        position: absolute;
+                        top: 20px;
+                        right: 20px;
+                        width: 50px;
+                        height: 50px;
+                        background: rgba(255, 255, 255, 0.98);
+                        border-radius: 50%;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        z-index: 10;
+                        opacity: 0.9;
+                        transform: scale(1);
+                        transition: all 0.3s ease;
+                        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+                        backdrop-filter: blur(10px);
+                    }
+                    .service-card-clickable:hover .icon {
+                        opacity: 1;
+                        transform: scale(1.1);
+                        box-shadow: 0 6px 20px rgba(45, 139, 209, 0.3);
+                        background: #fff;
+                    }
+                    .service-card-clickable .icon button {
+                        width: 100%;
+                        height: 100%;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        color: #2D8BD1 !important;
+                        font-size: 18px;
+                        transition: all 0.3s ease;
+                        border: none;
+                        background: transparent;
+                        padding: 0;
+                    }
+                    .service-card-clickable .icon button:hover {
+                        color: #1A4F97 !important;
+                    }
+                    .service-card-clickable .icon button i {
+                        color: #2D8BD1 !important;
+                        font-size: 18px;
+                        transition: all 0.3s ease;
+                        display: inline-block;
+                    }
+                    .service-card-clickable .icon button:hover i {
+                        color: #1A4F97 !important;
+                        transform: translateX(3px);
+                    }
+                    .service-card-clickable:hover .icon button i {
+                        transform: translateX(2px);
+                    }
+                    
+                    /* Service Cards Responsive Styles */
+                    @media (max-width: 768px) {
+                        .service-card-clickable .icon {
+                            width: 45px;
+                            height: 45px;
+                            top: 15px;
+                            right: 15px;
+                        }
+                        .service-card-clickable .icon button i {
+                            font-size: 16px;
+                        }
+                        .single-project-content h3 {
+                            font-size: 18px;
+                        }
+                        .single-project-content p {
+                            font-size: 14px;
+                        }
+                    }
+                    @media (max-width: 480px) {
+                        .service-card-clickable .icon {
+                            width: 40px;
+                            height: 40px;
+                            top: 10px;
+                            right: 10px;
+                        }
+                        .service-card-clickable .icon button i {
+                            font-size: 14px;
+                        }
+                    }
+                    
                     .product-body {
                         padding: 28px 24px;
                     }
@@ -2040,6 +3298,185 @@ function Home() {
                                     Add to Cart
                                 </button>
                                 <button className="product-modal-close" onClick={closeProduct}>Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            )}
+
+            {selectedService && (
+                <div className="service-modal-overlay" onClick={closeService}>
+                    <div className="service-modal-decorative-bg"></div>
+                    <div className="service-modal" onClick={(e) => e.stopPropagation()}>
+                        <div className="service-modal-image">
+                            <div className="service-modal-image-overlay"></div>
+                            <div className="service-modal-decorative-circles">
+                                <div className="decorative-circle circle-1"></div>
+                                <div className="decorative-circle circle-2"></div>
+                                <div className="decorative-circle circle-3"></div>
+                            </div>
+                            <img src={selectedService.image} alt={selectedService.title} />
+                        </div>
+                        <div className="service-modal-body">
+                            <span className="service-modal-chip">
+                                <i className="fa-solid fa-sparkles" style={{ marginRight: '6px', animation: 'sparkle 2s ease-in-out infinite' }}></i>
+                                Our Service
+                            </span>
+                            <h3 className="service-modal-title">
+                                <span className="title-decoration"></span>
+                                {selectedService.title}
+                            </h3>
+                            <p className="service-modal-desc">{selectedService.fullDescription}</p>
+                            
+                            {selectedService.categories ? (
+                                <div className="service-modal-categories">
+                                    {selectedService.categories.map((category, categoryIndex) => (
+                                        <div key={categoryIndex} className="service-category-item" style={{ animationDelay: `${categoryIndex * 0.1}s` }}>
+                                            <div className="service-category-header">
+                                                <div className="service-category-icon-wrapper">
+                                                    <i className={`fa-solid fa-${category.icon}`}></i>
+                                                </div>
+                                                <h4 className="service-category-title">{category.title}</h4>
+                                            </div>
+                                            <div className="service-category-items-grid">
+                                                {category.items.map((item, itemIndex) => (
+                                                    <div key={itemIndex} className="service-category-item-card" style={{ animationDelay: `${(categoryIndex * 0.1) + (itemIndex * 0.05)}s` }}>
+                                                        <span className="category-item-icon">
+                                                            <i className="fa-solid fa-circle-check"></i>
+                                                        </span>
+                                                        <span className="category-item-text">{item}</span>
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                            ) : (
+                                <>
+                                    <div className="service-modal-section">
+                                        <h4 className="service-modal-section-title">
+                                            <span className="section-icon-wrapper">
+                                                <i className="fa-solid fa-check-circle"></i>
+                                            </span>
+                                            Key Features
+                                        </h4>
+                                        <ul className="service-modal-features">
+                                            {selectedService.features.map((feature, index) => (
+                                                <li key={index} style={{ animationDelay: `${index * 0.1}s` }}>
+                                                    <span className="feature-icon">
+                                                        <i className="fa-solid fa-arrow-right"></i>
+                                                    </span>
+                                                    <span className="feature-text">{feature}</span>
+                                                </li>
+                                            ))}
+                                        </ul>
+                                    </div>
+
+                                    <div className="service-modal-section">
+                                        <h4 className="service-modal-section-title">
+                                            <span className="section-icon-wrapper">
+                                                <i className="fa-solid fa-star"></i>
+                                            </span>
+                                            Benefits
+                                        </h4>
+                                        <ul className="service-modal-benefits">
+                                            {selectedService.benefits.map((benefit, index) => (
+                                                <li key={index} style={{ animationDelay: `${index * 0.1}s` }}>
+                                                    <span className="benefit-icon">
+                                                        <i className="fa-solid fa-check"></i>
+                                                    </span>
+                                                    <span className="benefit-text">{benefit}</span>
+                                                </li>
+                                            ))}
+                                        </ul>
+                                    </div>
+                                </>
+                            )}
+
+                            <div className="service-modal-actions">
+                                {selectedService.id === 'internships-courses' ? (
+                                    <>
+                                        <button 
+                                            className="service-modal-register-btn" 
+                                            onClick={() => {
+                                                closeService()
+                                                setTimeout(() => {
+                                                    const contactElement = document.getElementById('contact')
+                                                    if (contactElement) {
+                                                        const headerOffset = 100
+                                                        const elementPosition = contactElement.getBoundingClientRect().top
+                                                        const offsetPosition = elementPosition + window.pageYOffset - headerOffset
+                                                        window.scrollTo({
+                                                            top: offsetPosition,
+                                                            behavior: 'smooth'
+                                                        })
+                                                        // Optionally pre-fill the service dropdown if needed
+                                                        setTimeout(() => {
+                                                            const serviceSelect = document.querySelector('select[name="service"]')
+                                                            if (serviceSelect) {
+                                                                serviceSelect.value = 'training'
+                                                                serviceSelect.dispatchEvent(new Event('change', { bubbles: true }))
+                                                            }
+                                                        }, 500)
+                                                    }
+                                                }, 100)
+                                            }}
+                                        >
+                                            <span className="btn-shine"></span>
+                                            <i className="fa-solid fa-user-plus"></i>
+                                            <span>Register Now</span>
+                                        </button>
+                                        <button 
+                                            className="service-modal-contact-btn" 
+                                            onClick={() => {
+                                                closeService()
+                                                setTimeout(() => {
+                                                    const contactElement = document.getElementById('contact')
+                                                    if (contactElement) {
+                                                        const headerOffset = 100
+                                                        const elementPosition = contactElement.getBoundingClientRect().top
+                                                        const offsetPosition = elementPosition + window.pageYOffset - headerOffset
+                                                        window.scrollTo({
+                                                            top: offsetPosition,
+                                                            behavior: 'smooth'
+                                                        })
+                                                    }
+                                                }, 100)
+                                            }}
+                                        >
+                                            <span className="btn-shine"></span>
+                                            <i className="fa-solid fa-envelope"></i>
+                                            <span>Contact Us</span>
+                                        </button>
+                                    </>
+                                ) : (
+                                    <button 
+                                        className="service-modal-contact-btn" 
+                                        onClick={() => {
+                                            closeService()
+                                            setTimeout(() => {
+                                                const contactElement = document.getElementById('contact')
+                                                if (contactElement) {
+                                                    const headerOffset = 100
+                                                    const elementPosition = contactElement.getBoundingClientRect().top
+                                                    const offsetPosition = elementPosition + window.pageYOffset - headerOffset
+                                                    window.scrollTo({
+                                                        top: offsetPosition,
+                                                        behavior: 'smooth'
+                                                    })
+                                                }
+                                            }, 100)
+                                        }}
+                                    >
+                                        <span className="btn-shine"></span>
+                                        <i className="fa-solid fa-envelope"></i>
+                                        <span>Contact Us</span>
+                                    </button>
+                                )}
+                                <button className="service-modal-close" onClick={closeService}>
+                                    <i className="fa-solid fa-times"></i>
+                                    Close
+                                </button>
                             </div>
                         </div>
                     </div>
