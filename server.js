@@ -7,7 +7,33 @@ dotenv.config();
 connectDB();
 
 const app = express();
-app.use(cors()); // Enable CORS for all routes and origins
+
+// Configure CORS with allowed origins
+const allowedOrigins = [
+  'https://new-fabritechs.vercel.app',
+  'http://localhost:3000',
+  'http://localhost:5173', // Vite default port
+  process.env.FRONTEND_URL // Allow custom frontend URL from env
+].filter(Boolean); // Remove any undefined values
+
+app.use(cors({
+  origin: function (origin, callback) {
+    // Allow requests with no origin (like mobile apps or curl requests)
+    if (!origin) return callback(null, true);
+    
+    if (allowedOrigins.indexOf(origin) !== -1) {
+      callback(null, true);
+    } else {
+      // In development, allow all origins
+      if (process.env.NODE_ENV !== 'production') {
+        callback(null, true);
+      } else {
+        callback(new Error('Not allowed by CORS'));
+      }
+    }
+  },
+  credentials: true
+}));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true })); // For DPO callback form data
 
@@ -25,4 +51,6 @@ app.use('/api/orders', orderRoutes);
 app.use('/api/payment', paymentRoutes);
 app.use('/api/wishlist', wishlistRoutes);
 
-app.listen(5000, () => console.log('Server running on port 5000'));
+const PORT = process.env.PORT || 5000;
+
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
