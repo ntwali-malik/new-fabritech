@@ -503,10 +503,8 @@ const ProductDetail = () => {
           <a href="/" style={styles.logo}>Fabritech</a>
           <div style={styles.navLinks}>
             <a href="/#home" style={styles.navLink}>Home</a>
-            <a href="/#about" style={styles.navLink}>About</a>
-            <a href="/#products" style={styles.navLink}>Products</a>
+            <a href="/#products" style={styles.navLink}>Shop</a>
             <a href="/#contact" style={styles.navLink}>Contact</a>
-            <a href="/shop" style={styles.navLink}>Shop</a>
             <a href="/contact" style={styles.cta}>Talk to us</a>
           </div>
         </nav>
@@ -516,10 +514,8 @@ const ProductDetail = () => {
             <span style={{ background: 'rgba(255,255,255,0.14)', padding: '6px 12px', borderRadius: '999px', border: '1px solid rgba(255,255,255,0.18)' }}>
               {safeProduct.category}
             </span>
-            <span>⭐ {safeProduct.rating} / 5 ({safeProduct.reviews} reviews)</span>
           </div>
           <h1 style={styles.heroTitle} className="pd-hero-title">{safeProduct.name}</h1>
-          <p style={styles.heroSubtitle}>{safeProduct.description}</p>
           <div style={styles.breadcrumb}>
             <a href="/" style={styles.breadcrumbLink}>Home</a>
             <span>/</span>
@@ -564,15 +560,29 @@ const ProductDetail = () => {
                   {'★'.repeat(Math.floor(safeProduct.rating))}{'☆'.repeat(5 - Math.floor(safeProduct.rating))}
                 </span>
                 <span>{safeProduct.rating}/5</span>
-                <span>({safeProduct.reviews} reviews)</span>
               </div>
 
               <div style={styles.price}>{formatPrice(safeProduct.price)}</div>
 
               <p style={styles.description}>{safeProduct.description}</p>
 
+              {/* Key Features - Show only top 3 specifications if available */}
+              {Object.keys(safeProduct.specifications).length > 0 && (
+                <div style={{ marginTop: '16px', padding: '16px', background: '#f8fafc', borderRadius: '12px', border: '1px solid rgba(0,0,0,0.04)' }}>
+                  <h4 style={{ margin: '0 0 12px', fontSize: '14px', fontWeight: 800, color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Key Features</h4>
+                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))', gap: '10px' }}>
+                    {Object.entries(safeProduct.specifications).slice(0, 4).map(([key, value]) => (
+                      <div key={key} style={{ fontSize: '13px', lineHeight: 1.6 }}>
+                        <span style={{ fontWeight: 700, color: '#64748b' }}>{key.replace(/([A-Z])/g, ' $1').trim()}: </span>
+                        <span style={{ fontWeight: 800, color: '#0f172a' }}>{value}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
               <div style={styles.quantityRow}>
-                <label htmlFor="quantity" style={{ fontWeight: 800, color: '#e2e8f0' }}>Quantity</label>
+                <label htmlFor="quantity" style={{ fontWeight: 800, color: '#64748b', fontSize: '14px' }}>Quantity:</label>
                 <select
                   id="quantity"
                   value={quantity}
@@ -626,54 +636,6 @@ const ProductDetail = () => {
           </div>
         </div>
 
-        {/* Specifications */}
-        <div style={{ ...styles.panel, marginTop: '24px' }} className="pd-card">
-          <h3 style={{ color: '#fff', margin: '0 0 12px', fontWeight: 900 }}>Key Specifications</h3>
-          {Object.keys(safeProduct.specifications).length === 0 ? (
-            <p style={{ color: '#94a3b8', margin: 0 }}>No specifications provided.</p>
-          ) : (
-            <div style={styles.specsGrid}>
-              {Object.entries(safeProduct.specifications).map(([key, value]) => (
-                <div key={key} style={styles.specCard}>
-                  <div style={styles.specLabel}>{key.replace(/([A-Z])/g, ' $1')}</div>
-                  <div style={styles.specValue}>{value}</div>
-                </div>
-              ))}
-            </div>
-          )}
-        </div>
-
-        {/* Reviews Section */}
-        <div style={styles.reviewsSection}>
-          <h2 style={styles.reviewsTitle}>Customer Reviews</h2>
-          <p style={{ color: '#94a3b8', marginBottom: '16px' }}>
-            Based on {safeProduct.reviews} verified purchases
-          </p>
-
-          <div style={styles.reviewCard}>
-            <div style={styles.reviewerName}>John Smith</div>
-            <div style={styles.reviewRating}>★★★★★ 5/5</div>
-            <div style={styles.reviewText}>
-              Excellent product! Perfect for our security setup. Highly recommended for professional installations.
-            </div>
-          </div>
-
-          <div style={styles.reviewCard}>
-            <div style={styles.reviewerName}>Sarah Johnson</div>
-            <div style={styles.reviewRating}>★★★★☆ 4.5/5</div>
-            <div style={styles.reviewText}>
-              Great quality and excellent support. The installation process was straightforward and the results exceeded our expectations.
-            </div>
-          </div>
-
-          <div style={styles.reviewCard}>
-            <div style={styles.reviewerName}>Michael Brown</div>
-            <div style={styles.reviewRating}>★★★★★ 5/5</div>
-            <div style={styles.reviewText}>
-              Outstanding performance and reliability. We've been using this for 6 months without any issues. Worth every penny!
-            </div>
-          </div>
-        </div>
       </div>
 
       {/* Footer */}

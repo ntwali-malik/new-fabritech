@@ -17,6 +17,7 @@ function Home() {
     const [dealProducts, setDealProducts] = useState([])
     const [productsLoading, setProductsLoading] = useState(true)
     const [productsError, setProductsError] = useState('')
+    const [showWhatsApp, setShowWhatsApp] = useState(false)
 
     // Services data
     const servicesData = [
@@ -423,6 +424,22 @@ function Home() {
         }
     }, [selectedService, selectedProduct, showCart])
 
+    // Show WhatsApp button when scrolling (same logic as back to top)
+    useEffect(() => {
+        const handleScroll = () => {
+            const scroll = window.pageYOffset || document.documentElement.scrollTop
+            if (scroll < 500) {
+                setShowWhatsApp(false)
+            } else {
+                setShowWhatsApp(true)
+            }
+        }
+        window.addEventListener('scroll', handleScroll)
+        // Check initial scroll position
+        handleScroll()
+        return () => window.removeEventListener('scroll', handleScroll)
+    }, [])
+
     const addToCart = (product) => {
         // Convert product format to match CartContext format
         const cartProduct = {
@@ -688,9 +705,6 @@ function Home() {
                                                     <a href='#home'>Home</a>
                                                 </li>
                                                 <li>
-                                                    <a href='#about'>About Us</a>
-                                                </li>
-                                                <li>
                                                     <a href='#products'>Shop</a>
                                                 </li>
                                                 <li>
@@ -762,7 +776,7 @@ function Home() {
                                 </div>
                                 <div className="swiper-slide">
                                     <div className="tv-slider-overlay z-index-1 fix p-relative">
-                                        <div className="tv-slider-bg" data-background="assets/img/slider/slider-1-2.jpg" style={{ backgroundImage: "url('assets/img/slider/slider-1-2.jpg')" }}></div>
+                                        <div className="tv-slider-bg" data-background="assets/img/slider/sec.jpeg" style={{ backgroundImage: "url('assets/img/slider/slider-1-2.jpg')" }}></div>
                                         <div className="container">
                                             <div className="row">
                                                 <div className="col-xl-6 col-lg-6">
@@ -826,71 +840,6 @@ function Home() {
                 </div>
                 {/* <!-- slider-area-end --> */}
 
-                {/* <!-- about-area-start --> */}
-                <div id="about" className="tv-about-area z-index-1 p-relative pt-130 pb-130 white-bg">
-
-                    <div className="container">
-                        <div className="row align-items-end">
-                            <div className="col-xl-5 col-lg-5 scroll-animate fade-left">
-                                <div className="tv-section-title-box">
-                                    <span className="tv-section-subtitle tv-spltv-text tv-spltv-in-right">About Fabritech</span>
-                                    <h4 className="tv-section-title pb-20 tv-spltv-text tv-spltv-in-right">Innovating Tomorrow's Technology Today</h4>
-                                </div>
-                            </div>
-                            <div className="col-xl-7 col-lg-7 text-end scroll-animate fade-right">
-                                <div className="tv-fade-anim button" data-fade-from="top" data-ease="bounce" data-delay=".5">
-                                    <a className='tv-btn-secondary' href='#contact'>
-                                        <span className="btn-wrap">
-                                            <span className="btn-text1">Know More</span>
-                                            <span className="btn-text2">Know More</span>
-                                        </span>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="tv-about-section mt-60">
-                            <div className="row align-items-center">
-                                <div className="col-xl-4 col-lg-6 col-md-6 scroll-animate fade-up scroll-animate-delay-1">
-                                    <div className="tv-about-left">
-                                        <div className="single-icon-box">
-                                            <span><img src="assets/img/icon/about-icon-1.png" alt="" /></span>
-                                            <div className="icon-box-content">
-                                                <h3>Our Mission</h3>
-                                                <p>To deliver cutting-edge technology solutions that empower businesses to connect, secure, and innovate in an increasingly digital world.</p>
-                                            </div>
-                                        </div>
-                                        <div className="single-icon-box">
-                                            <span><img src="assets/img/icon/about-icon-2.png" alt="" /></span>
-                                            <div className="icon-box-content">
-                                                <h3>Our Vision</h3>
-                                                <p>To be the leading technology partner trusted by businesses worldwide for transformative digital solutions and unparalleled support.</p>
-                                            </div>
-                                        </div>
-                                        <div className="single-icon-box">
-                                            <span><img src="assets/img/icon/about-icon-3.png" alt="" /></span>
-                                            <div className="icon-box-content">
-                                                <h3>Our Values</h3>
-                                                <p>Excellence, Innovation, Integrity, and Client Success drive everything we do at Fabritech.</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="col-xl-4 col-lg-6 col-md-6 scroll-animate scale-up scroll-animate-delay-2">
-                                    <div className="tv-about-middle">
-                                        <img src="assets/img/about/about-1-1.png" alt="" />
-                                        <p>Fabritech is a forward-thinking technology company specializing in Starlink & Networking, Digital Security, and Web & Software Development. We combine expertise, innovation, and dedication to deliver solutions that transform businesses and create lasting impact.</p>
-                                    </div>
-                                </div>
-                                <div className="col-xl-4 d-xxl-block d-xl-block d-none col-md-6 col-sm-6 scroll-animate fade-right scroll-animate-delay-3">
-                                    <div className="tv-about-right">
-                                        <img src="assets/img/about/about-1-2.png" alt="" />
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                {/* <!-- about-area-end --> */}
                 {/* <!-- service-area-start --> */}
                 <div className="tv-service-area pt-130 pb-130">
                     <div className="container">
@@ -2928,13 +2877,13 @@ function Home() {
                             <div style={{ flex: '1 1 auto', minWidth: '300px', zIndex: 1 }}>
                                 <div className="section-chip">
                                     <span className="pulse-dot"></span>
-                                    <span>Featured Product</span>
+                                    <span>Shop Now</span>
                                 </div>
-                                <h2 className="section-title">Discover the <span>Fabritech Pro Line</span></h2>
-                                <p className="section-subtitle">Fabritech's curated suite of Starlink internet gear, pro-grade surveillance, and resilient power solutions—ready to keep your homes, businesses, and remote sites online, secure, and powered.</p>
+                                <h2 className="section-title">Welcome to Our <span>Online Store</span></h2>
+                                <p className="section-subtitle">Browse our premium collection of technology products. From Starlink internet solutions and professional surveillance systems to power solutions - find everything you need to keep your homes, businesses, and remote sites connected, secure, and powered. Shop with confidence and enjoy fast delivery!</p>
                             </div>
                             <div className="section-actions" style={{ flex: '0 0 auto' }}>
-                                <a href='/shop' className="primary-btn">All Products</a>
+                                <a href='/shop' className="primary-btn">View All Products</a>
                                 <a href='#contact' className="ghost-btn">Talk to an expert</a>
                             </div>
                         </div>
@@ -3027,6 +2976,199 @@ function Home() {
                     </div>
                 </div>
                 {/* <!-- product-area-end --> */}
+
+                {/* <!-- partner-area-start --> */}
+                <style>{`
+                    /* Partner Section Marquee */
+                    .partner-section {
+                        background: #ffffff;
+                        padding: 80px 0;
+                        overflow: hidden;
+                        position: relative;
+                    }
+                    .partner-section::before,
+                    .partner-section::after {
+                        content: '';
+                        position: absolute;
+                        top: 0;
+                        width: 100px;
+                        height: 100%;
+                        z-index: 2;
+                        pointer-events: none;
+                    }
+                    .partner-section::before {
+                        left: 0;
+                        background: linear-gradient(to right, #ffffff, transparent);
+                    }
+                    .partner-section::after {
+                        right: 0;
+                        background: linear-gradient(to left, #ffffff, transparent);
+                    }
+                    .partner-section-title {
+                        text-align: center;
+                        margin-bottom: 50px;
+                    }
+                    .partner-section-title h3 {
+                        font-size: 32px;
+                        font-weight: 700;
+                        color: #1a1a1a;
+                        margin-bottom: 12px;
+                    }
+                    .partner-section-title p {
+                        font-size: 16px;
+                        color: #666;
+                        margin: 0;
+                    }
+                    .partner-marquee-wrapper {
+                        overflow: hidden;
+                        width: 100%;
+                        position: relative;
+                    }
+                    .partner-marquee {
+                        display: flex;
+                        width: fit-content;
+                        animation: marqueeScroll 40s linear infinite;
+                    }
+                    .partner-marquee:hover {
+                        animation-play-state: paused;
+                    }
+                    .partner-item {
+                        flex-shrink: 0;
+                        padding: 20px 50px;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        height: 120px;
+                    }
+                    .partner-item img {
+                        max-width: 150px;
+                        max-height: 80px;
+                        object-fit: contain;
+                        filter: grayscale(0%);
+                        opacity: 1;
+                        transition: all 0.3s ease;
+                    }
+                    .partner-item:hover img {
+                        filter: grayscale(0%);
+                        opacity: 1;
+                        transform: scale(1.1);
+                    }
+                    @keyframes marqueeScroll {
+                        0% {
+                            transform: translateX(0);
+                        }
+                        100% {
+                            transform: translateX(-50%);
+                        }
+                    }
+                    @media (max-width: 768px) {
+                        .partner-section {
+                            padding: 60px 0;
+                        }
+                        .partner-section-title h3 {
+                            font-size: 24px;
+                        }
+                        .partner-item {
+                            padding: 15px 30px;
+                            height: 100px;
+                        }
+                        .partner-item img {
+                            max-width: 120px;
+                            max-height: 60px;
+                        }
+                        .partner-section::before,
+                        .partner-section::after {
+                            width: 50px;
+                        }
+                    }
+                `}</style>
+                <div className="partner-section">
+                    <div className="container">
+                        <div className="partner-section-title scroll-animate fade-up">
+                            <h3>Our Trusted <span style={{ background: 'linear-gradient(135deg, #2D8BD1 0%, #1A4F97 50%, #37A6E5 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>Partners</span></h3>
+                            <p>Collaborating with industry leaders to deliver exceptional solutions</p>
+                        </div>
+                        <div className="partner-marquee-wrapper">
+                            <div className="partner-marquee">
+                                {/* Partner logos */}
+                                <div className="partner-item">
+                                    <img src="assets/img/partners/Huawei.png" alt="Huawei" />
+                                </div>
+                                <div className="partner-item">
+                                    <img src="assets/img/partners/mtn.jpg" alt="MTN" />
+                                </div>
+                                <div className="partner-item">
+                                    <img src="assets/img/partners/RwandAir-Logo.wine.png" alt="RwandAir" />
+                                </div>
+                                <div className="partner-item">
+                                    <img src="assets/img/partners/Qatar.png" alt="Qatar Airways" />
+                                </div>
+                                <div className="partner-item">
+                                    <img src="assets/img/partners/KICS.png" alt="KICS" />
+                                </div>
+                                <div className="partner-item">
+                                    <img src="assets/img/partners/inkomoko.png" alt="Inkomoko" />
+                                </div>
+                                <div className="partner-item">
+                                    <img src="assets/img/partners/BSC.png" alt="BSC" />
+                                </div>
+                                <div className="partner-item">
+                                    <img src="assets/img/partners/rba.png" alt="RBA" />
+                                </div>
+                                <div className="partner-item">
+                                    <img src="assets/img/partners/ncba.png" alt="NCBA" />
+                                </div>
+                                <div className="partner-item">
+                                    <img src="assets/img/partners/tele10.png" alt="Tele10" />
+                                </div>
+                                <div className="partner-item">
+                                    <img src="assets/img/partners/frontier.png" alt="Frontier" />
+                                </div>
+                                <div className="partner-item">
+                                    <img src="assets/img/partners/ritco.png" alt="RITCO" />
+                                </div>
+                                {/* Duplicate for seamless loop */}
+                                <div className="partner-item">
+                                    <img src="assets/img/partners/Huawei.png" alt="Huawei" />
+                                </div>
+                                <div className="partner-item">
+                                    <img src="assets/img/partners/mtn.jpg" alt="MTN" />
+                                </div>
+                                <div className="partner-item">
+                                    <img src="assets/img/partners/RwandAir-Logo.wine.png" alt="RwandAir" />
+                                </div>
+                                <div className="partner-item">
+                                    <img src="assets/img/partners/Qatar.png" alt="Qatar Airways" />
+                                </div>
+                                <div className="partner-item">
+                                    <img src="assets/img/partners/KICS.png" alt="KICS" />
+                                </div>
+                                <div className="partner-item">
+                                    <img src="assets/img/partners/inkomoko.png" alt="Inkomoko" />
+                                </div>
+                                <div className="partner-item">
+                                    <img src="assets/img/partners/BSC.png" alt="BSC" />
+                                </div>
+                                <div className="partner-item">
+                                    <img src="assets/img/partners/rba.png" alt="RBA" />
+                                </div>
+                                <div className="partner-item">
+                                    <img src="assets/img/partners/ncba.png" alt="NCBA" />
+                                </div>
+                                <div className="partner-item">
+                                    <img src="assets/img/partners/tele10.png" alt="Tele10" />
+                                </div>
+                                <div className="partner-item">
+                                    <img src="assets/img/partners/frontier.png" alt="Frontier" />
+                                </div>
+                                <div className="partner-item">
+                                    <img src="assets/img/partners/ritco.png" alt="RITCO" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {/* <!-- partner-area-end --> */}
 
                 <style>{`
                     @keyframes slideInLeft {
@@ -3138,6 +3280,146 @@ function Home() {
                     }
                     .contact-link-hover:hover {
                         transform: translateX(5px);
+                    }
+
+                    /* Back to Top Button Positioning - Stacked above WhatsApp */
+                    .scroll-top {
+                        position: fixed !important;
+                        bottom: 110px !important;
+                        right: 30px !important;
+                        width: 50px !important;
+                        height: 50px !important;
+                        line-height: 50px !important;
+                        font-size: 18px !important;
+                        z-index: 999 !important;
+                        border-radius: 50% !important;
+                        color: #ffffff !important;
+                        cursor: pointer !important;
+                        background: linear-gradient(135deg, #2D8BD1 0%, #1A4F97 100%) !important;
+                        border: none !important;
+                        box-shadow: 0 4px 15px rgba(45, 139, 209, 0.4) !important;
+                        transition: all 0.3s ease !important;
+                        opacity: 0;
+                        transform: translateY(20px);
+                    }
+                    .scroll-top.open {
+                        opacity: 1 !important;
+                        transform: translateY(0) !important;
+                    }
+                    .scroll-top:hover {
+                        transform: translateY(-3px) !important;
+                        box-shadow: 0 6px 20px rgba(45, 139, 209, 0.6) !important;
+                        background: linear-gradient(135deg, #3580d2 0%, #1A4F97 100%) !important;
+                    }
+                    .scroll-top i {
+                        color: #ffffff !important;
+                    }
+
+                    /* WhatsApp Floating Button */
+                    .whatsapp-float {
+                        position: fixed;
+                        bottom: 30px;
+                        right: 30px;
+                        width: 60px;
+                        height: 60px;
+                        background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);
+                        border-radius: 50%;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        z-index: 1000;
+                        box-shadow: 0 4px 20px rgba(37, 211, 102, 0.4);
+                        transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+                        text-decoration: none;
+                        opacity: 0;
+                        transform: translateY(100px) scale(0);
+                        animation: whatsappFloat 3s ease-in-out infinite;
+                    }
+                    .whatsapp-float.show {
+                        opacity: 1;
+                        transform: translateY(0) scale(1);
+                        animation: whatsappFloat 3s ease-in-out infinite, whatsappPulse 2s ease-in-out infinite;
+                    }
+                    .whatsapp-float:hover {
+                        animation: none !important;
+                        transform: translateY(-5px) scale(1.1) !important;
+                        box-shadow: 0 8px 35px rgba(37, 211, 102, 0.6);
+                    }
+                    .whatsapp-float i {
+                        font-size: 32px;
+                        color: #ffffff;
+                        transition: transform 0.3s ease;
+                    }
+                    .whatsapp-float:hover i {
+                        transform: scale(1.1);
+                    }
+                    @keyframes whatsappFloat {
+                        0%, 100% {
+                            transform: translateY(0px) scale(1);
+                        }
+                        50% {
+                            transform: translateY(-15px) scale(1);
+                        }
+                    }
+                    @keyframes whatsappPulse {
+                        0%, 100% {
+                            box-shadow: 0 4px 20px rgba(37, 211, 102, 0.4), 0 0 0 0 rgba(37, 211, 102, 0.7);
+                        }
+                        50% {
+                            box-shadow: 0 4px 20px rgba(37, 211, 102, 0.4), 0 0 0 15px rgba(37, 211, 102, 0);
+                        }
+                    }
+                    .whatsapp-tooltip {
+                        position: absolute;
+                        right: 75px;
+                        top: 50%;
+                        transform: translateY(-50%);
+                        background: #1e293b;
+                        color: #fff;
+                        padding: 10px 16px;
+                        border-radius: 8px;
+                        font-size: 14px;
+                        font-weight: 600;
+                        white-space: nowrap;
+                        opacity: 0;
+                        pointer-events: none;
+                        transition: all 0.3s ease;
+                        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+                    }
+                    .whatsapp-tooltip::after {
+                        content: '';
+                        position: absolute;
+                        left: 100%;
+                        top: 50%;
+                        transform: translateY(-50%);
+                        border: 8px solid transparent;
+                        border-left-color: #1e293b;
+                    }
+                    .whatsapp-float:hover .whatsapp-tooltip {
+                        opacity: 1;
+                        right: 70px;
+                    }
+                    @media (max-width: 768px) {
+                        .scroll-top {
+                            bottom: 90px !important;
+                            right: 20px !important;
+                            width: 48px !important;
+                            height: 48px !important;
+                            line-height: 48px !important;
+                            font-size: 16px !important;
+                        }
+                        .whatsapp-float {
+                            width: 56px;
+                            height: 56px;
+                            bottom: 20px;
+                            right: 20px;
+                        }
+                        .whatsapp-float i {
+                            font-size: 28px;
+                        }
+                        .whatsapp-tooltip {
+                            display: none;
+                        }
                     }
                 `}</style>
                 <div id="contact" className="tv-contact-us-area pt-130 pb-130" style={{ backgroundColor: '#f8f9fa' }}>
@@ -3631,9 +3913,6 @@ function Home() {
                                             <a href='/services' style={{ color: '#666', textDecoration: 'none', fontSize: '14px', transition: 'color 0.3s ease' }} onMouseEnter={(e) => e.target.style.color = '#4a90e2'} onMouseLeave={(e) => e.target.style.color = '#666'}>Services</a>
                                         </li>
                                         <li style={{ marginBottom: '12px' }}>
-                                            <a href='/about' style={{ color: '#666', textDecoration: 'none', fontSize: '14px', transition: 'color 0.3s ease' }} onMouseEnter={(e) => e.target.style.color = '#4a90e2'} onMouseLeave={(e) => e.target.style.color = '#666'}>About Us</a>
-                                        </li>
-                                        <li style={{ marginBottom: '12px' }}>
                                             <a href='/contact' style={{ color: '#666', textDecoration: 'none', fontSize: '14px', transition: 'color 0.3s ease' }} onMouseEnter={(e) => e.target.style.color = '#4a90e2'} onMouseLeave={(e) => e.target.style.color = '#666'}>Contact Us</a>
                                         </li>
                                         <li>
@@ -3698,6 +3977,18 @@ function Home() {
                 {/* <!-- footer-area-end --> */}
 
             </footer>
+
+            {/* WhatsApp Floating Button */}
+            <a 
+                href="https://wa.me/250788601280?text=Hello%20Fabritech!%20I%20would%20like%20to%20know%20more%20about%20your%20services." 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                className={`whatsapp-float ${showWhatsApp ? 'show' : ''}`}
+                aria-label="Chat with us on WhatsApp"
+            >
+                <i className="fa-brands fa-whatsapp"></i>
+                <span className="whatsapp-tooltip">Chat with us on WhatsApp</span>
+            </a>
         </div>
     )
 }

@@ -279,9 +279,6 @@ function Shop() {
                                                     <a href="/#home">Home</a>
                                                 </li>
                                                 <li>
-                                                    <a href="/#about">About Us</a>
-                                                </li>
-                                                <li>
                                                     <a href="/#products">Shop</a>
                                                 </li>
                                                 <li>
@@ -1650,9 +1647,6 @@ function Shop() {
                                         </li>
                                         <li style={{ marginBottom: '12px' }}>
                                             <a href='/shop' style={{ color: '#666', textDecoration: 'none', fontSize: '14px', transition: 'color 0.3s ease' }} onMouseEnter={(e) => e.target.style.color = '#2D8BD1'} onMouseLeave={(e) => e.target.style.color = '#666'}>Shop</a>
-                                        </li>
-                                        <li style={{ marginBottom: '12px' }}>
-                                            <a href='/about' style={{ color: '#666', textDecoration: 'none', fontSize: '14px', transition: 'color 0.3s ease' }} onMouseEnter={(e) => e.target.style.color = '#2D8BD1'} onMouseLeave={(e) => e.target.style.color = '#666'}>About Us</a>
                                         </li>
                                         <li>
                                             <a href='/contact' style={{ color: '#666', textDecoration: 'none', fontSize: '14px', transition: 'color 0.3s ease' }} onMouseEnter={(e) => e.target.style.color = '#2D8BD1'} onMouseLeave={(e) => e.target.style.color = '#666'}>Contact Us</a>
