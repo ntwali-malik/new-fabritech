@@ -32,6 +32,24 @@ const Cart = () => {
     }
   }, [toast])
 
+  // Prevent body scroll when payment modal is open
+  useEffect(() => {
+    if (showPaymentModal) {
+      document.body.style.overflow = 'hidden'
+      document.body.style.position = 'fixed'
+      document.body.style.width = '100%'
+    } else {
+      document.body.style.overflow = ''
+      document.body.style.position = ''
+      document.body.style.width = ''
+    }
+    return () => {
+      document.body.style.overflow = ''
+      document.body.style.position = ''
+      document.body.style.width = ''
+    }
+  }, [showPaymentModal])
+
   const formatPrice = (price) => {
     return new Intl.NumberFormat('rw-RW', {
       style: 'currency',
@@ -476,6 +494,19 @@ const Cart = () => {
           .checkout-modal h2 {
             font-size: 24px !important;
           }
+          .payment-modal {
+            padding: 24px 20px !important;
+            max-width: 100% !important;
+            margin: 10px !important;
+            max-height: 95vh !important;
+          }
+          .payment-modal h2 {
+            font-size: 22px !important;
+          }
+          .payment-modal input,
+          .payment-modal button {
+            font-size: 15px !important;
+          }
           .success-modal {
             padding: 30px 20px !important;
           }
@@ -503,6 +534,30 @@ const Cart = () => {
           }
           .success-delivery .success-note {
             font-size: 12px !important;
+          }
+          .payment-modal {
+            padding: 20px 16px !important;
+            border-radius: 16px !important;
+            max-height: 98vh !important;
+          }
+          .payment-modal h2 {
+            font-size: 20px !important;
+            margin-bottom: 8px !important;
+          }
+          .payment-modal p {
+            font-size: 14px !important;
+          }
+          .payment-modal input {
+            font-size: 14px !important;
+            padding: 12px 14px !important;
+          }
+          .payment-modal button {
+            font-size: 14px !important;
+            padding: 14px !important;
+          }
+          .payment-modal .momo-code {
+            font-size: 24px !important;
+            letter-spacing: 1px !important;
           }
         }
       `}</style>
@@ -1417,7 +1472,9 @@ const Cart = () => {
             justifyContent: 'center',
             zIndex: 10001,
             padding: '20px',
-            animation: 'fadeIn 0.3s ease-out'
+            animation: 'fadeIn 0.3s ease-out',
+            overflowY: 'auto',
+            WebkitOverflowScrolling: 'touch'
           }}
           onClick={() => setShowPaymentModal(false)}
         >
@@ -1433,7 +1490,9 @@ const Cart = () => {
               overflowY: 'auto',
               boxShadow: '0 24px 60px rgba(0,0,0,0.3)',
               animation: 'scaleIn 0.3s ease-out',
-              position: 'relative'
+              position: 'relative',
+              margin: 'auto',
+              WebkitOverflowScrolling: 'touch'
             }}
             onClick={(e) => e.stopPropagation()}
           >
@@ -1530,7 +1589,7 @@ const Cart = () => {
                 border: '2px dashed rgba(45, 139, 209, 0.3)',
                 textAlign: 'center'
               }}>
-                <div style={{
+                <div className="momo-code" style={{
                   fontSize: '32px',
                   fontWeight: '900',
                   color: '#2D8BD1',
