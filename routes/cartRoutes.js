@@ -17,10 +17,10 @@ router.get('/:userId', async (req, res) => {
     
     if (!cart) {
       // Create empty cart if it doesn't exist
+      // Total will be calculated automatically by the pre-save hook
       cart = await Cart.create({
         user: user._id,
-        items: [],
-        total: 0
+        items: []
       });
     }
 
@@ -137,10 +137,10 @@ router.post('/:userId/add', async (req, res) => {
     let cart = await Cart.findOne({ user: user._id });
     
     if (!cart) {
+      // Total will be calculated automatically by the pre-save hook
       cart = await Cart.create({
         user: user._id,
-        items: [],
-        total: 0
+        items: []
       });
     }
 
