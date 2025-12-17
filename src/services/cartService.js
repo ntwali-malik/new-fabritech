@@ -116,16 +116,26 @@ export const addToCart = async (userId, item, token = null) => {
       if (response.status === 401) {
         throw new Error('Unauthorized. Please login.')
       }
-      const errorData = await response.json()
+      
+      let errorData
+      try {
+        errorData = await response.json()
+      } catch (e) {
+        throw new Error(`Failed to add item to cart: ${response.status} ${response.statusText}`)
+      }
       
       // Handle stock-related errors with more detail
       if (errorData.product) {
-        throw new Error(errorData.error || 'Stock issue: ' + JSON.stringify(errorData.product))
+        const errorMsg = errorData.error || `Stock issue: ${errorData.product.title || errorData.product.id}`
+        const error = new Error(errorMsg)
+        error.product = errorData.product
+        throw error
       }
       
-      throw new Error(errorData.error || 'Failed to add item to cart')
+      throw new Error(errorData.error || errorData.message || 'Failed to add item to cart')
     }
 
+    // Backend returns cart object directly (not wrapped)
     const cart = await response.json()
     
     // Transform items to frontend format
@@ -168,16 +178,26 @@ export const updateCartItem = async (userId, productId, quantity, token = null) 
       if (response.status === 401) {
         throw new Error('Unauthorized. Please login.')
       }
-      const errorData = await response.json()
+      
+      let errorData
+      try {
+        errorData = await response.json()
+      } catch (e) {
+        throw new Error(`Failed to update cart item: ${response.status} ${response.statusText}`)
+      }
       
       // Handle stock-related errors
       if (errorData.product) {
-        throw new Error(errorData.error || 'Stock issue: ' + JSON.stringify(errorData.product))
+        const errorMsg = errorData.error || `Stock issue: ${errorData.product.title || errorData.product.id}`
+        const error = new Error(errorMsg)
+        error.product = errorData.product
+        throw error
       }
       
-      throw new Error(errorData.error || 'Failed to update cart item')
+      throw new Error(errorData.error || errorData.message || 'Failed to update cart item')
     }
 
+    // Backend returns cart object directly
     const cart = await response.json()
     
     // Transform items to frontend format
@@ -215,10 +235,18 @@ export const removeFromCart = async (userId, productId, token = null) => {
       if (response.status === 401) {
         throw new Error('Unauthorized. Please login.')
       }
-      const errorData = await response.json()
-      throw new Error(errorData.error || 'Failed to remove item from cart')
+      
+      let errorData
+      try {
+        errorData = await response.json()
+      } catch (e) {
+        throw new Error(`Failed to remove item from cart: ${response.status} ${response.statusText}`)
+      }
+      
+      throw new Error(errorData.error || errorData.message || 'Failed to remove item from cart')
     }
 
+    // Backend returns cart object directly
     const cart = await response.json()
     
     // Transform items to frontend format
@@ -259,6 +287,11 @@ export const clearCart = async (userId, token = null) => {
       throw new Error(errorData.error || 'Failed to clear cart')
     }
 
+    // Backend returns { message, cart }
+    const data = await response.json()
+    const cart = data.cart || data
+    
+    // Return empty items array
     return []
   } catch (error) {
     console.error('Error clearing cart:', error)

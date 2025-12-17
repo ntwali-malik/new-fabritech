@@ -1,6 +1,13 @@
 import React, { createContext, useContext, useState, useEffect, useRef } from 'react'
 import { useAuth } from './AuthContext'
-import * as cartService from '../services/cartService'
+import { 
+  getCart, 
+  addToCart as addToCartService, 
+  updateCartItem, 
+  removeFromCart as removeFromCartService,
+  clearCart as clearCartService,
+  syncCart as syncCartService
+} from '../services/cartService'
 
 // Create Cart Context
 const CartContext = createContext()
@@ -28,13 +35,13 @@ export const CartProvider = ({ children }) => {
           
           // If there's a local cart, sync it with server
           if (localCartItems.length > 0 && !hasSyncedRef.current) {
-            const syncedItems = await cartService.syncCart(userId, localCartItems, token || null)
+            const syncedItems = await syncCartService(userId, localCartItems, token || null)
             setCartItems(syncedItems)
             localStorage.setItem('cart', JSON.stringify(syncedItems))
             hasSyncedRef.current = true
           } else {
             // Just load from server
-            const cartData = await cartService.getCart(userId, token || null)
+            const cartData = await getCart(userId, token || null)
             setCartItems(cartData.items || [])
             localStorage.setItem('cart', JSON.stringify(cartData.items || []))
           }
@@ -79,19 +86,19 @@ export const CartProvider = ({ children }) => {
         try {
           // Sync each item individually (or batch if backend supports it)
           // For now, we'll sync the entire cart
-          const currentServerCart = await cartService.getCart(userId, token)
+          const currentServerCart = await getCart(userId, token)
           const serverProductIds = new Set((currentServerCart.items || []).map(item => item.id || item.productId))
           
           // Add new items
           for (const item of cartItems) {
             const productId = item.id
             if (!serverProductIds.has(productId)) {
-              await cartService.addToCart(userId, item, token || null)
+              await addToCartService(userId, item, token || null)
             } else {
               // Update quantity if different
               const serverItem = (currentServerCart.items || []).find(i => (i.id || i.productId) === productId)
               if (serverItem && serverItem.quantity !== item.quantity) {
-                await cartService.updateCartItem(userId, productId, item.quantity, token || null)
+                await updateCartItem(userId, productId, item.quantity, token || null)
               }
             }
           }
@@ -100,7 +107,7 @@ export const CartProvider = ({ children }) => {
           for (const serverItem of (currentServerCart.items || [])) {
             const productId = serverItem.id || serverItem.productId
             if (!cartItems.find(item => item.id === productId)) {
-              await cartService.removeFromCart(userId, productId, token || null)
+              await removeFromCartService(userId, productId, token || null)
             }
           }
         } catch (error) {
@@ -119,6 +126,7 @@ export const CartProvider = ({ children }) => {
       quantity,
     }
 
+    // Update local state immediately for better UX
     setCartItems((prevItems) => {
       const existingItem = prevItems.find((item) => item.id === product.id)
 
@@ -135,10 +143,22 @@ export const CartProvider = ({ children }) => {
       }
     })
 
-    // Sync to backend if authenticated (token optional)
+    // Sync to backend if authenticated - saves to database immediately
     if (isAuthenticated && userId) {
       try {
-        await cartService.addToCart(userId, cartItem, token || null)
+        // Save to database using cartService
+        // Backend handles incrementing quantity if item already exists
+        await addToCartService(userId, cartItem, token || null)
+        
+        // Reload cart from server to ensure we have the latest state from database
+        try {
+          const updatedCart = await getCart(userId, token || null)
+          setCartItems(updatedCart.items || [])
+          localStorage.setItem('cart', JSON.stringify(updatedCart.items || []))
+        } catch (reloadError) {
+          console.warn('Error reloading cart after add:', reloadError)
+          // Continue with local state if reload fails
+        }
       } catch (error) {
         console.error('Error syncing add to cart:', error)
         // Revert on error if it's a stock issue
@@ -155,6 +175,7 @@ export const CartProvider = ({ children }) => {
             return prevItems.filter((item) => item.id !== product.id)
           })
         }
+        throw error // Re-throw so calling component can handle it
       }
     }
   }
@@ -168,7 +189,7 @@ export const CartProvider = ({ children }) => {
     // Sync to backend if authenticated (token optional)
     if (isAuthenticated && userId) {
       try {
-        await cartService.removeFromCart(userId, productId, token || null)
+        await removeFromCartService(userId, productId, token || null)
       } catch (error) {
         console.error('Error syncing remove from cart:', error)
       }
@@ -191,7 +212,7 @@ export const CartProvider = ({ children }) => {
     // Sync to backend if authenticated (token optional)
     if (isAuthenticated && userId) {
       try {
-        await cartService.updateCartItem(userId, productId, quantity, token || null)
+        await updateCartItem(userId, productId, quantity, token || null)
       } catch (error) {
         console.error('Error syncing update quantity:', error)
         // Revert on error if it's a stock issue
@@ -213,7 +234,7 @@ export const CartProvider = ({ children }) => {
     // Sync to backend if authenticated (token optional)
     if (isAuthenticated && userId) {
       try {
-        await cartService.clearCart(userId, token || null)
+        await clearCartService(userId, token || null)
       } catch (error) {
         console.error('Error syncing clear cart:', error)
       }

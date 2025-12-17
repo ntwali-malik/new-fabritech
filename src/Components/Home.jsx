@@ -666,7 +666,7 @@ function Home() {
                                         <li className="d-none d-xxl-inline-block">
                                             <span>
                                                 <i className="fa-solid fa-location-dot"></i>
-                                                <a target="_blank" href="https://www.google.com/maps/@23.843848,90.3081992,17.5z?entry=ttu&amp;g_ep=EgoyMDI1MDEwMS4wIKXMDSoASAFQAw%3D%3D">371 7th Ave, New York, NY 10001</a>
+                                                <a target="_blank" href="https://www.google.com/maps/@23.843848,90.3081992,17.5z?entry=ttu&amp;g_ep=EgoyMDI1MDEwMS4wIKXMDSoASAFQAw%3D%3D">KG 11 Kisimenti, YYussa Plaza</a>
                                             </span>
                                         </li>
                                     </ul>

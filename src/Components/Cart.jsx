@@ -1,14 +1,28 @@
 import React, { useState, useEffect } from 'react'
 import { useCart } from '../Context/CartContext'
 import useTemplateScripts from '../hooks/useTemplateScripts'
+import { sendOrderConfirmationEmail } from '../services/emailService'
 
 const Cart = () => {
   useTemplateScripts()
 
   const { cartItems, removeFromCart, updateQuantity, clearCart, getTotalPrice } = useCart()
   const [showCheckout, setShowCheckout] = useState(false)
+  const [showPaymentModal, setShowPaymentModal] = useState(false)
   const [showSuccess, setShowSuccess] = useState(false)
   const [toast, setToast] = useState(null)
+  const [transactionId, setTransactionId] = useState('')
+  const [checkoutFormData, setCheckoutFormData] = useState({
+    fullName: '',
+    email: '',
+    phone: '',
+    address: '',
+    paymentMethod: '',
+    notes: ''
+  })
+  
+  // MOMO Code
+  const momoCode = '*182*8*1*025927#'
 
   // Toast notification handler
   useEffect(() => {
@@ -1101,8 +1115,17 @@ const Cart = () => {
 
             <form onSubmit={(e) => {
               e.preventDefault()
+              const formData = new FormData(e.target)
+              setCheckoutFormData({
+                fullName: formData.get('fullName') || '',
+                email: formData.get('email') || '',
+                phone: formData.get('phone') || '',
+                address: formData.get('address') || '',
+                paymentMethod: formData.get('paymentMethod') || '',
+                notes: formData.get('notes') || ''
+              })
               setShowCheckout(false)
-              setShowSuccess(true)
+              setShowPaymentModal(true)
             }}>
               <div style={{ display: 'grid', gap: '20px', marginBottom: '24px' }}>
                 <div>
@@ -1115,6 +1138,7 @@ const Cart = () => {
                   }}>Full Name *</label>
                   <input
                     type="text"
+                    name="fullName"
                     placeholder="John Doe"
                     required
                     style={{
@@ -1149,6 +1173,7 @@ const Cart = () => {
                     }}>Email Address *</label>
                     <input
                       type="email"
+                      name="email"
                       placeholder="john@example.com"
                       required
                       style={{
@@ -1181,6 +1206,7 @@ const Cart = () => {
                     }}>Phone Number *</label>
                     <input
                       type="tel"
+                      name="phone"
                       placeholder="+250 700 000 000"
                       required
                       style={{
@@ -1215,6 +1241,7 @@ const Cart = () => {
                   }}>Delivery Address *</label>
                   <input
                     type="text"
+                    name="address"
                     placeholder="123 Main Street, Kigali"
                     required
                     style={{
@@ -1247,6 +1274,7 @@ const Cart = () => {
                     marginBottom: '8px'
                   }}>Payment Method *</label>
                   <select
+                    name="paymentMethod"
                     required
                     style={{
                       width: '100%',
@@ -1286,6 +1314,7 @@ const Cart = () => {
                     marginBottom: '8px'
                   }}>Special Notes</label>
                   <textarea
+                    name="notes"
                     style={{
                       width: '100%',
                       padding: '14px 16px',
@@ -1366,6 +1395,306 @@ const Cart = () => {
               >
                 <i className="fa-solid fa-check"></i>
                 Complete Purchase
+              </button>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* Payment Modal - MOMO Code and Transaction ID */}
+      {showPaymentModal && (
+        <div
+          style={{
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            background: 'rgba(0, 0, 0, 0.7)',
+            backdropFilter: 'blur(4px)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            zIndex: 10001,
+            padding: '20px',
+            animation: 'fadeIn 0.3s ease-out'
+          }}
+          onClick={() => setShowPaymentModal(false)}
+        >
+          <div
+            className="payment-modal"
+            style={{
+              background: 'linear-gradient(145deg, #ffffff 0%, #f8fafc 100%)',
+              borderRadius: '24px',
+              padding: '40px',
+              maxWidth: '550px',
+              width: '100%',
+              maxHeight: '90vh',
+              overflowY: 'auto',
+              boxShadow: '0 24px 60px rgba(0,0,0,0.3)',
+              animation: 'scaleIn 0.3s ease-out',
+              position: 'relative'
+            }}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <button
+              onClick={() => setShowPaymentModal(false)}
+              style={{
+                position: 'absolute',
+                top: '20px',
+                right: '20px',
+                background: 'rgba(0,0,0,0.05)',
+                border: 'none',
+                width: '40px',
+                height: '40px',
+                borderRadius: '50%',
+                cursor: 'pointer',
+                fontSize: '20px',
+                color: '#64748b',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                transition: 'all 0.3s ease',
+                zIndex: 1
+              }}
+              onMouseEnter={(e) => {
+                e.target.style.background = 'rgba(239, 68, 68, 0.1)'
+                e.target.style.color = '#dc2626'
+                e.target.style.transform = 'rotate(90deg)'
+              }}
+              onMouseLeave={(e) => {
+                e.target.style.background = 'rgba(0,0,0,0.05)'
+                e.target.style.color = '#64748b'
+                e.target.style.transform = 'rotate(0deg)'
+              }}
+            >
+              <i className="fa-solid fa-times"></i>
+            </button>
+
+            <div style={{ textAlign: 'center', marginBottom: '32px' }}>
+              <div style={{
+                width: '80px',
+                height: '80px',
+                borderRadius: '50%',
+                background: 'linear-gradient(135deg, #2D8BD1 0%, #1A4F97 100%)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                margin: '0 auto 24px',
+                boxShadow: '0 8px 24px rgba(45, 139, 209, 0.3)'
+              }}>
+                <i className="fa-solid fa-mobile-screen-button" style={{ color: 'white', fontSize: '36px' }}></i>
+              </div>
+              
+              <h2 style={{
+                fontSize: '28px',
+                fontWeight: '900',
+                color: '#1a1a1a',
+                marginBottom: '12px',
+                background: 'linear-gradient(135deg, #2D8BD1 0%, #1A4F97 100%)',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+                backgroundClip: 'text'
+              }}>
+                Complete Payment
+              </h2>
+              <p style={{
+                color: '#64748b',
+                fontSize: '16px',
+                marginBottom: '8px'
+              }}>
+                Use Mobile Money to complete your purchase
+              </p>
+            </div>
+
+            {/* MOMO Code Display */}
+            <div style={{
+              background: 'linear-gradient(135deg, rgba(45, 139, 209, 0.1) 0%, rgba(26, 79, 151, 0.1) 100%)',
+              padding: '24px',
+              borderRadius: '16px',
+              marginBottom: '32px',
+              border: '2px solid rgba(45, 139, 209, 0.2)'
+            }}>
+              <label style={{
+                display: 'block',
+                fontSize: '14px',
+                fontWeight: '700',
+                color: '#1a1a1a',
+                marginBottom: '12px',
+                textAlign: 'center'
+              }}>MOMO CODE</label>
+              <div style={{
+                background: 'white',
+                padding: '20px',
+                borderRadius: '12px',
+                border: '2px dashed rgba(45, 139, 209, 0.3)',
+                textAlign: 'center'
+              }}>
+                <div style={{
+                  fontSize: '32px',
+                  fontWeight: '900',
+                  color: '#2D8BD1',
+                  letterSpacing: '2px',
+                  fontFamily: 'monospace',
+                  marginBottom: '8px'
+                }}>
+                  {momoCode}
+                </div>
+                <p style={{
+                  fontSize: '13px',
+                  color: '#64748b',
+                  margin: 0
+                }}>
+                  Dial this code on your phone to complete payment
+                </p>
+              </div>
+              <button
+                onClick={() => {
+                  navigator.clipboard.writeText(momoCode).then(() => {
+                    setToast('MOMO Code copied to clipboard!')
+                  }).catch(() => {
+                    setToast('Failed to copy code')
+                  })
+                }}
+                style={{
+                  width: '100%',
+                  marginTop: '12px',
+                  background: 'rgba(45, 139, 209, 0.1)',
+                  border: '1px solid rgba(45, 139, 209, 0.3)',
+                  color: '#2D8BD1',
+                  padding: '10px',
+                  borderRadius: '8px',
+                  fontSize: '14px',
+                  fontWeight: '600',
+                  cursor: 'pointer',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  gap: '8px',
+                  transition: 'all 0.3s ease'
+                }}
+                onMouseEnter={(e) => {
+                  e.target.style.background = 'rgba(45, 139, 209, 0.2)'
+                }}
+                onMouseLeave={(e) => {
+                  e.target.style.background = 'rgba(45, 139, 209, 0.1)'
+                }}
+              >
+                <i className="fa-solid fa-copy"></i>
+                Copy Code
+              </button>
+            </div>
+
+            {/* Transaction ID Input */}
+            <form onSubmit={async (e) => {
+              e.preventDefault()
+              if (!transactionId.trim()) {
+                setToast('Please enter your Transaction ID')
+                return
+              }
+
+              // Send order confirmation email
+              try {
+                const emailData = {
+                  to: checkoutFormData.email,
+                  customerName: checkoutFormData.fullName,
+                  orderItems: cartItems.map(item => ({
+                    name: item.name || item.title,
+                    quantity: item.quantity,
+                    price: item.price
+                  })),
+                  total: total,
+                  transactionId: transactionId.trim(),
+                  deliveryAddress: checkoutFormData.address,
+                  phone: checkoutFormData.phone
+                }
+
+                await sendOrderConfirmationEmail(emailData)
+                setToast('Order confirmation emails sent to you and the seller!')
+              } catch (error) {
+                console.error('Error sending email:', error)
+                // Continue with order even if email fails
+              }
+
+              setShowPaymentModal(false)
+              setShowSuccess(true)
+              setTransactionId('')
+            }}>
+              <div style={{ marginBottom: '24px' }}>
+                <label style={{
+                  display: 'block',
+                  fontSize: '14px',
+                  fontWeight: '700',
+                  color: '#1a1a1a',
+                  marginBottom: '8px'
+                }}>
+                  Transaction ID *
+                </label>
+                <input
+                  type="text"
+                  placeholder="Enter your transaction ID"
+                  value={transactionId}
+                  onChange={(e) => setTransactionId(e.target.value)}
+                  required
+                  style={{
+                    width: '100%',
+                    padding: '14px 16px',
+                    border: '2px solid rgba(45, 139, 209, 0.2)',
+                    borderRadius: '12px',
+                    fontSize: '15px',
+                    boxSizing: 'border-box',
+                    transition: 'all 0.3s ease',
+                    fontFamily: 'inherit'
+                  }}
+                  onFocus={(e) => {
+                    e.target.style.borderColor = '#2D8BD1'
+                    e.target.style.boxShadow = '0 0 0 4px rgba(45, 139, 209, 0.1)'
+                  }}
+                  onBlur={(e) => {
+                    e.target.style.borderColor = 'rgba(45, 139, 209, 0.2)'
+                    e.target.style.boxShadow = 'none'
+                  }}
+                />
+                <p style={{
+                  fontSize: '12px',
+                  color: '#64748b',
+                  marginTop: '8px',
+                  marginBottom: 0
+                }}>
+                  Enter the transaction ID from your mobile money confirmation message
+                </p>
+              </div>
+
+              <button
+                type="submit"
+                style={{
+                  width: '100%',
+                  background: 'linear-gradient(135deg, #2D8BD1 0%, #1A4F97 100%)',
+                  color: 'white',
+                  border: 'none',
+                  padding: '16px',
+                  borderRadius: '12px',
+                  fontSize: '16px',
+                  fontWeight: '800',
+                  cursor: 'pointer',
+                  boxShadow: '0 8px 24px rgba(45, 139, 209, 0.4)',
+                  transition: 'all 0.3s ease',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  gap: '10px'
+                }}
+                onMouseEnter={(e) => {
+                  e.target.style.transform = 'translateY(-2px)'
+                  e.target.style.boxShadow = '0 12px 32px rgba(45, 139, 209, 0.5)'
+                }}
+                onMouseLeave={(e) => {
+                  e.target.style.transform = 'translateY(0)'
+                  e.target.style.boxShadow = '0 8px 24px rgba(45, 139, 209, 0.4)'
+                }}
+              >
+                <i className="fa-solid fa-check"></i>
+                Confirm Payment
               </button>
             </form>
           </div>
@@ -1475,23 +1804,37 @@ const Cart = () => {
               </div>
               <p style={{
                 color: '#475467',
+                fontSize: '18px',
+                lineHeight: '1.7',
+                margin: 0,
+                fontWeight: 600
+              }}>
+                🎉 Great news! We're going to deliver your product to your provided address.
+              </p>
+              <p style={{
+                color: '#475467',
                 fontSize: '16px',
                 lineHeight: '1.7',
-                margin: 0
+                marginTop: '12px',
+                marginBottom: 0
               }}>
-                We have received your order and will arrange delivery to your provided address. 
-                Our team will contact you shortly via phone or email to confirm the delivery details 
-                and schedule.
+                We have received your order and payment confirmation. Our delivery team will 
+                process your order and contact you shortly via phone or email to confirm the 
+                delivery details and schedule.
               </p>
               <p className="success-note" style={{
                 color: '#64748b',
                 fontSize: '14px',
                 marginTop: '16px',
                 marginBottom: 0,
-                fontStyle: 'italic'
+                fontStyle: 'italic',
+                padding: '12px',
+                background: 'rgba(45, 139, 209, 0.05)',
+                borderRadius: '8px'
               }}>
-                <strong>Note:</strong> Payment gateway integration is coming soon. 
-                For now, payment will be arranged upon delivery.
+                <i className="fa-solid fa-info-circle" style={{ marginRight: '8px', color: '#2D8BD1' }}></i>
+                <strong>Delivery Info:</strong> You'll receive a call or SMS with your delivery 
+                tracking information within 24 hours.
               </p>
             </div>
 
