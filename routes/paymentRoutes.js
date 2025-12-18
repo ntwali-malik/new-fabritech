@@ -4,6 +4,7 @@ const Order = require('../models/Order');
 const Cart = require('../models/Cart');
 const User = require('../models/User');
 const Product = require('../models/Product');
+const emailService = require('../services/emailService');
 const router = express.Router();
 
 // Initialize DPO payment for an order
@@ -212,6 +213,18 @@ router.post('/callback', async (req, res) => {
       if (cart) {
         cart.items = [];
         await cart.save();
+      }
+
+      // Populate order for email
+      await order.populate('items.product');
+      await order.populate('user', 'name email');
+
+      // Send emails (don't block response if email fails)
+      try {
+        await emailService.sendOrderEmails({ order, user: order.user });
+      } catch (emailError) {
+        console.error('Failed to send order emails:', emailError);
+        // Continue even if email fails - payment is still verified successfully
       }
 
       res.json({ 
