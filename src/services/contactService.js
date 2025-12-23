@@ -58,8 +58,8 @@ export const submitContactForm = async (contactData, token = null) => {
       }
       
       if (response.status === 404) {
-        console.error('Contact endpoint not found. Please ensure the backend route /api/contacts is configured.')
-        console.error('Attempted URL:', `${API_BASE_URL}/contacts`)
+        console.error('Contact endpoint not found. Please ensure the backend route /api/contact is configured.')
+        console.error('Attempted URL:', `${API_BASE_URL}/contact`)
         
         // Store submission locally as fallback until backend is ready
         try {
@@ -78,7 +78,7 @@ export const submitContactForm = async (contactData, token = null) => {
           return {
             message: 'Thank you! Your message has been received. We will get back to you soon!',
             contact: submission,
-            note: 'Note: This submission was saved locally. Please ensure the backend route /api/contacts is configured.'
+            note: 'Note: This submission was saved locally. Please ensure the backend route /api/contact is configured.'
           }
         } catch (localError) {
           console.error('Failed to save locally:', localError)
@@ -373,7 +373,7 @@ export const deleteContact = async (contactId, token = null) => {
   }
 }
 
-export default {
+const contactService = {
   submitContactForm,
   getAllContacts,
   getContactById,
@@ -381,4 +381,6 @@ export default {
   updateContact,
   deleteContact
 }
+
+export default contactService
 
