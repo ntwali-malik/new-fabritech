@@ -5,6 +5,7 @@ import CartIcon from './CartIcon'
 import UserMenu from './UserMenu'
 import { useCart } from '../Context/CartContext'
 import { getAllProducts } from '../services/productService'
+import { submitContactForm } from '../services/contactService'
 
 function Home() {
     useTemplateScripts()
@@ -18,6 +19,20 @@ function Home() {
     const [productsLoading, setProductsLoading] = useState(true)
     const [productsError, setProductsError] = useState('')
     const [showWhatsApp, setShowWhatsApp] = useState(false)
+    
+    // Contact form state
+    const [contactFormData, setContactFormData] = useState({
+        fullName: '',
+        email: '',
+        phone: '',
+        subject: '',
+        serviceInterest: '',
+        message: '',
+        privacyAgreed: false
+    })
+    const [contactFormLoading, setContactFormLoading] = useState(false)
+    const [contactFormError, setContactFormError] = useState('')
+    const [contactFormSuccess, setContactFormSuccess] = useState('')
 
     // Services data
     const servicesData = [
@@ -463,6 +478,72 @@ function Home() {
         }
     }
 
+    // Contact form handlers
+    const handleContactInputChange = (e) => {
+        const { name, value, type, checked } = e.target
+        setContactFormData(prev => ({
+            ...prev,
+            [name]: type === 'checkbox' ? checked : value
+        }))
+        // Clear errors when user starts typing
+        if (contactFormError) {
+            setContactFormError('')
+        }
+    }
+
+    const handleContactSubmit = async (e) => {
+        e.preventDefault()
+        setContactFormError('')
+        setContactFormSuccess('')
+        
+        // Validate service interest before submission
+        if (!contactFormData.serviceInterest || contactFormData.serviceInterest === '') {
+            setContactFormError('Please select a service interest')
+            // Focus the select element
+            const selectElement = document.querySelector('select[name="serviceInterest"]')
+            if (selectElement) {
+                selectElement.focus()
+                selectElement.scrollIntoView({ behavior: 'smooth', block: 'center' })
+            }
+            return
+        }
+        
+        setContactFormLoading(true)
+
+        try {
+            const result = await submitContactForm(contactFormData)
+            
+            // Success
+            setContactFormSuccess(result.message || 'Thank you! Your message has been sent successfully. We will get back to you soon!')
+            
+            // Reset form
+            setContactFormData({
+                fullName: '',
+                email: '',
+                phone: '',
+                subject: '',
+                serviceInterest: '',
+                message: '',
+                privacyAgreed: false
+            })
+
+            // Scroll to top of form to show success message
+            const formElement = document.getElementById('contact')
+            if (formElement) {
+                formElement.scrollIntoView({ behavior: 'smooth', block: 'start' })
+            }
+
+            // Clear success message after 8 seconds (longer for better UX)
+            setTimeout(() => {
+                setContactFormSuccess('')
+            }, 8000)
+        } catch (error) {
+            setContactFormError(error.message || 'Failed to send message. Please try again.')
+        } finally {
+            setContactFormLoading(false)
+        }
+    }
+
     const toggleCart = () => setShowCart((prev) => !prev)
     
     const handleCheckout = () => {
@@ -539,6 +620,305 @@ function Home() {
                 .scroll-animate-delay-4 { transition-delay: 0.4s; }
                 .scroll-animate-delay-5 { transition-delay: 0.5s; }
                 .scroll-animate-delay-6 { transition-delay: 0.6s; }
+
+                /* Contact Form Select Dropdown Styling */
+                /* Ensure parent containers don't clip dropdown */
+                .tv-contact-us-area,
+                .tv-contact-us-area .container,
+                .tv-contact-us-area .row,
+                .tv-contact-us-area [class*="col-"],
+                .form-row,
+                .form-group {
+                    overflow: visible !important;
+                }
+                .contact-us-form-wrapper {
+                    overflow: visible !important;
+                    position: relative;
+                }
+                .contact-select-wrapper {
+                    position: relative;
+                    display: block;
+                    overflow: visible !important;
+                    z-index: 10;
+                    margin: 0;
+                    padding: 0;
+                }
+                /* Ensure no duplicate labels or text elements */
+                .contact-select-wrapper label:not([for]) {
+                    display: none !important;
+                }
+                /* Ensure select and arrow are properly displayed */
+                .contact-select-wrapper .contact-service-select {
+                    display: block !important;
+                }
+                .contact-select-wrapper .select-arrow {
+                    display: flex !important;
+                }
+                .contact-service-select {
+                    position: relative;
+                    background-image: none !important;
+                    background-repeat: no-repeat !important;
+                    background-position: right center !important;
+                    z-index: 1;
+                    min-height: 44px; /* Match input height */
+                    line-height: 1.5;
+                    display: block !important;
+                    visibility: visible !important;
+                    opacity: 1 !important;
+                }
+                .contact-service-select option {
+                    padding: 12px 15px;
+                    background-color: #fff;
+                    color: #1a1a1a;
+                    font-size: 14px;
+                    line-height: 1.5;
+                }
+                .contact-service-select option[value=""] {
+                    color: #999;
+                    font-style: normal;
+                }
+                /* Ensure dropdown options are visible when select is open */
+                .contact-service-select:focus,
+                .contact-service-select:active {
+                    z-index: 9999 !important;
+                    position: relative;
+                }
+                /* Ensure select is clickable and functional */
+                .contact-service-select:not(:disabled) {
+                    cursor: pointer;
+                }
+                .contact-service-select:disabled {
+                    cursor: not-allowed;
+                    opacity: 0.6;
+                    background-color: #f5f5f5;
+                }
+                /* Match select styling exactly with inputs */
+                .contact-service-select:hover:not(:disabled) {
+                    border-color: #bbb;
+                }
+                .contact-service-select:focus {
+                    outline: none;
+                }
+                .contact-service-select:disabled {
+                    opacity: 0.6;
+                    cursor: not-allowed;
+                    background-color: #f5f5f5;
+                }
+                .contact-service-select:disabled + .select-arrow {
+                    opacity: 0.6;
+                }
+                .select-arrow {
+                    transition: transform 0.3s ease, color 0.3s ease;
+                    z-index: 10;
+                    pointer-events: none;
+                }
+                
+                /* Hide default browser dropdown arrow on all browsers */
+                .contact-service-select::-ms-expand {
+                    display: none !important;
+                }
+                .contact-service-select::-webkit-appearance {
+                    -webkit-appearance: none !important;
+                }
+                .contact-service-select::-moz-appearance {
+                    -moz-appearance: none !important;
+                }
+                .contact-service-select {
+                    -webkit-appearance: none !important;
+                    -moz-appearance: none !important;
+                    appearance: none !important;
+                    background-image: none !important;
+                }
+                /* Ensure no duplicate arrows from browser or other sources */
+                .contact-service-select option::before,
+                .contact-service-select option::after {
+                    display: none !important;
+                    content: none !important;
+                }
+                /* Hide any nice-select library styles if present */
+                .contact-select-wrapper .nice-select {
+                    display: none !important;
+                }
+                
+                /* Ensure arrow is always visible */
+                .contact-select-wrapper .select-arrow {
+                    display: flex !important;
+                    visibility: visible !important;
+                    opacity: 1 !important;
+                }
+                .contact-select-wrapper .select-arrow i {
+                    display: inline-block !important;
+                    font-size: 11px;
+                    line-height: 1;
+                }
+                /* Hide any duplicate arrows */
+                .contact-select-wrapper .select-arrow::before,
+                .contact-select-wrapper .select-arrow::after {
+                    display: none !important;
+                    content: none !important;
+                }
+                
+                /* Mobile responsive for select */
+                @media (max-width: 768px) {
+                    .contact-service-select {
+                        font-size: 16px; /* Prevents zoom on iOS */
+                        padding-right: 40px !important;
+                    }
+                    .select-arrow {
+                        right: 15px !important;
+                        font-size: 12px !important;
+                    }
+                }
+                
+                @media (max-width: 480px) {
+                    .contact-service-select {
+                        padding-right: 40px !important;
+                    }
+                    .select-arrow {
+                        right: 15px !important;
+                    }
+                }
+
+                /* Contact Success Notification Animations */
+                @keyframes slideInDown {
+                    from {
+                        opacity: 0;
+                        transform: translateY(-30px);
+                    }
+                    to {
+                        opacity: 1;
+                        transform: translateY(0);
+                    }
+                }
+
+                @keyframes fadeIn {
+                    from {
+                        opacity: 0;
+                    }
+                    to {
+                        opacity: 1;
+                    }
+                }
+
+                @keyframes scaleIn {
+                    from {
+                        transform: scale(0);
+                        opacity: 0;
+                    }
+                    to {
+                        transform: scale(1);
+                        opacity: 1;
+                    }
+                }
+
+                @keyframes pulse {
+                    0%, 100% {
+                        transform: scale(1);
+                    }
+                    50% {
+                        transform: scale(1.05);
+                    }
+                }
+
+                @keyframes checkmark {
+                    0% {
+                        transform: scale(0) rotate(-45deg);
+                        opacity: 0;
+                    }
+                    50% {
+                        transform: scale(1.2) rotate(-45deg);
+                    }
+                    100% {
+                        transform: scale(1) rotate(0deg);
+                        opacity: 1;
+                    }
+                }
+
+                @keyframes fadeInUp {
+                    from {
+                        opacity: 0;
+                        transform: translateY(10px);
+                    }
+                    to {
+                        opacity: 1;
+                        transform: translateY(0);
+                    }
+                }
+
+                @keyframes progressBar {
+                    from {
+                        width: 100%;
+                    }
+                    to {
+                        width: 0%;
+                    }
+                }
+
+                @keyframes float {
+                    0% {
+                        transform: translate(0, 0) rotate(0deg);
+                    }
+                    100% {
+                        transform: translate(-30px, -30px) rotate(360deg);
+                    }
+                }
+
+                /* Responsive styles for success notification */
+                @media (max-width: 768px) {
+                    .contact-success-notification {
+                        padding: 20px 20px !important;
+                    }
+                    .contact-success-notification h4 {
+                        font-size: 16px !important;
+                    }
+                    .contact-success-notification p {
+                        font-size: 13px !important;
+                    }
+                    .contact-success-notification > div > div:first-child {
+                        width: 48px !important;
+                        height: 48px !important;
+                    }
+                    .contact-success-notification > div > div:first-child i {
+                        font-size: 24px !important;
+                    }
+                }
+
+                @media (max-width: 480px) {
+                    .contact-success-notification {
+                        padding: 16px 16px !important;
+                        border-radius: 12px !important;
+                    }
+                    .contact-success-notification > div {
+                        flex-direction: column !important;
+                        align-items: flex-start !important;
+                        gap: 12px !important;
+                    }
+                    .contact-success-notification > div > div:first-child {
+                        align-self: center;
+                    }
+                    .contact-success-notification button {
+                        position: absolute !important;
+                        top: 12px !important;
+                        right: 12px !important;
+                    }
+                    .contact-error-notification {
+                        padding: 16px 16px !important;
+                        border-radius: 12px !important;
+                    }
+                    .contact-error-notification > div {
+                        flex-direction: column !important;
+                        align-items: flex-start !important;
+                        gap: 12px !important;
+                    }
+                    .contact-error-notification > div > div:first-child {
+                        align-self: center;
+                    }
+                    .contact-error-notification button {
+                        position: absolute !important;
+                        top: 12px !important;
+                        right: 12px !important;
+                    }
+                }
             `}</style>
 
 
@@ -3240,19 +3620,7 @@ function Home() {
                         position: relative;
                         overflow: hidden;
                     }
-                    .form-input-animated::after {
-                        content: '';
-                        position: absolute;
-                        bottom: 0;
-                        left: -100%;
-                        width: 100%;
-                        height: 2px;
-                        background: linear-gradient(90deg, transparent, #2D8BD1, transparent);
-                        transition: left 0.5s ease;
-                    }
-                    .form-input-animated:focus-within::after {
-                        left: 100%;
-                    }
+                    /* Removed decorative blue line animation */
                     .btn-submit-animated {
                         position: relative;
                         overflow: hidden;
@@ -3422,7 +3790,7 @@ function Home() {
                         }
                     }
                 `}</style>
-                <div id="contact" className="tv-contact-us-area pt-130 pb-130" style={{ backgroundColor: '#f8f9fa' }}>
+                <div id="contact" className="tv-contact-us-area pt-130 pb-130" style={{ backgroundColor: '#f8f9fa', overflow: 'visible', position: 'relative' }}>
                     <div className="container">
                         <div className="row align-items-center">
                             <div className="col-xxl-6 col-xl-6 col-lg-6 col-md-12 mb-50 mb-md-0">
@@ -3467,35 +3835,359 @@ function Home() {
                             </div>
 
                             <div className="col-xxl-6 col-xl-6 col-lg-6 col-md-12 p-relative">
-                                <div className="contact-us-form-wrapper scroll-animate fade-right" style={{ backgroundColor: '#fff', padding: '40px', borderRadius: '12px', boxShadow: '0 8px 30px rgba(0,0,0,0.08)', transition: 'all 0.3s ease' }}>
+                                <div className="contact-us-form-wrapper scroll-animate fade-right" style={{ backgroundColor: '#fff', padding: '40px', borderRadius: '12px', boxShadow: '0 8px 30px rgba(0,0,0,0.08)', transition: 'all 0.3s ease', overflow: 'visible', position: 'relative', zIndex: 1 }}>
                                     <h3 style={{ fontSize: '28px', fontWeight: '700', marginBottom: '10px', color: '#1a1a1a' }}>Send us a Message</h3>
                                     <p style={{ fontSize: '15px', color: '#666', marginBottom: '30px', lineHeight: '1.6' }}>Fill out the form below and we'll get back to you as soon as possible.</p>
 
-                                    <form action="#">
+                                    {/* Animated Success Message */}
+                                    {contactFormSuccess && (
+                                        <div className="contact-success-notification" style={{
+                                            position: 'relative',
+                                            background: 'linear-gradient(135deg, #10b981 0%, #059669 100%)',
+                                            color: '#fff',
+                                            padding: '24px 28px',
+                                            borderRadius: '16px',
+                                            marginBottom: '24px',
+                                            boxShadow: '0 10px 40px rgba(16, 185, 129, 0.3)',
+                                            animation: 'slideInDown 0.5s ease-out, fadeIn 0.5s ease-out',
+                                            overflow: 'hidden',
+                                            zIndex: 10
+                                        }}>
+                                            {/* Animated Background Pattern */}
+                                            <div style={{
+                                                position: 'absolute',
+                                                top: '-50%',
+                                                right: '-50%',
+                                                width: '200%',
+                                                height: '200%',
+                                                background: 'radial-gradient(circle, rgba(255,255,255,0.1) 1px, transparent 1px)',
+                                                backgroundSize: '30px 30px',
+                                                animation: 'float 20s linear infinite',
+                                                opacity: 0.3
+                                            }}></div>
+                                            
+                                            {/* Success Icon with Animation */}
+                                            <div style={{
+                                                display: 'flex',
+                                                alignItems: 'center',
+                                                gap: '16px',
+                                                position: 'relative',
+                                                zIndex: 1
+                                            }}>
+                                                <div style={{
+                                                    width: '56px',
+                                                    height: '56px',
+                                                    borderRadius: '50%',
+                                                    background: 'rgba(255, 255, 255, 0.2)',
+                                                    display: 'flex',
+                                                    alignItems: 'center',
+                                                    justifyContent: 'center',
+                                                    flexShrink: 0,
+                                                    animation: 'scaleIn 0.5s ease-out 0.2s both, pulse 2s ease-in-out infinite 1s'
+                                                }}>
+                                                    <i className="fas fa-check-circle" style={{
+                                                        fontSize: '32px',
+                                                        color: '#fff',
+                                                        animation: 'checkmark 0.6s ease-out 0.3s both'
+                                                    }}></i>
+                                                </div>
+                                                
+                                                {/* Success Content */}
+                                                <div style={{ flex: 1 }}>
+                                                    <h4 style={{
+                                                        fontSize: '18px',
+                                                        fontWeight: '700',
+                                                        margin: '0 0 6px 0',
+                                                        color: '#fff',
+                                                        animation: 'fadeInUp 0.5s ease-out 0.4s both'
+                                                    }}>
+                                                        Message Sent Successfully!
+                                                    </h4>
+                                                    <p style={{
+                                                        fontSize: '14px',
+                                                        margin: 0,
+                                                        color: 'rgba(255, 255, 255, 0.95)',
+                                                        lineHeight: '1.5',
+                                                        animation: 'fadeInUp 0.5s ease-out 0.5s both'
+                                                    }}>
+                                                        {contactFormSuccess}
+                                                    </p>
+                                                </div>
+                                                
+                                                {/* Close Button */}
+                                                <button
+                                                    onClick={() => setContactFormSuccess('')}
+                                                    style={{
+                                                        background: 'rgba(255, 255, 255, 0.2)',
+                                                        border: 'none',
+                                                        borderRadius: '50%',
+                                                        width: '32px',
+                                                        height: '32px',
+                                                        display: 'flex',
+                                                        alignItems: 'center',
+                                                        justifyContent: 'center',
+                                                        cursor: 'pointer',
+                                                        transition: 'all 0.3s ease',
+                                                        flexShrink: 0,
+                                                        color: '#fff'
+                                                    }}
+                                                    onMouseEnter={(e) => {
+                                                        e.target.style.background = 'rgba(255, 255, 255, 0.3)';
+                                                        e.target.style.transform = 'rotate(90deg)';
+                                                    }}
+                                                    onMouseLeave={(e) => {
+                                                        e.target.style.background = 'rgba(255, 255, 255, 0.2)';
+                                                        e.target.style.transform = 'rotate(0deg)';
+                                                    }}
+                                                >
+                                                    <i className="fas fa-times" style={{ fontSize: '14px' }}></i>
+                                                </button>
+                                            </div>
+                                            
+                                            {/* Progress Bar */}
+                                            <div style={{
+                                                position: 'absolute',
+                                                bottom: 0,
+                                                left: 0,
+                                                width: '100%',
+                                                height: '4px',
+                                                background: 'rgba(255, 255, 255, 0.2)',
+                                                borderRadius: '0 0 16px 16px',
+                                                overflow: 'hidden'
+                                            }}>
+                                                <div style={{
+                                                    height: '100%',
+                                                    background: 'rgba(255, 255, 255, 0.8)',
+                                                    width: '100%',
+                                                    animation: 'progressBar 8s linear forwards',
+                                                    borderRadius: '0 0 16px 16px'
+                                                }}></div>
+                                            </div>
+                                        </div>
+                                    )}
+
+                                    {/* Animated Error Message */}
+                                    {contactFormError && (
+                                        <div className="contact-error-notification" style={{
+                                            position: 'relative',
+                                            background: 'linear-gradient(135deg, #ef4444 0%, #dc2626 100%)',
+                                            color: '#fff',
+                                            padding: '20px 24px',
+                                            borderRadius: '16px',
+                                            marginBottom: '24px',
+                                            boxShadow: '0 10px 40px rgba(239, 68, 68, 0.3)',
+                                            animation: 'slideInDown 0.5s ease-out, fadeIn 0.5s ease-out',
+                                            overflow: 'hidden',
+                                            zIndex: 10
+                                        }}>
+                                            <div style={{
+                                                display: 'flex',
+                                                alignItems: 'center',
+                                                gap: '14px',
+                                                position: 'relative',
+                                                zIndex: 1
+                                            }}>
+                                                <div style={{
+                                                    width: '48px',
+                                                    height: '48px',
+                                                    borderRadius: '50%',
+                                                    background: 'rgba(255, 255, 255, 0.2)',
+                                                    display: 'flex',
+                                                    alignItems: 'center',
+                                                    justifyContent: 'center',
+                                                    flexShrink: 0,
+                                                    animation: 'scaleIn 0.5s ease-out 0.2s both'
+                                                }}>
+                                                    <i className="fas fa-exclamation-circle" style={{
+                                                        fontSize: '24px',
+                                                        color: '#fff',
+                                                        animation: 'fadeIn 0.5s ease-out 0.3s both'
+                                                    }}></i>
+                                                </div>
+                                                
+                                                <div style={{ flex: 1 }}>
+                                                    <p style={{
+                                                        fontSize: '14px',
+                                                        margin: 0,
+                                                        color: '#fff',
+                                                        lineHeight: '1.5',
+                                                        fontWeight: 500,
+                                                        animation: 'fadeInUp 0.5s ease-out 0.4s both'
+                                                    }}>
+                                                        {contactFormError}
+                                                    </p>
+                                                </div>
+                                                
+                                                <button
+                                                    onClick={() => setContactFormError('')}
+                                                    style={{
+                                                        background: 'rgba(255, 255, 255, 0.2)',
+                                                        border: 'none',
+                                                        borderRadius: '50%',
+                                                        width: '28px',
+                                                        height: '28px',
+                                                        display: 'flex',
+                                                        alignItems: 'center',
+                                                        justifyContent: 'center',
+                                                        cursor: 'pointer',
+                                                        transition: 'all 0.3s ease',
+                                                        flexShrink: 0,
+                                                        color: '#fff'
+                                                    }}
+                                                    onMouseEnter={(e) => {
+                                                        e.target.style.background = 'rgba(255, 255, 255, 0.3)';
+                                                        e.target.style.transform = 'rotate(90deg)';
+                                                    }}
+                                                    onMouseLeave={(e) => {
+                                                        e.target.style.background = 'rgba(255, 255, 255, 0.2)';
+                                                        e.target.style.transform = 'rotate(0deg)';
+                                                    }}
+                                                >
+                                                    <i className="fas fa-times" style={{ fontSize: '12px' }}></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    )}
+
+                                    <form onSubmit={handleContactSubmit}>
                                         <div className="form-row mb-20">
                                             <div className="form-group form-input-animated">
-                                                <input type="text" placeholder="Your Full Name *" required style={{ width: '100%', padding: '12px 15px', border: '1px solid #ddd', borderRadius: '6px', fontSize: '14px', fontFamily: 'inherit', transition: 'all 0.3s ease' }} onFocus={(e) => { e.target.style.borderColor = '#4a90e2'; e.target.style.boxShadow = '0 0 0 3px rgba(74, 144, 226, 0.1)'; }} onBlur={(e) => { e.target.style.borderColor = '#ddd'; e.target.style.boxShadow = 'none'; }} />
+                                                <input 
+                                                    type="text" 
+                                                    name="fullName"
+                                                    placeholder="Your Full Name *" 
+                                                    required 
+                                                    value={contactFormData.fullName}
+                                                    onChange={handleContactInputChange}
+                                                    disabled={contactFormLoading}
+                                                    style={{ width: '100%', padding: '12px 15px', border: '1px solid #ddd', borderRadius: '6px', fontSize: '14px', fontFamily: 'inherit', transition: 'all 0.3s ease' }} 
+                                                    onFocus={(e) => { e.target.style.borderColor = '#4a90e2'; e.target.style.boxShadow = '0 0 0 3px rgba(74, 144, 226, 0.1)'; }} 
+                                                    onBlur={(e) => { e.target.style.borderColor = '#ddd'; e.target.style.boxShadow = 'none'; }} 
+                                                />
                                             </div>
                                         </div>
 
                                         <div className="form-row mb-20" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '15px' }}>
                                             <div className="form-group form-input-animated half-width">
-                                                <input type="email" placeholder="Your Email *" required style={{ width: '100%', padding: '12px 15px', border: '1px solid #ddd', borderRadius: '6px', fontSize: '14px', fontFamily: 'inherit', transition: 'all 0.3s ease' }} onFocus={(e) => { e.target.style.borderColor = '#4a90e2'; e.target.style.boxShadow = '0 0 0 3px rgba(74, 144, 226, 0.1)'; }} onBlur={(e) => { e.target.style.borderColor = '#ddd'; e.target.style.boxShadow = 'none'; }} />
+                                                <input 
+                                                    type="email" 
+                                                    name="email"
+                                                    placeholder="Your Email *" 
+                                                    required 
+                                                    value={contactFormData.email}
+                                                    onChange={handleContactInputChange}
+                                                    disabled={contactFormLoading}
+                                                    style={{ width: '100%', padding: '12px 15px', border: '1px solid #ddd', borderRadius: '6px', fontSize: '14px', fontFamily: 'inherit', transition: 'all 0.3s ease' }} 
+                                                    onFocus={(e) => { e.target.style.borderColor = '#4a90e2'; e.target.style.boxShadow = '0 0 0 3px rgba(74, 144, 226, 0.1)'; }} 
+                                                    onBlur={(e) => { e.target.style.borderColor = '#ddd'; e.target.style.boxShadow = 'none'; }} 
+                                                />
                                             </div>
                                             <div className="form-group form-input-animated half-width">
-                                                <input type="tel" placeholder="Your Phone Number" style={{ width: '100%', padding: '12px 15px', border: '1px solid #ddd', borderRadius: '6px', fontSize: '14px', fontFamily: 'inherit', transition: 'all 0.3s ease' }} onFocus={(e) => { e.target.style.borderColor = '#4a90e2'; e.target.style.boxShadow = '0 0 0 3px rgba(74, 144, 226, 0.1)'; }} onBlur={(e) => { e.target.style.borderColor = '#ddd'; e.target.style.boxShadow = 'none'; }} />
+                                                <input 
+                                                    type="tel" 
+                                                    name="phone"
+                                                    placeholder="Your Phone Number" 
+                                                    value={contactFormData.phone}
+                                                    onChange={handleContactInputChange}
+                                                    disabled={contactFormLoading}
+                                                    style={{ width: '100%', padding: '12px 15px', border: '1px solid #ddd', borderRadius: '6px', fontSize: '14px', fontFamily: 'inherit', transition: 'all 0.3s ease' }} 
+                                                    onFocus={(e) => { e.target.style.borderColor = '#4a90e2'; e.target.style.boxShadow = '0 0 0 3px rgba(74, 144, 226, 0.1)'; }} 
+                                                    onBlur={(e) => { e.target.style.borderColor = '#ddd'; e.target.style.boxShadow = 'none'; }} 
+                                                />
                                             </div>
                                         </div>
 
                                         <div className="form-row mb-20">
                                             <div className="form-group form-input-animated">
-                                                <input type="text" placeholder="Subject *" required style={{ width: '100%', padding: '12px 15px', border: '1px solid #ddd', borderRadius: '6px', fontSize: '14px', fontFamily: 'inherit', transition: 'all 0.3s ease' }} onFocus={(e) => { e.target.style.borderColor = '#4a90e2'; e.target.style.boxShadow = '0 0 0 3px rgba(74, 144, 226, 0.1)'; }} onBlur={(e) => { e.target.style.borderColor = '#ddd'; e.target.style.boxShadow = 'none'; }} />
+                                                <input 
+                                                    type="text" 
+                                                    name="subject"
+                                                    placeholder="Subject *" 
+                                                    required 
+                                                    value={contactFormData.subject}
+                                                    onChange={handleContactInputChange}
+                                                    disabled={contactFormLoading}
+                                                    style={{ width: '100%', padding: '12px 15px', border: '1px solid #ddd', borderRadius: '6px', fontSize: '14px', fontFamily: 'inherit', transition: 'all 0.3s ease' }} 
+                                                    onFocus={(e) => { e.target.style.borderColor = '#4a90e2'; e.target.style.boxShadow = '0 0 0 3px rgba(74, 144, 226, 0.1)'; }} 
+                                                    onBlur={(e) => { e.target.style.borderColor = '#ddd'; e.target.style.boxShadow = 'none'; }} 
+                                                />
                                             </div>
                                         </div>
 
                                         <div className="form-row mb-20">
-                                            <div className="form-group form-input-animated">
-                                                <select required defaultValue="" style={{ width: '100%', padding: '12px 15px', border: '1px solid #ddd', borderRadius: '6px', fontSize: '14px', fontFamily: 'inherit', backgroundColor: '#fff', color: '#666', transition: 'all 0.3s ease', cursor: 'pointer' }} onFocus={(e) => { e.target.style.borderColor = '#4a90e2'; e.target.style.boxShadow = '0 0 0 3px rgba(74, 144, 226, 0.1)'; }} onBlur={(e) => { e.target.style.borderColor = '#ddd'; e.target.style.boxShadow = 'none'; }}>
+                                            <div className="form-group form-input-animated contact-select-wrapper" style={{ position: 'relative', margin: 0 }}>
+                                                <select 
+                                                    name="serviceInterest"
+                                                    required 
+                                                    value={contactFormData.serviceInterest}
+                                                    onChange={handleContactInputChange}
+                                                    disabled={contactFormLoading}
+                                                    className="contact-service-select"
+                                                    style={{ 
+                                                        width: '100%', 
+                                                        padding: '12px 15px', 
+                                                        paddingRight: '45px',
+                                                        border: '1px solid #ddd', 
+                                                        borderRadius: '6px', 
+                                                        fontSize: '14px', 
+                                                        fontFamily: 'inherit', 
+                                                        backgroundColor: '#fff', 
+                                                        color: contactFormData.serviceInterest && contactFormData.serviceInterest !== '' ? '#1a1a1a' : '#999', 
+                                                        transition: 'all 0.3s ease', 
+                                                        cursor: 'pointer',
+                                                        appearance: 'none',
+                                                        WebkitAppearance: 'none',
+                                                        MozAppearance: 'none',
+                                                        backgroundImage: 'none',
+                                                        outline: 'none',
+                                                        display: 'block',
+                                                        visibility: 'visible',
+                                                        opacity: 1,
+                                                        height: '44px',
+                                                        lineHeight: '20px',
+                                                        margin: 0,
+                                                        boxSizing: 'border-box'
+                                                    }} 
+                                                    onFocus={(e) => { 
+                                                        e.target.style.borderColor = '#4a90e2'; 
+                                                        e.target.style.boxShadow = '0 0 0 3px rgba(74, 144, 226, 0.1)';
+                                                        e.target.style.color = '#1a1a1a';
+                                                        const arrow = e.target.parentElement.querySelector('.select-arrow');
+                                                        if (arrow) {
+                                                            arrow.style.color = '#4a90e2';
+                                                            arrow.style.transform = 'translateY(-50%) rotate(180deg)';
+                                                        }
+                                                    }} 
+                                                    onBlur={(e) => { 
+                                                        e.target.style.borderColor = '#ddd'; 
+                                                        e.target.style.boxShadow = 'none';
+                                                        if (!contactFormData.serviceInterest) {
+                                                            e.target.style.color = '#999';
+                                                        }
+                                                        const arrow = e.target.parentElement.querySelector('.select-arrow');
+                                                        if (arrow) {
+                                                            arrow.style.color = '#666';
+                                                            arrow.style.transform = 'translateY(-50%) rotate(0deg)';
+                                                        }
+                                                    }}
+                                                    onMouseEnter={(e) => {
+                                                        if (!e.target.disabled) {
+                                                            const arrow = e.target.parentElement.querySelector('.select-arrow');
+                                                            if (arrow && document.activeElement !== e.target) {
+                                                                arrow.style.color = '#4a90e2';
+                                                            }
+                                                        }
+                                                    }}
+                                                    onMouseLeave={(e) => {
+                                                        if (document.activeElement !== e.target) {
+                                                            const arrow = e.target.parentElement.querySelector('.select-arrow');
+                                                            if (arrow) {
+                                                                arrow.style.color = '#666';
+                                                                arrow.style.transform = 'translateY(-50%) rotate(0deg)';
+                                                            }
+                                                        }
+                                                    }}
+                                                >
                                                     <option value="">Select Service Interest *</option>
                                                     <option value="starlink">Starlink & Networking</option>
                                                     <option value="security">Digital Security</option>
@@ -3505,25 +4197,103 @@ function Home() {
                                                     <option value="training">Internships & Short Courses</option>
                                                     <option value="other">Other</option>
                                                 </select>
+                                                <div className="select-arrow" style={{
+                                                    position: 'absolute',
+                                                    right: '15px',
+                                                    top: '50%',
+                                                    transform: 'translateY(-50%)',
+                                                    pointerEvents: 'none',
+                                                    color: '#666',
+                                                    fontSize: '12px',
+                                                    transition: 'all 0.3s ease',
+                                                    zIndex: 2,
+                                                    display: 'flex',
+                                                    alignItems: 'center',
+                                                    justifyContent: 'center',
+                                                    width: '20px',
+                                                    height: '20px',
+                                                    lineHeight: '1'
+                                                }}>
+                                                    <i className="fas fa-chevron-down" style={{ 
+                                                        display: 'inline-block',
+                                                        fontSize: '11px',
+                                                        lineHeight: '1'
+                                                    }}></i>
+                                                </div>
                                             </div>
                                         </div>
 
                                         <div className="form-row mb-20">
                                             <div className="form-group form-input-animated">
-                                                <textarea placeholder="Your Message *" rows="5" required style={{ width: '100%', padding: '12px 15px', border: '1px solid #ddd', borderRadius: '6px', fontSize: '14px', fontFamily: 'inherit', resize: 'vertical', transition: 'all 0.3s ease' }} onFocus={(e) => { e.target.style.borderColor = '#4a90e2'; e.target.style.boxShadow = '0 0 0 3px rgba(74, 144, 226, 0.1)'; }} onBlur={(e) => { e.target.style.borderColor = '#ddd'; e.target.style.boxShadow = 'none'; }}></textarea>
+                                                <textarea 
+                                                    name="message"
+                                                    placeholder="Your Message *" 
+                                                    rows="5" 
+                                                    required 
+                                                    value={contactFormData.message}
+                                                    onChange={handleContactInputChange}
+                                                    disabled={contactFormLoading}
+                                                    style={{ width: '100%', padding: '12px 15px', border: '1px solid #ddd', borderRadius: '6px', fontSize: '14px', fontFamily: 'inherit', resize: 'vertical', transition: 'all 0.3s ease' }} 
+                                                    onFocus={(e) => { e.target.style.borderColor = '#4a90e2'; e.target.style.boxShadow = '0 0 0 3px rgba(74, 144, 226, 0.1)'; }} 
+                                                    onBlur={(e) => { e.target.style.borderColor = '#ddd'; e.target.style.boxShadow = 'none'; }}
+                                                ></textarea>
                                             </div>
                                         </div>
 
                                         <div className="form-checkbox mb-20" style={{ display: 'flex', alignItems: 'center', gap: '10px', fontSize: '14px', color: '#666', transition: 'all 0.3s ease' }}>
-                                            <input type="checkbox" id="agree" required style={{ width: '18px', height: '18px', cursor: 'pointer', accentColor: '#4a90e2', transition: 'all 0.3s ease' }} />
+                                            <input 
+                                                type="checkbox" 
+                                                id="agree" 
+                                                name="privacyAgreed"
+                                                required 
+                                                checked={contactFormData.privacyAgreed}
+                                                onChange={handleContactInputChange}
+                                                disabled={contactFormLoading}
+                                                style={{ width: '18px', height: '18px', cursor: 'pointer', accentColor: '#4a90e2', transition: 'all 0.3s ease' }} 
+                                            />
                                             <label htmlFor="agree" style={{ cursor: 'pointer', margin: '0' }}>I agree to the privacy policy and terms & conditions</label>
                                         </div>
 
                                         <div className="form-submit">
-                                            <button type="submit" className="tv-btn-primary p-relative btn-submit-animated" style={{ width: '100%', padding: '14px 30px', backgroundColor: '#4a90e2', color: '#fff', border: 'none', borderRadius: '6px', fontSize: '16px', fontWeight: '600', cursor: 'pointer', transition: 'all 0.3s ease' }}>
+                                            <button 
+                                                type="submit" 
+                                                className="tv-btn-primary p-relative btn-submit-animated" 
+                                                disabled={contactFormLoading}
+                                                style={{ 
+                                                    width: '100%', 
+                                                    padding: '14px 30px', 
+                                                    backgroundColor: contactFormLoading ? '#9ca3af' : '#4a90e2', 
+                                                    color: '#fff', 
+                                                    border: 'none', 
+                                                    borderRadius: '6px', 
+                                                    fontSize: '16px', 
+                                                    fontWeight: '600', 
+                                                    cursor: contactFormLoading ? 'not-allowed' : 'pointer', 
+                                                    transition: 'all 0.3s ease',
+                                                    opacity: contactFormLoading ? 0.7 : 1
+                                                }}
+                                            >
                                                 <span className="btn-wrap">
-                                                    <span className="btn-text1">Send Message</span>
-                                                    <span className="btn-text2">Send Message</span>
+                                                    <span className="btn-text1">
+                                                        {contactFormLoading ? (
+                                                            <>
+                                                                <i className="fas fa-spinner fa-spin" style={{ marginRight: '8px' }}></i>
+                                                                Sending...
+                                                            </>
+                                                        ) : (
+                                                            'Send Message'
+                                                        )}
+                                                    </span>
+                                                    <span className="btn-text2">
+                                                        {contactFormLoading ? (
+                                                            <>
+                                                                <i className="fas fa-spinner fa-spin" style={{ marginRight: '8px' }}></i>
+                                                                Sending...
+                                                            </>
+                                                        ) : (
+                                                            'Send Message'
+                                                        )}
+                                                    </span>
                                                 </span>
                                             </button>
                                         </div>
