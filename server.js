@@ -51,11 +51,13 @@ app.use(async (req, res, next) => {
   next();
 });
 
-// For Vercel serverless functions, export the app
+// For Vercel serverless functions, export the app as handler
+// Vercel expects the default export to be the handler
 module.exports = app;
 
 // For local development, listen on port 5000
 if (require.main === module) {
   connectDB();
-  app.listen(5000, () => console.log('Server running on port 5000'));
+  const PORT = process.env.PORT || 5000;
+  app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
 }
