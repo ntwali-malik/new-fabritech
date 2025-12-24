@@ -19,6 +19,7 @@ function Home() {
     const [productsLoading, setProductsLoading] = useState(true)
     const [productsError, setProductsError] = useState('')
     const [showWhatsApp, setShowWhatsApp] = useState(false)
+    const [showDiscountNotification, setShowDiscountNotification] = useState(false)
     
     // Contact form state
     const [contactFormData, setContactFormData] = useState({
@@ -453,6 +454,37 @@ function Home() {
         // Check initial scroll position
         handleScroll()
         return () => window.removeEventListener('scroll', handleScroll)
+    }, [])
+
+    // Show discount notification when Shop Now section comes into view
+    useEffect(() => {
+        const productsSection = document.getElementById('products')
+        if (!productsSection) return
+
+        const observerOptions = {
+            threshold: 0.2, // Trigger when 20% of the section is visible
+            rootMargin: '0px'
+        }
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    // Show notification when section is visible
+                    setShowDiscountNotification(true)
+                } else {
+                    // Optionally hide when scrolling away (comment out if you want it to stay visible)
+                    // setShowDiscountNotification(false)
+                }
+            })
+        }, observerOptions)
+
+        observer.observe(productsSection)
+
+        return () => {
+            if (productsSection) {
+                observer.unobserve(productsSection)
+            }
+        }
     }, [])
 
     const addToCart = (product) => {
@@ -3250,8 +3282,219 @@ function Home() {
                     .hydro-add-to-cart:hover .hydro-cart-icon {
                         transform: scale(1.2) translateX(3px);
                     }
+
+                    /* Floating Discount Notification */
+                    .discount-notification {
+                        position: fixed;
+                        top: 120px;
+                        right: 20px;
+                        background: linear-gradient(135deg, #dc2626 0%, #ef4444 100%);
+                        color: #fff;
+                        padding: 20px 24px;
+                        border-radius: 16px;
+                        box-shadow: 0 12px 40px rgba(220, 38, 38, 0.4);
+                        z-index: 1000;
+                        animation: discountSlideIn 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards, discountPulse 2s ease-in-out infinite 1.2s;
+                        max-width: 280px;
+                        cursor: pointer;
+                        transition: all 0.3s ease;
+                        overflow: hidden;
+                    }
+                    .discount-notification::before {
+                        content: '';
+                        position: absolute;
+                        top: -50%;
+                        left: -50%;
+                        width: 200%;
+                        height: 200%;
+                        background: radial-gradient(circle, rgba(255,255,255,0.2) 1px, transparent 1px);
+                        background-size: 20px 20px;
+                        animation: discountShine 3s linear infinite;
+                        opacity: 0.3;
+                    }
+                    .discount-notification:hover {
+                        transform: translateY(-5px) scale(1.02);
+                        box-shadow: 0 16px 50px rgba(220, 38, 38, 0.5);
+                    }
+                    @keyframes discountSlideIn {
+                        0% {
+                            opacity: 0;
+                            transform: translateX(100px) scale(0.8);
+                        }
+                        100% {
+                            opacity: 1;
+                            transform: translateX(0) scale(1);
+                        }
+                    }
+                    @keyframes discountPulse {
+                        0%, 100% {
+                            box-shadow: 0 12px 40px rgba(220, 38, 38, 0.4), 0 0 0 0 rgba(220, 38, 38, 0.7);
+                        }
+                        50% {
+                            box-shadow: 0 12px 40px rgba(220, 38, 38, 0.4), 0 0 0 10px rgba(220, 38, 38, 0);
+                        }
+                    }
+                    @keyframes discountShine {
+                        0% {
+                            transform: translate(0, 0) rotate(0deg);
+                        }
+                        100% {
+                            transform: translate(20px, 20px) rotate(360deg);
+                        }
+                    }
+                    .discount-notification-content {
+                        position: relative;
+                        z-index: 1;
+                        display: flex;
+                        flex-direction: column;
+                        gap: 8px;
+                    }
+                    .discount-notification-header {
+                        display: flex;
+                        align-items: center;
+                        justify-content: space-between;
+                        gap: 12px;
+                    }
+                    .discount-percent {
+                        font-size: 36px;
+                        font-weight: 900;
+                        line-height: 1;
+                        text-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+                        animation: discountBounce 1s ease-in-out infinite;
+                    }
+                    @keyframes discountBounce {
+                        0%, 100% {
+                            transform: scale(1);
+                        }
+                        50% {
+                            transform: scale(1.1);
+                        }
+                    }
+                    .discount-icon {
+                        width: 48px;
+                        height: 48px;
+                        background: rgba(255, 255, 255, 0.2);
+                        border-radius: 50%;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        font-size: 24px;
+                        flex-shrink: 0;
+                        animation: discountRotate 3s linear infinite;
+                    }
+                    @keyframes discountRotate {
+                        0% {
+                            transform: rotate(0deg);
+                        }
+                        100% {
+                            transform: rotate(360deg);
+                        }
+                    }
+                    .discount-text {
+                        font-size: 14px;
+                        font-weight: 700;
+                        line-height: 1.4;
+                        text-transform: uppercase;
+                        letter-spacing: 0.5px;
+                    }
+                    .discount-subtext {
+                        font-size: 12px;
+                        opacity: 0.95;
+                        line-height: 1.4;
+                    }
+                    .discount-close {
+                        position: absolute;
+                        top: 8px;
+                        right: 8px;
+                        width: 24px;
+                        height: 24px;
+                        background: rgba(255, 255, 255, 0.2);
+                        border: none;
+                        border-radius: 50%;
+                        color: #fff;
+                        cursor: pointer;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        font-size: 12px;
+                        transition: all 0.3s ease;
+                        z-index: 2;
+                    }
+                    .discount-close:hover {
+                        background: rgba(255, 255, 255, 0.3);
+                        transform: rotate(90deg) scale(1.1);
+                    }
+                    @media (max-width: 768px) {
+                        .discount-notification {
+                            top: 100px;
+                            right: 15px;
+                            max-width: 240px;
+                            padding: 16px 20px;
+                        }
+                        .discount-percent {
+                            font-size: 28px;
+                        }
+                        .discount-icon {
+                            width: 40px;
+                            height: 40px;
+                            font-size: 20px;
+                        }
+                        .discount-text {
+                            font-size: 12px;
+                        }
+                        .discount-subtext {
+                            font-size: 11px;
+                        }
+                    }
+                    @media (max-width: 480px) {
+                        .discount-notification {
+                            top: 90px;
+                            right: 10px;
+                            max-width: 200px;
+                            padding: 14px 16px;
+                        }
+                        .discount-percent {
+                            font-size: 24px;
+                        }
+                        .discount-icon {
+                            width: 36px;
+                            height: 36px;
+                            font-size: 18px;
+                        }
+                        .discount-text {
+                            font-size: 11px;
+                        }
+                        .discount-subtext {
+                            font-size: 10px;
+                        }
+                    }
                 `}</style>
-                <div id="products" style={{ backgroundColor: '#f8f9fa', paddingTop: '130px', paddingBottom: '130px' }}>
+                <div id="products" style={{ backgroundColor: '#f8f9fa', paddingTop: '130px', paddingBottom: '130px', position: 'relative' }}>
+                    {/* Floating Discount Notification */}
+                    {showDiscountNotification && (
+                        <div className="discount-notification" onClick={() => navigate('/shop')}>
+                            <button 
+                                className="discount-close" 
+                                onClick={(e) => {
+                                    e.stopPropagation();
+                                    setShowDiscountNotification(false);
+                                }}
+                                aria-label="Close notification"
+                            >
+                                <i className="fa-solid fa-times"></i>
+                            </button>
+                            <div className="discount-notification-content">
+                                <div className="discount-notification-header">
+                                    <div className="discount-icon">
+                                        <i className="fa-solid fa-tag"></i>
+                                    </div>
+                                    <div className="discount-percent">20%</div>
+                                </div>
+                                <div className="discount-text">OFF</div>
+                                <div className="discount-subtext">On All Products</div>
+                            </div>
+                        </div>
+                    )}
                     <div style={{ maxWidth: '1200px', margin: '0 auto', paddingLeft: '15px', paddingRight: '15px' }}>
                         <div className="section-header highlight scroll-animate fade-up" style={{ marginBottom: '80px' }}>
                             <div style={{ flex: '1 1 auto', minWidth: '300px', zIndex: 1 }}>
