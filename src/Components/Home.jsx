@@ -1160,7 +1160,7 @@ function Home() {
                             <div className="swiper-wrapper">
                                 <div className="swiper-slide">
                                     <div className="tv-slider-overlay z-index-1 fix p-relative">
-                                        <div className="tv-slider-bg" data-background="assets/img/slider/hero1.jpeg" style={{ backgroundImage: "url('assets/img/slider/hero1.jpeg')" }}></div>
+                                        <div className="tv-slider-bg" data-background="assets/img/slider/hero1.jpeg" style={{ backgroundImage: "url('assets/img/slider/hero-image.jpeg')" }}></div>
                                         <div className="container">
                                             <div className="row">
                                                 <div className="col-xl-6 col-lg-6">
@@ -1216,7 +1216,7 @@ function Home() {
                                 </div>
                                 <div className="swiper-slide">
                                     <div className="tv-slider-overlay z-index-1 fix p-relative">
-                                        <div className="tv-slider-bg" data-background="assets/img/slider/slider-1-3.jpg" style={{ backgroundImage: "url('assets/img/slider/slider-1-3.jpg')" }}></div>
+                                        <div className="tv-slider-bg" data-background="assets/img/slider/soft-img.jpeg" style={{ backgroundImage: "url('assets/img/slider/soft-image.jpeg')" }}></div>
                                         <div className="container">
                                             <div className="row">
                                                 <div className="col-xl-6 col-lg-6">
@@ -3290,12 +3290,12 @@ function Home() {
                         right: 20px;
                         background: linear-gradient(135deg, #dc2626 0%, #ef4444 100%);
                         color: #fff;
-                        padding: 20px 24px;
+                        padding: 24px 26px;
                         border-radius: 16px;
                         box-shadow: 0 12px 40px rgba(220, 38, 38, 0.4);
                         z-index: 1000;
                         animation: discountSlideIn 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards, discountPulse 2s ease-in-out infinite 1.2s;
-                        max-width: 280px;
+                        max-width: 300px;
                         cursor: pointer;
                         transition: all 0.3s ease;
                         overflow: hidden;
@@ -3349,6 +3349,61 @@ function Home() {
                         flex-direction: column;
                         gap: 8px;
                     }
+                    .discount-greeting {
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        gap: 8px;
+                        padding: 8px 12px;
+                        background: rgba(255, 255, 255, 0.25);
+                        border-radius: 12px;
+                        margin-bottom: 4px;
+                        font-size: 13px;
+                        font-weight: 800;
+                        text-transform: uppercase;
+                        letter-spacing: 1px;
+                        animation: greetingGlow 2s ease-in-out infinite;
+                        backdrop-filter: blur(10px);
+                        border: 1px solid rgba(255, 255, 255, 0.3);
+                    }
+                    .discount-greeting i {
+                        font-size: 12px;
+                        animation: sparkleTwinkle 1.5s ease-in-out infinite;
+                        color: #ffd700;
+                        text-shadow: 0 0 8px rgba(255, 215, 0, 0.8);
+                    }
+                    .discount-greeting i:nth-child(1) {
+                        animation-delay: 0s;
+                    }
+                    .discount-greeting i:nth-child(3) {
+                        animation-delay: 0.5s;
+                    }
+                    @keyframes greetingGlow {
+                        0%, 100% {
+                            box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+                        }
+                        50% {
+                            box-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
+                        }
+                    }
+                    @keyframes sparkleTwinkle {
+                        0%, 100% {
+                            opacity: 1;
+                            transform: scale(1) rotate(0deg);
+                        }
+                        25% {
+                            opacity: 0.6;
+                            transform: scale(1.2) rotate(90deg);
+                        }
+                        50% {
+                            opacity: 1;
+                            transform: scale(1) rotate(180deg);
+                        }
+                        75% {
+                            opacity: 0.6;
+                            transform: scale(1.2) rotate(270deg);
+                        }
+                    }
                     .discount-notification-header {
                         display: flex;
                         align-items: center;
@@ -3400,7 +3455,10 @@ function Home() {
                     .discount-subtext {
                         font-size: 12px;
                         opacity: 0.95;
-                        line-height: 1.4;
+                        line-height: 1.5;
+                        font-weight: 600;
+                        text-align: center;
+                        margin-top: 2px;
                     }
                     .discount-close {
                         position: absolute;
@@ -3428,8 +3486,16 @@ function Home() {
                         .discount-notification {
                             top: 100px;
                             right: 15px;
-                            max-width: 240px;
-                            padding: 16px 20px;
+                            max-width: 260px;
+                            padding: 18px 20px;
+                        }
+                        .discount-greeting {
+                            font-size: 11px;
+                            padding: 6px 10px;
+                            gap: 6px;
+                        }
+                        .discount-greeting i {
+                            font-size: 10px;
                         }
                         .discount-percent {
                             font-size: 28px;
@@ -3450,8 +3516,16 @@ function Home() {
                         .discount-notification {
                             top: 90px;
                             right: 10px;
-                            max-width: 200px;
-                            padding: 14px 16px;
+                            max-width: 220px;
+                            padding: 16px 18px;
+                        }
+                        .discount-greeting {
+                            font-size: 10px;
+                            padding: 5px 8px;
+                            gap: 5px;
+                        }
+                        .discount-greeting i {
+                            font-size: 9px;
                         }
                         .discount-percent {
                             font-size: 24px;
@@ -3484,6 +3558,11 @@ function Home() {
                                 <i className="fa-solid fa-times"></i>
                             </button>
                             <div className="discount-notification-content">
+                                <div className="discount-greeting">
+                                    <i className="fa-solid fa-sparkles"></i>
+                                    <span>Happy Festive Season!</span>
+                                    <i className="fa-solid fa-sparkles"></i>
+                                </div>
                                 <div className="discount-notification-header">
                                     <div className="discount-icon">
                                         <i className="fa-solid fa-tag"></i>
@@ -3491,7 +3570,7 @@ function Home() {
                                     <div className="discount-percent">20%</div>
                                 </div>
                                 <div className="discount-text">OFF</div>
-                                <div className="discount-subtext">On All Products</div>
+                                <div className="discount-subtext">On All Products - Celebrate with Savings!</div>
                             </div>
                         </div>
                     )}
