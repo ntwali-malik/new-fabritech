@@ -1130,9 +1130,6 @@ function Home() {
                                     <div className="tv-header-right-action d-flex justify-content-end align-items-center" style={{ gap: '12px' }}>
                                         <UserMenu />
                                         <CartIcon cartCount={cartItems.length} onClick={toggleCart} />
-                                        <button className="tv-header-search search-open-btn d-none d-xxl-block">
-                                            <i className="fa-solid fa-magnifying-glass"></i>
-                                        </button>
                                         <div className="tv-header-bar">
                                             <button className="tv-menu-bar">
                                                 <span className="hamburger-icon">
