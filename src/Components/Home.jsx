@@ -2514,23 +2514,17 @@ function Home() {
                         right: 20px;
                         width: 50px;
                         height: 50px;
-                        background: rgba(255, 255, 255, 0.98);
-                        border-radius: 50%;
+                        background: #ffffff;
+                        border-radius: 12px;
                         display: flex;
                         align-items: center;
                         justify-content: center;
                         z-index: 10;
-                        opacity: 0.9;
-                        transform: scale(1);
-                        transition: all 0.3s ease;
-                        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-                        backdrop-filter: blur(10px);
+                        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+                        transition: box-shadow 0.2s ease;
                     }
                     .service-card-clickable:hover .icon {
-                        opacity: 1;
-                        transform: scale(1.1);
-                        box-shadow: 0 6px 20px rgba(45, 139, 209, 0.3);
-                        background: #fff;
+                        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
                     }
                     .service-card-clickable .icon button {
                         width: 100%;
@@ -2538,27 +2532,17 @@ function Home() {
                         display: flex;
                         align-items: center;
                         justify-content: center;
-                        color: #2D8BD1 !important;
-                        font-size: 18px;
-                        transition: all 0.3s ease;
                         border: none;
                         background: transparent;
                         padding: 0;
-                    }
-                    .service-card-clickable .icon button:hover {
-                        color: #1A4F97 !important;
+                        cursor: pointer;
                     }
                     .service-card-clickable .icon button i {
-                        color: #2D8BD1 !important;
+                        color: #2D8BD1;
                         font-size: 18px;
-                        transition: all 0.3s ease;
-                        display: inline-block;
+                        transition: transform 0.2s ease;
                     }
                     .service-card-clickable .icon button:hover i {
-                        color: #1A4F97 !important;
-                        transform: translateX(3px);
-                    }
-                    .service-card-clickable:hover .icon button i {
                         transform: translateX(2px);
                     }
                     

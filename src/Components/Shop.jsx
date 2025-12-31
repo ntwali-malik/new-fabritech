@@ -727,55 +727,56 @@ function Shop() {
                 </div>
 
                 {/* <!-- Shop Section --> */}
-                <section className="pt-130 pb-130" style={{ backgroundColor: '#f8f9fa', position: 'relative' }}>
+                <section className="pt-130 pb-130" style={{ backgroundColor: '#f8f9fb', position: 'relative' }}>
                     <div className="container">
                         <div className="row">
                             {/* <!-- Sidebar --> */}
                             <div className="col-lg-3 mb-50" style={{ position: 'sticky', top: '100px', alignSelf: 'flex-start' }}>
                                 <style>{`
                                     .shop-sidebar {
-                                        background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
-                                        padding: 30px;
-                                        border-radius: 16px;
-                                        box-shadow: 0 8px 24px rgba(0,0,0,0.08);
-                                        border: 1px solid rgba(45, 139, 209, 0.1);
-                                        transition: all 0.3s ease;
+                                        background: white;
+                                        padding: 32px;
+                                        border-radius: 20px;
+                                        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+                                        height: fit-content;
                                     }
-                                    .shop-sidebar:hover {
-                                        box-shadow: 0 12px 32px rgba(0,0,0,0.12);
-                                        transform: translateY(-2px);
-                                    }
-                                    .shop-sidebar h3 {
+                                    .sidebar-title {
                                         font-size: 20px;
-                                        font-weight: 700;
-                                        margin-bottom: 20px;
-                                        color: #1a1a1a;
-                                        border-bottom: 2px solid #2D8BD1;
-                                        padding-bottom: 15px;
+                                        font-weight: 800;
+                                        color: #0f172a;
+                                        margin-bottom: 24px;
+                                        padding-bottom: 16px;
+                                        border-bottom: 2px solid #e2e8f0;
+                                        display: flex;
+                                        align-items: center;
+                                        gap: 10px;
                                     }
                                     .category-list {
                                         list-style: none;
                                         padding: 0;
+                                        margin: 0;
                                     }
-                                    .category-list li {
-                                        margin-bottom: 12px;
+                                    .category-item {
+                                        margin-bottom: 8px;
                                     }
-                                    .category-list button {
+                                    .category-btn {
+                                        width: 100%;
                                         background: none;
                                         border: none;
-                                        color: #666;
-                                        font-size: 15px;
+                                        padding: 14px 16px;
+                                        text-align: left;
                                         cursor: pointer;
-                                        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+                                        border-radius: 12px;
                                         display: flex;
                                         justify-content: space-between;
                                         align-items: center;
-                                        width: 100%;
-                                        padding: 12px 16px;
-                                        border-radius: 10px;
+                                        color: #64748b;
+                                        font-size: 15px;
+                                        font-weight: 500;
+                                        transition: all 0.3s ease;
                                         position: relative;
                                     }
-                                    .category-list button::before {
+                                    .category-btn::before {
                                         content: '';
                                         position: absolute;
                                         left: 0;
@@ -787,40 +788,47 @@ function Shop() {
                                         border-radius: 0 4px 4px 0;
                                         transition: height 0.3s ease;
                                     }
-                                    .category-list button:hover {
+                                    .category-btn:hover {
                                         background: rgba(45, 139, 209, 0.08);
                                         color: #2D8BD1;
                                         transform: translateX(4px);
                                     }
-                                    .category-list button:hover::before,
-                                    .category-list button.active::before {
+                                    .category-btn:hover::before,
+                                    .category-btn.active::before {
                                         height: 60%;
                                     }
-                                    .category-list button.active {
+                                    .category-btn.active {
+                                        background: rgba(45, 139, 209, 0.1);
                                         color: #2D8BD1;
                                         font-weight: 700;
-                                        background: rgba(45, 139, 209, 0.12);
                                     }
                                     .category-count {
-                                        background: #f0f0f0;
-                                        padding: 2px 8px;
-                                        border-radius: 4px;
-                                        font-size: 12px;
+                                        background: #f1f5f9;
+                                        padding: 4px 12px;
+                                        border-radius: 12px;
+                                        font-size: 13px;
+                                        font-weight: 700;
+                                        transition: all 0.3s ease;
                                     }
-                                    .category-list button.active .category-count {
+                                    .category-btn.active .category-count {
                                         background: #2D8BD1;
                                         color: white;
                                     }
                                 `}</style>
                                 <div className="shop-sidebar">
-                                    <h3><i className="fa-solid fa-filter"></i> Filter</h3>
-                                    <h4 style={{ fontSize: '16px', fontWeight: '600', marginTop: '20px', marginBottom: '15px', color: '#1a1a1a' }}>Categories</h4>
+                                    <h3 className="sidebar-title">
+                                        <span>🔍</span>
+                                        <span>Filter</span>
+                                    </h3>
+                                    <h4 style={{ fontSize: '15px', fontWeight: 600, marginBottom: '16px', color: '#64748b' }}>
+                                        Categories
+                                    </h4>
                                     <ul className="category-list">
                                         {categories.map(category => (
-                                            <li key={category.id}>
+                                            <li key={category.id} className="category-item">
                                                 <button
                                                     onClick={() => setSelectedCategory(category.id)}
-                                                    className={selectedCategory === category.id ? 'active' : ''}
+                                                    className={`category-btn ${selectedCategory === category.id ? 'active' : ''}`}
                                                 >
                                                     <span>{category.name}</span>
                                                     <span className="category-count">{category.count}</span>
@@ -835,131 +843,104 @@ function Shop() {
                             <div className="col-lg-9">
                                 <style>{`
                                     .shop-header {
-                                        display: flex;
-                                        justify-content: space-between;
-                                        align-items: center;
-                                        margin-bottom: 40px;
-                                        background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
-                                        padding: 32px 36px;
+                                        background: white;
+                                        padding: 32px;
                                         border-radius: 20px;
-                                        box-shadow: 0 8px 32px rgba(0,0,0,0.08);
+                                        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+                                        display: flex;
                                         flex-wrap: wrap;
                                         gap: 20px;
-                                        border: 1px solid rgba(45, 139, 209, 0.12);
-                                        position: relative;
-                                        overflow: hidden;
+                                        align-items: center;
+                                        justify-content: space-between;
+                                        margin-bottom: 32px;
                                     }
-                                    .shop-header::before {
-                                        content: '';
-                                        position: absolute;
-                                        top: 0;
-                                        left: 0;
-                                        right: 0;
-                                        height: 4px;
-                                        background: linear-gradient(90deg, #2D8BD1 0%, #1A4F97 50%, #37A6E5 100%);
-                                    }
-                                    .shop-header h2 {
-                                        font-size: 28px;
-                                        font-weight: 800;
+                                    .products-title {
+                                        font-size: 32px;
+                                        font-weight: 900;
                                         color: #0f172a;
                                         margin: 0;
-                                        flex: 1;
-                                        min-width: 250px;
                                         background: linear-gradient(135deg, #2D8BD1 0%, #1A4F97 100%);
                                         -webkit-background-clip: text;
                                         -webkit-text-fill-color: transparent;
                                         background-clip: text;
                                     }
-                                    .products-count {
-                                        color: #64748b;
-                                        font-size: 15px;
-                                        font-weight: 600;
-                                        background: rgba(45, 139, 209, 0.1);
-                                        padding: 8px 16px;
-                                        border-radius: 20px;
-                                    }
-                                    .search-sort-controls {
+                                    .products-controls {
                                         display: flex;
                                         gap: 12px;
-                                        flex-wrap: wrap;
-                                        align-items: center;
                                         flex: 1;
+                                        flex-wrap: wrap;
                                     }
                                     .search-box {
                                         display: flex;
                                         align-items: center;
+                                        background: #f8f9fb;
                                         border: 2px solid #e2e8f0;
                                         border-radius: 12px;
                                         padding: 12px 16px;
                                         flex: 1;
                                         min-width: 250px;
-                                        background: #fff;
                                         transition: all 0.3s ease;
                                     }
                                     .search-box:focus-within {
                                         border-color: #2D8BD1;
+                                        background: white;
                                         box-shadow: 0 0 0 4px rgba(45, 139, 209, 0.1);
                                     }
                                     .search-box input {
                                         border: none;
                                         outline: none;
+                                        background: none;
                                         flex: 1;
                                         font-size: 15px;
-                                        font-family: inherit;
-                                        color: #1e293b;
+                                        color: #0f172a;
+                                        font-weight: 500;
                                     }
-                                    .search-box i {
+                                    .search-box input::placeholder {
                                         color: #94a3b8;
-                                        margin-right: 10px;
-                                        font-size: 16px;
                                     }
-                                    .sort-dropdown {
+                                    .search-icon {
+                                        color: #94a3b8;
+                                        margin-right: 12px;
+                                    }
+                                    .sort-select {
                                         padding: 12px 16px;
                                         border: 2px solid #e2e8f0;
                                         border-radius: 12px;
+                                        background: #f8f9fb;
+                                        color: #0f172a;
                                         font-size: 15px;
-                                        color: #1e293b;
-                                        cursor: pointer;
-                                        background: #fff;
-                                        transition: all 0.3s ease;
                                         font-weight: 600;
+                                        cursor: pointer;
+                                        transition: all 0.3s ease;
                                     }
-                                    .sort-dropdown:hover, .sort-dropdown:focus {
+                                    .sort-select:hover,
+                                    .sort-select:focus {
                                         border-color: #2D8BD1;
+                                        background: white;
                                         box-shadow: 0 0 0 4px rgba(45, 139, 209, 0.1);
+                                        outline: none;
+                                    }
+                                    .products-count {
+                                        background: rgba(45, 139, 209, 0.1);
+                                        color: #2D8BD1;
+                                        padding: 8px 16px;
+                                        border-radius: 20px;
+                                        font-size: 14px;
+                                        font-weight: 700;
                                     }
                                     .products-grid {
                                         display: grid;
-                                        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+                                        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
                                         gap: 28px;
-                                        margin-bottom: 50px;
                                     }
                                     .deal-card {
-                                        width: 100%;
-                                        max-width: 100%;
-                                        background: linear-gradient(145deg, #ffffff 0%, #fafbfc 100%);
+                                        background: white;
                                         border-radius: 20px;
-                                        box-shadow: 0 12px 32px rgba(0, 0, 0, 0.1);
                                         overflow: hidden;
-                                        border: 1px solid rgba(45, 139, 209, 0.1);
+                                        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
                                         transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-                                        position: relative;
-                                        animation: fadeInUp 0.6s ease-out forwards;
-                                    }
-                                    .deal-card::before {
-                                        content: '';
-                                        position: absolute;
-                                        top: 0;
-                                        left: 0;
-                                        right: 0;
-                                        height: 3px;
-                                        background: linear-gradient(90deg, #2D8BD1 0%, #1A4F97 100%);
-                                        transform: scaleX(0);
-                                        transform-origin: left;
-                                        transition: transform 0.4s ease;
-                                    }
-                                    .deal-card:hover::before {
-                                        transform: scaleX(1);
+                                        cursor: pointer;
+                                        animation: fadeInUp 0.6s ease-out both;
                                     }
                                     .deal-card:nth-child(1) { animation-delay: 0.1s; }
                                     .deal-card:nth-child(2) { animation-delay: 0.2s; }
@@ -967,12 +948,132 @@ function Shop() {
                                     .deal-card:nth-child(4) { animation-delay: 0.4s; }
                                     .deal-card:nth-child(5) { animation-delay: 0.5s; }
                                     .deal-card:nth-child(6) { animation-delay: 0.6s; }
-                                    .deal-card:nth-child(7) { animation-delay: 0.7s; }
-                                    .deal-card:nth-child(8) { animation-delay: 0.8s; }
-                                    .deal-card:nth-child(9) { animation-delay: 0.9s; }
-                                    .deal-card:nth-child(10) { animation-delay: 1s; }
-                                    .deal-card:nth-child(11) { animation-delay: 1.1s; }
-                                    .deal-card:nth-child(12) { animation-delay: 1.2s; }
+                                    .deal-card:hover {
+                                        transform: translateY(-8px);
+                                        box-shadow: 0 12px 32px rgba(45, 139, 209, 0.2);
+                                    }
+                                    .deal-image {
+                                        position: relative;
+                                        height: 280px;
+                                        overflow: hidden;
+                                        background: linear-gradient(135deg, #f8f9fb 0%, #e2e8f0 100%);
+                                    }
+                                    .deal-image img {
+                                        width: 100%;
+                                        height: 100%;
+                                        object-fit: cover;
+                                        transition: transform 0.5s ease;
+                                    }
+                                    .deal-card:hover .deal-image img {
+                                        transform: scale(1.1);
+                                    }
+                                    .deal-badge {
+                                        position: absolute;
+                                        top: 16px;
+                                        left: 16px;
+                                        background: linear-gradient(135deg, #2D8BD1 0%, #1A4F97 100%);
+                                        color: white;
+                                        padding: 6px 14px;
+                                        border-radius: 20px;
+                                        font-size: 11px;
+                                        font-weight: 800;
+                                        text-transform: uppercase;
+                                        letter-spacing: 0.5px;
+                                        box-shadow: 0 4px 12px rgba(45, 139, 209, 0.4);
+                                        z-index: 2;
+                                    }
+                                    .product-actions {
+                                        position: absolute;
+                                        top: 16px;
+                                        right: 16px;
+                                        display: flex;
+                                        flex-direction: column;
+                                        gap: 8px;
+                                        z-index: 2;
+                                    }
+                                    .action-btn {
+                                        width: 44px;
+                                        height: 44px;
+                                        background: white;
+                                        border: none;
+                                        border-radius: 50%;
+                                        display: flex;
+                                        align-items: center;
+                                        justify-content: center;
+                                        cursor: pointer;
+                                        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+                                        transition: all 0.3s ease;
+                                    }
+                                    .action-btn:hover {
+                                        transform: scale(1.1);
+                                        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+                                    }
+                                    .wishlist-btn.active {
+                                        background: #dc2626;
+                                        color: white;
+                                    }
+                                    .wishlist-btn.active i {
+                                        color: white !important;
+                                    }
+                                    .cart-btn:hover {
+                                        background: #2D8BD1;
+                                        color: white;
+                                    }
+                                    .cart-btn.added {
+                                        background: #10b981;
+                                        color: white;
+                                    }
+                                    .deal-body {
+                                        padding: 24px;
+                                    }
+                                    .deal-title {
+                                        font-size: 18px;
+                                        font-weight: 700;
+                                        color: #0f172a;
+                                        margin: 0 0 16px 0;
+                                        line-height: 1.4;
+                                        display: -webkit-box;
+                                        -webkit-line-clamp: 2;
+                                        -webkit-box-orient: vertical;
+                                        overflow: hidden;
+                                    }
+                                    .deal-pricing {
+                                        display: flex;
+                                        align-items: baseline;
+                                        gap: 10px;
+                                        margin-bottom: 16px;
+                                        flex-wrap: wrap;
+                                    }
+                                    .deal-price-new {
+                                        font-size: 28px;
+                                        font-weight: 900;
+                                        color: #2D8BD1;
+                                    }
+                                    .deal-price-old {
+                                        font-size: 18px;
+                                        color: #94a3b8;
+                                        text-decoration: line-through;
+                                    }
+                                    .deal-discount {
+                                        background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
+                                        color: white;
+                                        padding: 4px 10px;
+                                        border-radius: 8px;
+                                        font-size: 12px;
+                                        font-weight: 800;
+                                    }
+                                    .deal-rating {
+                                        display: flex;
+                                        align-items: center;
+                                        gap: 10px;
+                                        font-size: 14px;
+                                        color: #64748b;
+                                    }
+                                    .deal-stars {
+                                        display: flex;
+                                        gap: 2px;
+                                        color: #f59e0b;
+                                    }
                                     @keyframes fadeInUp {
                                         from {
                                             opacity: 0;
@@ -983,217 +1084,20 @@ function Shop() {
                                             transform: translateY(0);
                                         }
                                     }
-                                    .deal-card:hover {
-                                        transform: translateY(-8px) scale(1.02);
-                                        box-shadow: 0 20px 48px rgba(45, 139, 209, 0.2);
-                                        border-color: rgba(45, 139, 209, 0.3);
-                                    }
-                                    .deal-image {
-                                        position: relative;
-                                        width: 100%;
-                                        height: 260px;
-                                        overflow: hidden;
-                                        background: linear-gradient(135deg, #f6f8fb 0%, #e9ecef 100%);
-                                    }
-                                    .deal-image img {
-                                        width: 100%;
-                                        height: 100%;
-                                        object-fit: cover;
-                                        display: block;
-                                        transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-                                    }
-                                    .deal-card:hover .deal-image img {
-                                        transform: scale(1.1) rotate(1deg);
-                                        filter: brightness(1.05);
-                                    }
-                                    .deal-cart-btn {
-                                        position: absolute;
-                                        right: 14px;
-                                        bottom: 14px;
-                                        width: 56px;
-                                        height: 56px;
-                                        border-radius: 50%;
-                                        background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
-                                        border: 2px solid rgba(45, 139, 209, 0.2);
-                                        display: grid;
-                                        place-items: center;
-                                        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
-                                        transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
-                                        cursor: pointer;
-                                        z-index: 2;
-                                    }
-                                    .deal-cart-btn:hover {
-                                        transform: translateY(-4px) scale(1.1) rotate(5deg);
-                                        box-shadow: 0 16px 32px rgba(45, 139, 209, 0.3);
-                                        border-color: #2D8BD1;
-                                        background: linear-gradient(135deg, #2D8BD1 0%, #1A4F97 100%);
-                                    }
-                                    .deal-wishlist-btn {
-                                        position: absolute;
-                                        right: 14px;
-                                        top: 14px;
-                                        width: 48px;
-                                        height: 48px;
-                                        border-radius: 50%;
-                                        background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
-                                        border: 2px solid rgba(220, 38, 38, 0.2);
-                                        display: grid;
-                                        place-items: center;
-                                        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
-                                        transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
-                                        cursor: pointer;
-                                        z-index: 2;
-                                    }
-                                    .deal-wishlist-btn:hover {
-                                        transform: translateY(-2px) scale(1.1);
-                                        box-shadow: 0 12px 28px rgba(220, 38, 38, 0.3);
-                                        border-color: #dc2626;
-                                        background: linear-gradient(135deg, #ffffff 0%, #fef2f2 100%);
-                                    }
-                                    .deal-wishlist-btn.active {
-                                        background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
-                                        border-color: #dc2626;
-                                    }
-                                    .deal-wishlist-btn.active i {
-                                        color: #ffffff;
-                                    }
-                                    .deal-cart-btn:hover i {
-                                        color: #fff !important;
-                                        animation: cartBounce 0.5s ease;
-                                    }
-                                    @keyframes cartBounce {
-                                        0%, 100% { transform: scale(1); }
-                                        50% { transform: scale(1.2); }
-                                    }
-                                    .deal-badge {
-                                        position: absolute;
-                                        top: 16px;
-                                        left: 16px;
-                                        padding: 8px 14px;
-                                        border-radius: 12px;
-                                        background: linear-gradient(135deg, #2D8BD1 0%, #1A4F97 100%);
-                                        color: #fff;
-                                        font-size: 11px;
-                                        font-weight: 900;
-                                        letter-spacing: 0.5px;
-                                        text-transform: uppercase;
-                                        box-shadow: 0 8px 20px rgba(26, 79, 151, 0.35);
-                                        border: 1px solid rgba(255, 255, 255, 0.3);
-                                        z-index: 2;
-                                        backdrop-filter: blur(10px);
-                                        animation: badgePulse 2s ease-in-out infinite;
-                                    }
-                                    @keyframes badgePulse {
-                                        0%, 100% { box-shadow: 0 8px 20px rgba(26, 79, 151, 0.35); }
-                                        50% { box-shadow: 0 8px 24px rgba(26, 79, 151, 0.5); }
-                                    }
-                                    .deal-body {
-                                        padding: 22px 24px 24px;
-                                        background: linear-gradient(to bottom, transparent, rgba(45, 139, 209, 0.02));
-                                    }
-                                    .deal-title {
-                                        font-size: 17px;
-                                        color: #111827;
-                                        font-weight: 800;
-                                        margin: 0 0 14px 0;
-                                        line-height: 1.4;
-                                        display: -webkit-box;
-                                        -webkit-line-clamp: 2;
-                                        -webkit-box-orient: vertical;
-                                        overflow: hidden;
-                                        transition: color 0.3s ease;
-                                    }
-                                    .deal-card:hover .deal-title {
-                                        color: #2D8BD1;
-                                    }
-                                    .deal-pricing {
-                                        display: flex;
-                                        align-items: baseline;
-                                        gap: 8px;
-                                        margin-bottom: 10px;
-                                        flex-wrap: wrap;
-                                    }
-                                    .deal-price-new {
-                                        font-size: 24px;
-                                        font-weight: 900;
-                                        color: #111827;
-                                        background: linear-gradient(135deg, #2D8BD1 0%, #1A4F97 100%);
-                                        -webkit-background-clip: text;
-                                        -webkit-text-fill-color: transparent;
-                                        background-clip: text;
-                                    }
-                                    .deal-price-old {
-                                        font-size: 15px;
-                                        color: #9ca3af;
-                                        text-decoration: line-through;
-                                        font-weight: 600;
-                                    }
-                                    .deal-discount {
-                                        font-size: 12px;
-                                        font-weight: 900;
-                                        color: #fff;
-                                        background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
-                                        padding: 4px 10px;
-                                        border-radius: 8px;
-                                        box-shadow: 0 4px 12px rgba(220, 38, 38, 0.3);
-                                    }
-                                    .deal-rating {
-                                        display: flex;
-                                        align-items: center;
-                                        gap: 8px;
-                                        font-size: 13px;
-                                        color: #4b5563;
-                                        margin-top: 8px;
-                                    }
-                                    .deal-stars {
-                                        color: #f59e0b;
-                                        display: inline-flex;
-                                        align-items: center;
-                                        gap: 2px;
-                                        font-size: 13px;
-                                    }
                                     .no-products {
                                         grid-column: 1 / -1;
                                         text-align: center;
-                                        padding: 100px 20px;
-                                        background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
-                                        border-radius: 20px;
-                                        border: 2px dashed rgba(45, 139, 209, 0.2);
-                                        position: relative;
-                                        overflow: hidden;
+                                        padding: 60px 20px;
                                     }
-                                    .no-products::before {
-                                        content: '';
-                                        position: absolute;
-                                        top: -50%;
-                                        left: -50%;
-                                        width: 200%;
-                                        height: 200%;
-                                        background: radial-gradient(circle, rgba(45, 139, 209, 0.05) 0%, transparent 70%);
-                                        animation: rotate 20s linear infinite;
-                                    }
-                                    @keyframes rotate {
-                                        from { transform: rotate(0deg); }
-                                        to { transform: rotate(360deg); }
-                                    }
-                                    .no-products-icon {
+                                    .empty-icon {
                                         font-size: 80px;
                                         color: #cbd5e1;
-                                        margin-bottom: 24px;
-                                        position: relative;
-                                        z-index: 1;
-                                        animation: float 3s ease-in-out infinite;
+                                        margin-bottom: 20px;
                                     }
-                                    @keyframes float {
-                                        0%, 100% { transform: translateY(0px); }
-                                        50% { transform: translateY(-10px); }
-                                    }
-                                    .no-products-text {
-                                        font-size: 22px;
+                                    .empty-text {
+                                        font-size: 18px;
                                         color: #64748b;
-                                        font-weight: 700;
-                                        position: relative;
-                                        z-index: 1;
+                                        font-weight: 600;
                                     }
                                     .product-modal-overlay {
                                         position: fixed;
@@ -1302,27 +1206,36 @@ function Shop() {
                                         background: #fecdd3;
                                         transform: translateY(-1px);
                                     }
-                                    @media (max-width: 768px) {
+                                    @media (max-width: 1024px) {
                                         .products-grid {
-                                            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+                                            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
                                             gap: 20px;
                                         }
+                                    }
+                                    @media (max-width: 768px) {
                                         .shop-header {
                                             flex-direction: column;
-                                            gap: 15px;
-                                            padding: 20px;
+                                            align-items: stretch;
+                                            padding: 24px;
+                                        }
+                                        .products-controls {
+                                            flex-direction: column;
                                         }
                                         .search-box {
                                             min-width: 100%;
+                                        }
+                                        .products-grid {
+                                            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+                                            gap: 20px;
                                         }
                                     }
                                 `}</style>
 
                                 <div className="shop-header">
-                                    <h2>Our Products</h2>
-                                    <div className="search-sort-controls">
+                                    <h2 className="products-title">Our Products</h2>
+                                    <div className="products-controls">
                                         <div className="search-box">
-                                            <i className="fa-solid fa-search"></i>
+                                            <span className="search-icon">🔍</span>
                                             <input
                                                 type="text"
                                                 placeholder="Search products..."
@@ -1331,7 +1244,7 @@ function Shop() {
                                             />
                                         </div>
                                         <select
-                                            className="sort-dropdown"
+                                            className="sort-select"
                                             value={sortBy}
                                             onChange={(e) => setSortBy(e.target.value)}
                                         >
@@ -1399,40 +1312,43 @@ function Shop() {
                                                         <img 
                                                             src={product.image} 
                                                             alt={product.name}
+                                                            className="product-image"
                                                             onError={(e) => {
                                                                 e.target.src = '/placeholder-image.png'
                                                             }}
                                                         />
                                                         <span className="deal-badge">{product.category}</span>
-                                                        <WishlistButton 
-                                                            product={product}
-                                                            className="deal-wishlist-btn"
-                                                        />
-                                                        <button 
-                                                            className="deal-cart-btn" 
-                                                            aria-label="Add to cart" 
-                                                            onClick={(e) => { 
-                                                                e.stopPropagation()
-                                                                const cartProduct = {
-                                                                    id: product.id,
-                                                                    name: product.name,
-                                                                    title: product.title || product.name,
-                                                                    price: product.price,
-                                                                    image: product.image,
-                                                                    category: product.category,
-                                                                    quantity: 1
-                                                                }
-                                                                addToCart(cartProduct, 1)
-                                                                setAddedProduct(product.id)
-                                                                setToast(`${product.name} added to cart`)
-                                                                setTimeout(() => setAddedProduct(null), 2000)
-                                                            }}
-                                                        >
-                                                            <i className="fa-solid fa-cart-shopping" style={{ color: addedProduct === product.id ? '#22c55e' : '#111827', fontSize: '18px' }}></i>
-                                                        </button>
+                                                        <div className="product-actions">
+                                                            <WishlistButton 
+                                                                product={product}
+                                                                className="action-btn wishlist-btn"
+                                                            />
+                                                            <button 
+                                                                className={`action-btn cart-btn ${addedProduct === product.id ? 'added' : ''}`}
+                                                                aria-label="Add to cart" 
+                                                                onClick={(e) => { 
+                                                                    e.stopPropagation()
+                                                                    const cartProduct = {
+                                                                        id: product.id,
+                                                                        name: product.name,
+                                                                        title: product.title || product.name,
+                                                                        price: product.price,
+                                                                        image: product.image,
+                                                                        category: product.category,
+                                                                        quantity: 1
+                                                                    }
+                                                                    addToCart(cartProduct, 1)
+                                                                    setAddedProduct(product.id)
+                                                                    setToast(`${product.name} added to cart`)
+                                                                    setTimeout(() => setAddedProduct(null), 2000)
+                                                                }}
+                                                            >
+                                                                {addedProduct === product.id ? '✓' : '🛒'}
+                                                            </button>
+                                                        </div>
                                                     </div>
                                                     <div className="deal-body">
-                                                        <h4 className="deal-title">{product.name}</h4>
+                                                        <h3 className="deal-title">{product.name}</h3>
                                                         <div className="deal-pricing">
                                                             <span className="deal-price-new">RWF {product.price.toLocaleString()}</span>
                                                             {showDiscount && (
@@ -1443,13 +1359,15 @@ function Shop() {
                                                             )}
                                                         </div>
                                                         <div className="deal-rating">
-                                                            <span className="deal-stars">
+                                                            <div className="deal-stars">
                                                                 {[...Array(5)].map((_, i) => (
-                                                                    <i key={i} className={`fa-solid fa-star${i < Math.floor(product.rating) ? '' : i < product.rating ? '-half-stroke' : ''}`}></i>
+                                                                    <span key={i}>
+                                                                        {i < Math.floor(product.rating) ? '★' : '☆'}
+                                                                    </span>
                                                                 ))}
-                                                            </span>
+                                                            </div>
                                                             <span>{product.rating.toFixed(1)}</span>
-                                                            <span style={{ color: '#9ca3af' }}>|</span>
+                                                            <span style={{ color: '#cbd5e1' }}>|</span>
                                                             <span>{product.reviews} reviews</span>
                                                         </div>
                                                     </div>
@@ -1459,10 +1377,8 @@ function Shop() {
                                     </div>
                                 ) : (
                                     <div className="no-products">
-                                        <div className="no-products-icon">
-                                            <i className="fa-solid fa-inbox"></i>
-                                        </div>
-                                        <p className="no-products-text">No products found matching your criteria</p>
+                                        <div className="empty-icon">📦</div>
+                                        <p className="empty-text">No products found</p>
                                     </div>
                                 )}
                             </div>
