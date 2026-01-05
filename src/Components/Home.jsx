@@ -1255,7 +1255,7 @@ function Home() {
                         <div className="row  justify-content-center">
                             <div className="col-12 text-center scroll-animate fade-up">
                                 <div className="tv-section-title-box mb-60">
-                                    <span className="tv-section-subtitle tv-spltv-text tv-spltv-in-right">Our Services...</span>
+                                    <span className="tv-section-subtitle tv-spltv-text tv-spltv-in-right">Our Services</span>
                                     <h4 className="tv-section-title pb-20 tv-spltv-text tv-spltv-in-right">Tech Solutions Driving Global <br /> Connectivity</h4>
                                 </div>
                             </div>
