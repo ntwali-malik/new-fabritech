@@ -2170,11 +2170,55 @@ const ProductDetail = () => {
                       <i className="fa-solid fa-magnifying-glass"></i>
                     </button>
                     <div className="tv-header-bar">
-                      <button className="tv-menu-bar">
-                        <span className="hamburger-icon">
-                          <span className="hamburger-line"></span>
-                          <span className="hamburger-line"></span>
-                          <span className="hamburger-line"></span>
+                      <button
+                        style={{
+                          background: 'transparent',
+                          border: 'none',
+                          cursor: 'pointer',
+                          padding: '10px',
+                          display: 'flex',
+                          flexDirection: 'column',
+                          justifyContent: 'center',
+                          alignItems: 'center',
+                          width: '50px',
+                          height: '50px'
+                        }}
+                      >
+                        <span
+                          style={{
+                            display: 'flex',
+                            flexDirection: 'column',
+                            gap: '6px',
+                            width: '30px'
+                          }}
+                        >
+                          <span
+                            style={{
+                              width: '100%',
+                              height: '3px',
+                              backgroundColor: '#333',
+                              borderRadius: '2px',
+                              transition: 'all 0.3s ease'
+                            }}
+                          ></span>
+                          <span
+                            style={{
+                              width: '100%',
+                              height: '3px',
+                              backgroundColor: '#333',
+                              borderRadius: '2px',
+                              transition: 'all 0.3s ease'
+                            }}
+                          ></span>
+                          <span
+                            style={{
+                              width: '100%',
+                              height: '3px',
+                              backgroundColor: '#333',
+                              borderRadius: '2px',
+                              transition: 'all 0.3s ease'
+                            }}
+                          ></span>
                         </span>
                       </button>
                     </div>
