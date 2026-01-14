@@ -1613,7 +1613,7 @@ function Shop() {
                             <div className="row">
                                 <div className="col-12">
                                     <div className="footer-copyright" style={{ textAlign: 'center' }}>
-                                        <p style={{ fontSize: '14px', color: '#666', margin: '0' }}>Fabritech, All rights reserved 2025. Developed by <a href="#" style={{ color: '#2D8BD1', textDecoration: 'none', fontWeight: '600' }}>Maliki NTWALI</a></p>
+                                        <p style={{ fontSize: '14px', color: '#666', margin: '0' }}>Fabritech, All rights reserved 2026. Developed by <a href="#" style={{ color: '#2D8BD1', textDecoration: 'none', fontWeight: '600' }}>Maliki NTWALI</a></p>
                                     </div>
                                 </div>
                             </div>
