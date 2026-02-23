@@ -4429,36 +4429,17 @@ function Home() {
                             <div className="service-modal-actions">
                                 {selectedService.id === 'internships-courses' ? (
                                     <>
-                                        <button 
-                                            className="service-modal-register-btn" 
-                                            onClick={() => {
-                                                closeService()
-                                                setTimeout(() => {
-                                                    const contactElement = document.getElementById('contact')
-                                                    if (contactElement) {
-                                                        const headerOffset = 100
-                                                        const elementPosition = contactElement.getBoundingClientRect().top
-                                                        const offsetPosition = elementPosition + window.pageYOffset - headerOffset
-                                                        window.scrollTo({
-                                                            top: offsetPosition,
-                                                            behavior: 'smooth'
-                                                        })
-                                                        // Optionally pre-fill the service dropdown if needed
-                                                        setTimeout(() => {
-                                                            const serviceSelect = document.querySelector('select[name="service"]')
-                                                            if (serviceSelect) {
-                                                                serviceSelect.value = 'training'
-                                                                serviceSelect.dispatchEvent(new Event('change', { bubbles: true }))
-                                                            }
-                                                        }, 500)
-                                                    }
-                                                }, 100)
-                                            }}
+                                        <a 
+                                            href="http://studentregistration.fabritech.rw/" 
+                                            target="_blank" 
+                                            rel="noopener noreferrer"
+                                            className="service-modal-register-btn"
+                                            onClick={() => closeService()}
                                         >
                                             <span className="btn-shine"></span>
                                             <i className="fa-solid fa-user-plus"></i>
                                             <span>Register Now</span>
-                                        </button>
+                                        </a>
                                         <button 
                                             className="service-modal-contact-btn" 
                                             onClick={() => {
