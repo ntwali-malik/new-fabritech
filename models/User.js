@@ -2,15 +2,26 @@ const mongoose = require('mongoose');
 
 const UserSchema = new mongoose.Schema(
   {
-    id: { 
-      type: String, 
-      required: true, 
+    id: {
+      type: String,
+      required: true,
       unique: true,
       default: () => new mongoose.Types.ObjectId().toString()
     },
     name: { type: String, required: true },
     email: { type: String, required: true, unique: true },
-    password: { type: String, required: true },
+    password: {
+      type: String,
+      required: function () {
+        return this.authProvider !== 'google';
+      }
+    },
+    authProvider: {
+      type: String,
+      enum: ['local', 'google'],
+      default: 'local'
+    },
+    googleId: { type: String },
     role: { type: String, enum: ['user', 'admin'], default: 'user' },
     phone: { type: String },
     address: { type: String }
@@ -19,4 +30,3 @@ const UserSchema = new mongoose.Schema(
 );
 
 module.exports = mongoose.model('User', UserSchema);
-

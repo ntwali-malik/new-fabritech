@@ -1,34 +1,72 @@
 const express = require('express');
+const { OAuth2Client } = require('google-auth-library');
 const User = require('../models/User');
 const Order = require('../models/Order');
 const router = express.Router();
+
+const googleClient = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
+
+async function getGoogleProfile({ idToken, accessToken }) {
+  if (idToken) {
+    const ticket = await googleClient.verifyIdToken({
+      idToken,
+      audience: process.env.GOOGLE_CLIENT_ID
+    });
+    const payload = ticket.getPayload();
+    if (!payload?.email) {
+      throw new Error('Google account email is required');
+    }
+    return {
+      email: payload.email.toLowerCase(),
+      name: payload.name || payload.email.split('@')[0],
+      googleId: payload.sub
+    };
+  }
+
+  if (accessToken) {
+    const response = await fetch('https://www.googleapis.com/oauth2/v3/userinfo', {
+      headers: { Authorization: `Bearer ${accessToken}` }
+    });
+    if (!response.ok) {
+      throw new Error('Failed to fetch Google user profile');
+    }
+    const data = await response.json();
+    if (!data?.email) {
+      throw new Error('Google account email is required');
+    }
+    return {
+      email: data.email.toLowerCase(),
+      name: data.name || data.email.split('@')[0],
+      googleId: data.sub
+    };
+  }
+
+  throw new Error('idToken or accessToken is required');
+}
 
 // Register user
 router.post('/register', async (req, res) => {
   try {
     const { name, email, password, phone, address } = req.body;
 
-    // Validate required fields
     if (!name || !email || !password) {
       return res.status(400).json({ error: 'Name, email, and password are required' });
     }
 
-    // Check if user already exists
     const existingUser = await User.findOne({ email });
     if (existingUser) {
       return res.status(400).json({ error: 'User with this email already exists' });
     }
 
-    // Create new user
     const user = await User.create({
       name,
       email,
-      password, // Note: In production, hash the password before saving
+      password,
       phone,
-      address
+      address,
+      authProvider: 'local'
     });
 
-    // Don't send password in response
     const userResponse = user.toObject();
     delete userResponse.password;
 
@@ -43,29 +81,76 @@ router.post('/login', async (req, res) => {
   try {
     const { email, password } = req.body;
 
-    // Validate required fields
     if (!email || !password) {
       return res.status(400).json({ error: 'Email and password are required' });
     }
 
-    // Find user by email
     const user = await User.findOne({ email });
     if (!user) {
       return res.status(401).json({ error: 'Invalid email or password' });
     }
 
-    // Check password (Note: In production, use bcrypt.compare for hashed passwords)
+    if (user.authProvider === 'google' && !user.password) {
+      return res.status(401).json({
+        error: 'This account uses Google sign-in. Please continue with Google.'
+      });
+    }
+
     if (user.password !== password) {
       return res.status(401).json({ error: 'Invalid email or password' });
     }
 
-    // Don't send password in response
     const userResponse = user.toObject();
     delete userResponse.password;
 
     res.json({ message: 'Login successful', user: userResponse });
   } catch (err) {
     res.status(500).json({ error: err.message });
+  }
+});
+
+// Google OAuth login / signup
+router.post('/google', async (req, res) => {
+  try {
+    if (!process.env.GOOGLE_CLIENT_ID) {
+      return res.status(500).json({ error: 'Google sign-in is not configured on the server' });
+    }
+
+    const { idToken, accessToken } = req.body;
+    const profile = await getGoogleProfile({ idToken, accessToken });
+
+    let user = await User.findOne({
+      $or: [
+        { email: profile.email },
+        ...(profile.googleId ? [{ googleId: profile.googleId }] : [])
+      ]
+    });
+
+    if (!user) {
+      user = await User.create({
+        name: profile.name,
+        email: profile.email,
+        googleId: profile.googleId,
+        authProvider: 'google'
+      });
+    } else {
+      let changed = false;
+      if (!user.googleId && profile.googleId) {
+        user.googleId = profile.googleId;
+        changed = true;
+      }
+      if (changed) {
+        await user.save();
+      }
+    }
+
+    const userResponse = user.toObject();
+    delete userResponse.password;
+
+    res.json({ message: 'Login successful', user: userResponse });
+  } catch (err) {
+    console.error('Google auth error:', err);
+    res.status(401).json({ error: err.message || 'Google authentication failed' });
   }
 });
 
@@ -145,7 +230,7 @@ router.get('/:id/orders', async (req, res) => {
     const orders = await Order.find({ user: user._id })
       .populate('items.product')
       .sort({ createdAt: -1 });
-    
+
     res.json(orders);
   } catch (err) {
     res.status(500).json({ error: err.message });
@@ -153,4 +238,3 @@ router.get('/:id/orders', async (req, res) => {
 });
 
 module.exports = router;
-
