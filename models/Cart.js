@@ -41,34 +41,12 @@ const CartSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-// Calculate total before saving - Use synchronous function with next callback
-CartSchema.pre('save', function(next) {
-  try {
-    // Calculate total from items
-    this.total = this.items.reduce((sum, item) => {
-      const itemTotal = (item.price || 0) * (item.quantity || 0);
-      return sum + itemTotal;
-    }, 0);
-    
-    // Call next to continue the save operation
-    next();
-  } catch (error) {
-    // Pass error to next to abort the save operation
-    next(error);
-  }
+// Calculate total before saving (Mongoose 7+ does not pass next to sync middleware)
+CartSchema.pre('save', function () {
+  this.total = this.items.reduce((sum, item) => {
+    return sum + ((item.price || 0) * (item.quantity || 0));
+  }, 0);
 });
-
-// Alternative: Use pre('save') without async if you don't need async operations
-// CartSchema.pre('save', function(next) {
-//   try {
-//     this.total = this.items.reduce((sum, item) => {
-//       return sum + ((item.price || 0) * (item.quantity || 0));
-//     }, 0);
-//     next();
-//   } catch (error) {
-//     next(error);
-//   }
-// });
 
 // Index for faster queries
 CartSchema.index({ user: 1 });

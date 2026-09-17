@@ -32,6 +32,18 @@ const OrderSchema = new mongoose.Schema(
       required: true
     },
     items: [OrderItemSchema],
+    subtotal: {
+      type: Number,
+      default: 0
+    },
+    tax: {
+      type: Number,
+      default: 0
+    },
+    shippingFee: {
+      type: Number,
+      default: 0
+    },
     total: {
       type: Number,
       required: true
@@ -49,9 +61,30 @@ const OrderSchema = new mongoose.Schema(
       type: String,
       required: true
     },
+    customerName: {
+      type: String,
+      default: ''
+    },
+    customerEmail: {
+      type: String,
+      default: ''
+    },
+    deliveryMethod: {
+      type: String,
+      enum: ['delivery', 'store'],
+      default: 'delivery'
+    },
+    notes: {
+      type: String,
+      default: ''
+    },
     paymentMethod: {
       type: String,
-      default: 'DPO'
+      default: 'Mobile Money'
+    },
+    momoProvider: {
+      type: String,
+      default: ''
     },
     paymentStatus: {
       type: String,
@@ -66,4 +99,3 @@ const OrderSchema = new mongoose.Schema(
 );
 
 module.exports = mongoose.model('Order', OrderSchema);
-

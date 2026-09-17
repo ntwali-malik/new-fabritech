@@ -6,10 +6,23 @@ const User = require('../models/User');
 const emailService = require('../services/emailService');
 const router = express.Router();
 
+const TAX_RATE = 0.18;
+
 // Create order from cart
 router.post('/:userId/create', async (req, res) => {
   try {
-    const { shippingAddress, phone, dpoTransactionId } = req.body;
+    const {
+      shippingAddress,
+      phone,
+      dpoTransactionId,
+      paymentMethod,
+      deliveryMethod,
+      customerName,
+      customerEmail,
+      notes,
+      momoProvider,
+      shippingFee: requestedShippingFee
+    } = req.body;
 
     if (!shippingAddress || !phone) {
       return res.status(400).json({ error: 'Shipping address and phone are required' });
@@ -33,6 +46,10 @@ router.post('/:userId/create', async (req, res) => {
     for (const cartItem of cart.items) {
       const product = cartItem.product;
       
+      if (!product) {
+        return res.status(400).json({ error: 'A cart item references a missing product' });
+      }
+
       if (product.stock < cartItem.quantity) {
         return res.status(400).json({ 
           error: `Insufficient stock for ${product.title}. Available: ${product.stock}` 
@@ -47,13 +64,27 @@ router.post('/:userId/create', async (req, res) => {
       });
     }
 
-    // Create order
+    const subtotal = cart.total || 0;
+    const tax = Math.round(subtotal * TAX_RATE);
+    const shippingFee = Number(requestedShippingFee) || 0;
+    const total = subtotal + tax + shippingFee;
+
+    // Create order (pending payment unless transaction id provided)
     const order = await Order.create({
       user: user._id,
       items: orderItems,
-      total: cart.total,
+      subtotal,
+      tax,
+      shippingFee,
+      total,
       shippingAddress,
       phone,
+      customerName: customerName || user.name || '',
+      customerEmail: (customerEmail || user.email || '').toLowerCase(),
+      deliveryMethod: deliveryMethod === 'store' ? 'store' : 'delivery',
+      notes: notes || '',
+      paymentMethod: paymentMethod || 'Mobile Money',
+      momoProvider: momoProvider || '',
       dpoTransactionId: dpoTransactionId || null,
       paymentStatus: dpoTransactionId ? 'paid' : 'pending'
     });
